@@ -7,6 +7,9 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
+      "@components/*": ["src/components/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@interfaces/*": ["src/interfaces/*"],
       "@pages/*": ["src/pages/*"],
       "@routes/*": ["src/routes/*"],
     },

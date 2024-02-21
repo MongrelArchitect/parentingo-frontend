@@ -1,6 +1,9 @@
 // package imports
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+// contexts
+import UserContextProvider from "@contexts/Users";
+
 // page module imports
 import ErrorPage from "@pages/ErrorPage";
 import Landing from "@pages/Landing";
@@ -11,7 +14,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Root />
+      <UserContextProvider>
+         <Root />
+      </UserContextProvider>
     ),
     errorElement: <ErrorPage />,
     children: [
