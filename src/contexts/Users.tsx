@@ -6,12 +6,16 @@ interface ContextProps {
 }
 
 interface ContextValue {
-  attemptLogin: (username: string, password: string) => void;
+  attemptLogin: (username: string, password: string) => Promise<number>;
   clearUser: () => void;
   user: UserInterface | null;
 }
 
-export const UserContext = createContext<ContextValue | null>(null);
+export const UserContext = createContext<ContextValue>({
+  attemptLogin: async () => {return 500},
+  user: null,
+  clearUser: () => {},
+});
 
 export default function UserContextProvider({ children }: ContextProps) {
   const [user, setUser] = useState<UserInterface | null>(null);
@@ -20,22 +24,36 @@ export default function UserContextProvider({ children }: ContextProps) {
     setUser(null);
   };
 
-  const attemptLogin = async (username: string, password: string) => {
+  const getCurrentUser = async () => {
     try {
       const response = await fetch("http://localhost:3131/users/current", {
-        body: JSON.stringify({username, password}),
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        method: "POST",
+        credentials: "include",
         mode: "cors",
       });
       const result = await response.json();
-      if (response.status === 200) {
-        console.log(result);
+      switch (response.status) {
+        case 200:
+          console.log("User authenticated successfully");
+          setUser({
+            avatar: result.avatar || null,
+            email: result.email,
+            id: result.id,
+            followers: result.followers,
+            following: result.following,
+            lastLogin: new Date(result.lastLogin),
+            name: result.name,
+            username: result.username,
+          });
+          break;
+        case 401:
+          console.log("User authentication required - please login");
+          break;
+        default:
+          console.log("UNEXPECTED RESPONSE");
+          console.log(`status: ${response.status}`);
+          console.log(result);
+          break;
       }
-      console.log(response.status);
-      console.log(result);
     } catch (err) {
       // XXX
       // display this error in ui?
@@ -43,21 +61,31 @@ export default function UserContextProvider({ children }: ContextProps) {
     }
   };
 
-  const getCurrentUser = async () => {
+  const attemptLogin = async (username: string, password: string) => {
+    // fetch will serialize this to x-www-form-urlencoded (what server expects)
+    const formBody = new URLSearchParams();
+    formBody.append("username", username);
+    formBody.append("password", password);
+
     try {
-      const response = await fetch("http://localhost:3131/users/current", {
+      const response = await fetch("http://localhost:3131/users/login", {
+        body: formBody,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "POST",
         mode: "cors",
       });
-      const result = await response.json();
       if (response.status === 200) {
-        console.log(result);
+        await getCurrentUser();
       }
-      console.log(response.status);
-      console.log(result);
+      return response.status;
     } catch (err) {
       // XXX
       // display this error in ui?
       console.error(err);
+      return 500;
     }
   };
 

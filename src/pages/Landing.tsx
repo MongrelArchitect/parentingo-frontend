@@ -4,11 +4,11 @@ import Login from "@components/Login";
 
 export default function Landing() {
   const auth = useContext(UserContext);
-  const user = auth ? auth.user : null;
+  const user = auth.user;
 
   if (user) {
     return (
-      <div>LANDING WITH USER</div>
+      <div>Welcome User!</div>
     );
   }
   return (
