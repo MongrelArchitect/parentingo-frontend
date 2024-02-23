@@ -8,7 +8,7 @@ export default function Landing() {
 
   if (user) {
     return (
-      <div>Welcome User!</div>
+      <div>Welcome {user.name}!</div>
     );
   }
   return (

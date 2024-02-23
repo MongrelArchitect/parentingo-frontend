@@ -7,12 +7,18 @@ interface ContextProps {
 
 interface ContextValue {
   attemptLogin: (username: string, password: string) => Promise<number>;
+  attemptLogout: () => Promise<number>;
   clearUser: () => void;
   user: UserInterface | null;
 }
 
 export const UserContext = createContext<ContextValue>({
-  attemptLogin: async () => {return 500},
+  attemptLogin: async () => {
+    return 500;
+  },
+  attemptLogout: async () => {
+    return 500;
+  },
   user: null,
   clearUser: () => {},
 });
@@ -89,12 +95,33 @@ export default function UserContextProvider({ children }: ContextProps) {
     }
   };
 
+  const attemptLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:3131/users/logout", {
+        credentials: "include",
+        method: "POST",
+        mode: "cors",
+      });
+      if (response.status === 200) {
+        clearUser();
+      }
+      return response.status;
+    } catch (err) {
+      // XXX
+      // display this error in ui?
+      console.error(err);
+      return 500;
+    }
+  };
+
   useEffect(() => {
     getCurrentUser();
   }, []);
 
   return (
-    <UserContext.Provider value={{ attemptLogin, clearUser, user }}>
+    <UserContext.Provider
+      value={{ attemptLogin, attemptLogout, clearUser, user }}
+    >
       {children}
     </UserContext.Provider>
   );
