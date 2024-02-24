@@ -9,6 +9,7 @@ import ErrorPage from "@pages/ErrorPage";
 import Landing from "@pages/Landing";
 import NotFound from "@pages/NotFound";
 import Root from "@pages/Root";
+import SignUp from "@pages/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
       },
       {
         path: "*",

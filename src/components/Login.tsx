@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { UserContext } from "@contexts/Users";
 
-const inputStyle = "border-2 border-slate-600";
+import styles from "@configs/styles";
 
 export default function Login() {
   const auth = useContext(UserContext);
@@ -9,7 +10,7 @@ export default function Login() {
 
   const [error, setError] = useState<string | null>(null);
 
-  const [formInfo, setFormInfo] = useState({
+  const defaultFormInfo = {
     username: {
       value: "",
       valid: false,
@@ -18,7 +19,9 @@ export default function Login() {
       value: "",
       valid: false,
     },
-  });
+  };
+
+  const [formInfo, setFormInfo] = useState(defaultFormInfo);
 
   const handleChange = (event: React.SyntheticEvent) => {
     setError(null);
@@ -65,11 +68,11 @@ export default function Login() {
   };
 
   return (
-    <form className="flex flex-col gap-2 text-lg">
+    <form className={styles.form}>
       <h1>Login</h1>
       <label htmlFor="username">username:</label>
       <input
-        className={inputStyle}
+        className={styles.input}
         id="username"
         onChange={handleChange}
         required
@@ -78,7 +81,7 @@ export default function Login() {
       />
       <label htmlFor="password">password:</label>
       <input
-        className={inputStyle}
+        className={styles.input}
         id="password"
         onChange={handleChange}
         required
@@ -86,13 +89,17 @@ export default function Login() {
         value={formInfo.password.value || ""}
       />
       <button
-        className="border-2 bg-slate-600 text-white"
+        className={styles.buttonConfirm}
         onClick={submit}
         type="button"
       >
         Submit
       </button>
-      {error ? <div className="text-red-700">{error}</div> : null}
+      {error ? <div className={styles.error}>{error}</div> : null}
+      <div>
+        <span>Need an account? </span>
+        <Link className="text-teal-800 underline" to="signup">Sign up</Link>!
+      </div>
     </form>
   );
 }

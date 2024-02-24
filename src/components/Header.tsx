@@ -33,7 +33,7 @@ export default function Header() {
     <header className="flex flex-wrap justify-between bg-teal-600 text-neutral-100">
       Parentingo
       <div className="flex flex-wrap gap-2">
-        {user ? <div>Welcome {user.username}!</div> : null}
+        {user ? <div>{user.username}</div> : null}
         {user ? (
           <button
             className="bg-slate-400 text-slate-900"
