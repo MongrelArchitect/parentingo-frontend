@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "@contexts/Users";
+
+import Dashboard from "@components/Dashboard";
 import Login from "@components/Login";
 
 export default function Landing() {
@@ -8,7 +10,7 @@ export default function Landing() {
 
   if (user) {
     return (
-      <div>Welcome {user.name}!</div>
+      <Dashboard user={user} />
     );
   }
   return (
