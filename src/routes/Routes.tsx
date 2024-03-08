@@ -9,6 +9,9 @@ import { UserContext } from "@contexts/Users";
 // page module imports
 import Dashboard from "@pages/Dashboard";
 import ErrorPage from "@pages/ErrorPage";
+import GroupDetail from "@pages/GroupDetail";
+import Groups from "@pages/Groups";
+import GroupsSummary from "@pages/GroupsSummary";
 import Home from "@pages/Home";
 import Login from "@pages/Login";
 import NewGroup from "@pages/NewGroup";
@@ -16,10 +19,8 @@ import NotFound from "@pages/NotFound";
 import Root from "@pages/Root";
 import SignUp from "@pages/SignUp";
 
-export default function Routes() {
-  const { user } = useContext(UserContext);
-
-  const router = createBrowserRouter([
+function getRoutesWithUser() {
+  return createBrowserRouter([
     {
       path: "/",
       element: <Root />,
@@ -27,17 +28,51 @@ export default function Routes() {
       children: [
         {
           path: "",
-          element: user ? <Dashboard /> : <Login />,
+          element: <Dashboard />,
           children: [
             {
               index: true,
-              element: <Home/>,
+              element: <Home />,
             },
             {
               path: "newgroup",
               element: <NewGroup />,
             },
           ],
+        },
+        {
+          path: "/groups",
+          element: <Groups />,
+          children: [
+            {
+              index: true,
+              element: <GroupsSummary />,
+            },
+            {
+              path: ":groupId",
+              element: <GroupDetail />,
+            },
+          ],
+        },
+        {
+          path: "*",
+          element: <NotFound />,
+        },
+      ],
+    },
+  ]);
+}
+
+function getRoutesWithoutUser() {
+  return createBrowserRouter([
+    {
+      path: "/",
+      element: <Root />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: <Login />,
         },
         {
           path: "/signup",
@@ -50,6 +85,12 @@ export default function Routes() {
       ],
     },
   ]);
+}
+
+export default function Routes() {
+  const { user } = useContext(UserContext);
+
+  const router = user ? getRoutesWithUser() : getRoutesWithoutUser();
 
   return <RouterProvider router={router} />;
 }

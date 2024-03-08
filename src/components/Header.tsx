@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "@contexts/Users";
 
 export default function Header() {
@@ -7,6 +7,8 @@ export default function Header() {
   const { attemptLogout, user } = auth;
 
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const logOut = async () => {
     const status = await attemptLogout();
@@ -19,6 +21,7 @@ export default function Header() {
     if (status === 500) {
       setError("Server error - maybe the back end is down? Try again later =(");
     }
+    navigate("/");
   };
 
   useEffect(() => {
