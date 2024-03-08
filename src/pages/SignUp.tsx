@@ -134,6 +134,7 @@ export default function SignUp() {
       navigate("/");
     } else if (result.status === 400 || result.status === 500) {
       // XXX
+      // need to parse error messages & provide feedback to user
       console.log(result);
       setError(result.message);
     }

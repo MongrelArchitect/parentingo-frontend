@@ -1,44 +1,55 @@
+import { useContext } from "react";
+
 // package imports
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // contexts
-import UserContextProvider from "@contexts/Users";
+import { UserContext } from "@contexts/Users";
 
 // page module imports
+import Dashboard from "@pages/Dashboard";
 import ErrorPage from "@pages/ErrorPage";
-import Landing from "@pages/Landing";
+import Home from "@pages/Home";
+import Login from "@pages/Login";
+import NewGroup from "@pages/NewGroup";
 import NotFound from "@pages/NotFound";
 import Root from "@pages/Root";
 import SignUp from "@pages/SignUp";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <UserContextProvider>
-         <Root />
-      </UserContextProvider>
-    ),
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        index: true,
-        element: <Landing />,
-      },
-      {
-        path: "/signup",
-        element: <SignUp />,
-      },
-      {
-        path: "*",
-        element: <NotFound />,
-      },
-    ],
-  },
-]);
-
 export default function Routes() {
-  return (
-    <RouterProvider router={router} />
-  );
+  const { user } = useContext(UserContext);
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Root />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "",
+          element: user ? <Dashboard /> : <Login />,
+          children: [
+            {
+              index: true,
+              element: <Home/>,
+            },
+            {
+              path: "newgroup",
+              element: <NewGroup />,
+            },
+          ],
+        },
+        {
+          path: "/signup",
+          element: <SignUp />,
+        },
+        {
+          path: "*",
+          element: <NotFound />,
+        },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
