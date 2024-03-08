@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import Response from "@interfaces/Response";
 import UserInterface from "@interfaces/Users";
 import api from "@configs/api";
 
@@ -13,21 +14,10 @@ interface SignUpForm {
   name: string;
 }
 
-interface SignUpResponse {
-  status: number;
-  message: string;
-  error?: string;
-  errors?: {
-    [key: string]: {
-      [key: string]: string;
-    };
-  };
-}
-
 interface ContextValue {
   attemptLogin: (username: string, password: string) => Promise<number>;
   attemptLogout: () => Promise<number>;
-  attemptSignup: (formInfo: SignUpForm) => Promise<SignUpResponse>;
+  attemptSignup: (formInfo: SignUpForm) => Promise<Response>;
   clearUser: () => void;
   user: UserInterface | null;
 }
@@ -140,7 +130,7 @@ export default function UserContextProvider({ children }: ContextProps) {
     }
   };
 
-  const attemptSignup = async (formInfo: SignUpForm): Promise<SignUpResponse> => {
+  const attemptSignup = async (formInfo: SignUpForm): Promise<Response> => {
     // fetch will serialize this to x-www-form-urlencoded (what server expects)
     const formBody = new URLSearchParams();
     const formKeys = Object.keys(formInfo) as Array<keyof SignUpForm>;
@@ -163,7 +153,7 @@ export default function UserContextProvider({ children }: ContextProps) {
         await getCurrentUser();
       }
       const responseBody = await response.json();
-      const signUpResponse: SignUpResponse = {
+      const signUpResponse: Response = {
         status: response.status,
         message: responseBody.message,
       };

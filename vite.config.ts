@@ -12,6 +12,7 @@ export default defineConfig({
       "@interfaces": "/src/interfaces",
       "@pages": "/src/pages",
       "@routes": "/src/routes",
+      "@util": "/src/util",
     },
   },
 });

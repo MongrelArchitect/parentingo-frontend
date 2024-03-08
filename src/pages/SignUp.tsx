@@ -132,7 +132,7 @@ export default function SignUp() {
     if (result.status === 201) {
       // success, redirect to landing page
       navigate("/");
-    } else if (result.status === 400 || result.status === 500) {
+    } else {
       // XXX
       // need to parse error messages & provide feedback to user
       console.log(result);

@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 export default function Sidebar() {
   return (
     <div className="bg-teal-200">
-      Sidebar
+      <Link to="/newgroup">New group</Link>
     </div>
   );
 }

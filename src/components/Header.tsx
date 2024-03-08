@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { UserContext } from "@contexts/Users";
 
 export default function Header() {
@@ -31,7 +32,9 @@ export default function Header() {
 
   return (
     <header className="flex flex-wrap justify-between bg-teal-600 text-neutral-100">
-      Parentingo
+      <Link to="/">
+        Parentingo
+      </Link>
       <div className="flex flex-wrap gap-2">
         {user ? <div>{user.username}</div> : null}
         {user ? (
