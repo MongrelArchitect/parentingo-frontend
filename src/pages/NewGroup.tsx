@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import groups from "@util/groups";
 import styles from "@configs/styles";
 
@@ -52,6 +53,8 @@ export default function NewGroup() {
         break;
     }
   };
+  
+  const navigate = useNavigate();
 
   const submit = async () => {
     const result = await groups.attemptNewGroup(
@@ -60,10 +63,10 @@ export default function NewGroup() {
         description: formInfo.description.value,
       },
     );
-    if (result.status === 201) {
+    if (result.status === 201 && result.group) {
       // success, redirect to landing page
-      // XXX wat do here?
       console.log(result);
+      navigate(`/groups/${result.group.id}`);
     } else {
       // XXX
       // need to parse error messages & provide feedback to user

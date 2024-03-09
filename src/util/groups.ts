@@ -7,7 +7,7 @@ interface NewGroupForm {
   description: string,
 }
 
-interface NewGroupResponse extends Response {
+interface GroupResponse extends Response {
   group?: GroupInterface;
 }
 
@@ -30,7 +30,7 @@ async function attemptNewGroup(formInfo: NewGroupForm) {
         mode: "cors",
       });
       const responseBody = await response.json();
-      const newGroupResponse: NewGroupResponse = {
+      const newGroupResponse: GroupResponse = {
         status: response.status,
         message: responseBody.message,
       };
@@ -59,12 +59,51 @@ async function attemptNewGroup(formInfo: NewGroupForm) {
         status: 500,
         message: "Server error",
         error: err,
+        group: null,
+      };
+    }
+}
+
+async function getGroupInfo(groupId: string) {
+    try {
+      const response = await fetch(`${api.url}/groups/${groupId}`, {
+        credentials: "include",
+        method: "GET",
+        mode: "cors",
+      });
+      const responseBody = await response.json();
+      const groupResponse: GroupResponse = {
+        status: response.status,
+        message: responseBody.message,
+      };
+      if (response.status === 200) {
+        // everything went ok! give em the group info
+        groupResponse.group = responseBody.group;
+      }
+      // this happens with a 500 response, either from a problem getting the
+      // group info  or for some other unforseen server issue
+      if (responseBody.error) {
+        groupResponse.error = responseBody.error;
+      }
+      return groupResponse;
+    } catch (err) {
+      // XXX
+      // display this error in ui?
+      console.error(err);
+      // this will happen if there's some problem with fetch itself, just
+      // report as a server error & handle similarly
+      return {
+        status: 500,
+        message: "Server error",
+        error: err,
+        group: null,
       };
     }
 }
 
 const groups = {
   attemptNewGroup,
+  getGroupInfo,
 };
 
 export default groups;
