@@ -64,7 +64,7 @@ export default function NewGroup() {
       },
     );
     if (result.status === 201 && result.group) {
-      // success, redirect to landing page
+      // success, redirect to group
       console.log(result);
       navigate(`/groups/${result.group.id}`);
     } else {
