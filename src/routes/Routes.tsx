@@ -38,19 +38,19 @@ function getRoutesWithUser() {
               path: "newgroup",
               element: <NewGroup />,
             },
-          ],
-        },
-        {
-          path: "/groups",
-          element: <Groups />,
-          children: [
             {
-              index: true,
-              element: <GroupsSummary />,
-            },
-            {
-              path: ":groupId",
-              element: <GroupDetail />,
+              path: "/groups",
+              element: <Groups />,
+              children: [
+                {
+                  index: true,
+                  element: <GroupsSummary />,
+                },
+                {
+                  path: ":groupId",
+                  element: <GroupDetail />,
+                },
+              ],
             },
           ],
         },
