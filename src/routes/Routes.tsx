@@ -16,6 +16,7 @@ import Home from "@pages/Home";
 import Login from "@pages/Login";
 import NewGroup from "@pages/NewGroup";
 import NotFound from "@pages/NotFound";
+import PostDetail from "@pages/PostDetail";
 import Root from "@pages/Root";
 import SignUp from "@pages/SignUp";
 
@@ -49,6 +50,10 @@ function getRoutesWithUser() {
                 {
                   path: ":groupId",
                   element: <GroupDetail />,
+                },
+                {
+                  path: ":groupId/posts/:postId",
+                  element: <PostDetail />,
                 },
               ],
             },

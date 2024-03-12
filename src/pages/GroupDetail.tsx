@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import NewPost from "@components/NewPost";
+import GroupPosts from "@components/GroupPosts";
+
 import GroupInterface from "@interfaces/Groups";
 import groups from "@util/groups";
 import styles from "@configs/styles";
@@ -48,6 +50,7 @@ export default function GroupDetail() {
     <div>
       {displayGroupInfo()}
       {group ? <NewPost groupId={group.id} /> : null}
+      {group ? <GroupPosts groupId={group.id} /> : null}
       {error ? <div className={styles.error}>error</div> : null}
     </div>
   );
