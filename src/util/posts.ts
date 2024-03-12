@@ -1,16 +1,20 @@
 import api from "@configs/api";
 import Response from "@interfaces/Response";
-import { PostList } from "@interfaces/Posts";
+import PostInterface, { PostList } from "@interfaces/Posts";
 
-interface PostResponse extends Response {
+interface NewPostResponse extends Response {
   post: null | {
     id: string;
     uri: string;
-  }
+  };
+}
+
+interface PostResponse extends Response {
+  post: null | PostInterface;
 }
 
 interface PostListResponse extends Response {
-  posts: null | PostList,
+  posts: null | PostList;
 }
 
 async function createNewPost(groupId: string, text: string) {
@@ -29,7 +33,7 @@ async function createNewPost(groupId: string, text: string) {
       mode: "cors",
     });
     const responseBody = await response.json();
-    const newPostResponse: PostResponse = {
+    const newPostResponse: NewPostResponse = {
       status: response.status,
       message: responseBody.message,
       post: null,
@@ -104,9 +108,51 @@ async function getGroupPosts(groupId: string) {
   }
 }
 
+async function getSinglePost(groupId: string, postId: string) {
+  try {
+    const response = await fetch(
+      `${api.url}/groups/${groupId}/posts/${postId}`,
+      {
+        credentials: "include",
+        method: "GET",
+        mode: "cors",
+      },
+    );
+    const responseBody = await response.json();
+    const postResponse: PostResponse = {
+      status: response.status,
+      message: responseBody.message,
+      post: null,
+    };
+    if (response.status === 200) {
+      // everything went ok! give em the group info
+      postResponse.post = responseBody.post;
+    }
+    // this happens with a 500 response, either from a problem getting the
+    // group info  or for some other unforseen server issue
+    if (responseBody.error) {
+      postResponse.error = responseBody.error;
+    }
+    return postResponse;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+      post: null,
+    };
+  }
+}
+
 const posts = {
   createNewPost,
   getGroupPosts,
+  getSinglePost,
 };
 
 export default posts;

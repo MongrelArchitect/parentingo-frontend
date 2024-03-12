@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PostInterface from "@interfaces/Posts";
 import users from "@util/users";
 import styles from "@configs/styles";
@@ -18,10 +19,10 @@ export default function PostSummary({ post }: Props) {
       if (result.status === 200 && result.user) {
         setError(null);
         setUsername(result.user.username);
-      }
-      if (result.error) {
+      } else {
+        setUsername(null);
         setError(result.message);
-        console.error(result.error);
+        console.error(result);
       }
     };
     getInfo();
@@ -32,9 +33,15 @@ export default function PostSummary({ post }: Props) {
       <div>
         <p>{post.text}</p>
         <p>{new Date(post.timestamp).toLocaleString()}</p>
-        <p>
-          {username || ""}
-        </p>
+        <p>{username || ""}</p>
+        <p>{post.comments.length} comments</p>
+        <p>{post.likes.length} likes</p>
+        <Link
+          className="text-teal-800 underline"
+          to={`/groups/${post.group}/posts/${post.id}`}
+        >
+          View post
+        </Link>
         {error ? <div className={styles.error}>{error}</div> : null}
       </div>
       <hr />

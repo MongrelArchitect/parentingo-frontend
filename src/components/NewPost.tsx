@@ -27,7 +27,6 @@ export default function NewPost({ groupId }: Props) {
     const result = await posts.createNewPost(groupId, text.value);
     if (result.status === 201 && result.post) {
       // success, redirect to post detail
-      console.log(result);
       navigate(result.post.uri);
     } else {
       // XXX
