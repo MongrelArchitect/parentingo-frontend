@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import PostSummary from "./PostSummary";
 import styles from "@configs/styles";
 import { PostList } from "@interfaces/Posts";
 import posts from "@util/posts";
@@ -17,7 +18,6 @@ export default function GroupPosts({ groupId }: Props) {
       const result = await posts.getGroupPosts(groupId);
       if (result.status === 200) {
         setGroupPosts(result.posts);
-        console.log(result.posts);
       } else {
         setError(result.message);
         // XXX
@@ -41,20 +41,7 @@ export default function GroupPosts({ groupId }: Props) {
         {postIds.map((postId) => {
           const currentPost = groupPosts[postId];
           return (
-            <li key={postId}>
-              <div>
-                <p>
-                  {currentPost.text}
-                </p>
-                <p>
-                  {new Date(currentPost.timestamp).toLocaleString()}
-                </p>
-                <p>
-                  {currentPost.author}
-                </p>
-              </div>
-              <hr />
-            </li>
+            <PostSummary key={postId} post={currentPost} />
           );
         })}
       </ul>
@@ -64,7 +51,7 @@ export default function GroupPosts({ groupId }: Props) {
   return (
     <div>
       {displayPosts()}
-      {error ? <div className={styles.error}>error</div> : null}
+      {error ? <div className={styles.error}>{error}</div> : null}
     </div>
   );
 }
