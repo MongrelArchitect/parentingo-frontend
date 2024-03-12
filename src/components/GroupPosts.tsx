@@ -34,8 +34,12 @@ export default function GroupPosts({ groupId }: Props) {
         <p>No posts in this group</p>
       );
     }
-    // XXX sort by timestamp
-    const postIds = Object.keys(groupPosts);
+    // sort by timestamp
+    const postIds = Object.keys(groupPosts).sort((a, b) => {
+      const dateA = new Date(groupPosts[a].timestamp);
+      const dateB = new Date(groupPosts[b].timestamp);
+      return dateB.getTime() - dateA.getTime();
+    });
     return (
       <ul>
         {postIds.map((postId) => {
