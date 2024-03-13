@@ -74,7 +74,6 @@ export default function PostDetail() {
         <p>{post.text}</p>
         <p>{new Date(post.timestamp).toLocaleString()}</p>
         <p>{username || ""}</p>
-        <p>{post.comments.length} comments</p>
         <div>
           <p>{post.likes.length} likes</p>
           <button

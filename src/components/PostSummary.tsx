@@ -34,7 +34,6 @@ export default function PostSummary({ post }: Props) {
         <p>{post.text}</p>
         <p>{new Date(post.timestamp).toLocaleString()}</p>
         <p>{username || ""}</p>
-        <p>{post.comments.length} comments</p>
         <p>{post.likes.length} likes</p>
         <Link
           className="text-teal-800 underline"
