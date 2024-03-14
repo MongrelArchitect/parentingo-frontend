@@ -43,8 +43,8 @@ export default function PostSummary({ post }: Props) {
 
   return (
     <li>
-      <div>
-        <p>{post.text}</p>
+      <article>
+        <h2>{post.title}</h2>
         <p>{new Date(post.timestamp).toLocaleString()}</p>
         <p>{username || ""}</p>
         <p>
@@ -60,7 +60,7 @@ export default function PostSummary({ post }: Props) {
           View post
         </Link>
         {error ? <div className={styles.error}>{error}</div> : null}
-      </div>
+      </article>
       <hr />
     </li>
   );

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 // package imports
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // contexts
 import { UserContext } from "@contexts/Users";
@@ -85,7 +85,7 @@ function getRoutesWithoutUser() {
         },
         {
           path: "*",
-          element: <Navigate to="/" />,
+          element: <Login />,
         },
       ],
     },

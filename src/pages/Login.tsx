@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "@contexts/Users";
 
 import styles from "@configs/styles";
@@ -54,6 +54,8 @@ export default function Login() {
     }
   };
 
+  const navigate = useNavigate();
+
   const submit = async () => {
     const status = await attemptLogin(
       formInfo.username.value,
@@ -64,6 +66,9 @@ export default function Login() {
     }
     if (status === 500) {
       setError("Server error");
+    }
+    if (status === 200) {
+      navigate("/");
     }
   };
 

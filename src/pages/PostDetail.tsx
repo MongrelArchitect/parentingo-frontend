@@ -94,7 +94,8 @@ export default function PostDetail() {
       );
     }
     return (
-      <div>
+      <article>
+        <h2>{post.title}</h2>
         <p>{post.text}</p>
         <p>{new Date(post.timestamp).toLocaleString()}</p>
         <p>{username || ""}</p>
@@ -114,7 +115,7 @@ export default function PostDetail() {
           </button>
         </div>
         {error ? <div className={styles.error}>{error}</div> : null}
-      </div>
+      </article>
     );
   };
 

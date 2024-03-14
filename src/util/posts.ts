@@ -26,10 +26,14 @@ interface PostListResponse extends Response {
   posts: null | PostList;
 }
 
-async function createNewPost(groupId: string, text: string) {
+async function createNewPost(
+  groupId: string,
+  formInfo: { title: string; text: string },
+) {
   // fetch will serialize this to x-www-form-urlencoded (what server expects)
   const formBody = new URLSearchParams();
-  formBody.append("text", text);
+  formBody.append("title", formInfo.title);
+  formBody.append("text", formInfo.text);
 
   try {
     const response = await fetch(`${api.url}/groups/${groupId}/posts`, {
