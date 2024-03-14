@@ -74,6 +74,54 @@ async function createNewPost(groupId: string, text: string) {
   }
 }
 
+async function createNewComment(groupId: string, postId: string, text: string) {
+  // fetch will serialize this to x-www-form-urlencoded (what server expects)
+  const formBody = new URLSearchParams();
+  formBody.append("text", text);
+
+  try {
+    const response = await fetch(
+      `${api.url}/groups/${groupId}/posts/${postId}/comments`,
+      {
+        body: formBody,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "POST",
+        mode: "cors",
+      },
+    );
+    const responseBody = await response.json();
+    // successful response sends comment uri, but don't need it here
+    const newPostResponse: Response = {
+      status: response.status,
+      message: responseBody.message,
+    };
+    // this happens with a 400 response from invalid/missing form data
+    if (responseBody.errors) {
+      newPostResponse.errors = responseBody.errors;
+    }
+    // this happens with a 500 response, either from a problem creating the
+    // post or for some other unforseen server issue
+    if (responseBody.error) {
+      newPostResponse.error = responseBody.error;
+    }
+    return newPostResponse;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+    };
+  }
+}
+
 async function getCommentCount(groupId: string, postId: string) {
   try {
     const response = await fetch(
@@ -230,6 +278,7 @@ async function likePost(groupId: string, postId: string) {
 }
 
 const posts = {
+  createNewComment,
   createNewPost,
   getCommentCount,
   getGroupPosts,

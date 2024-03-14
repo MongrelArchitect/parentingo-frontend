@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import NewComment from "@components/NewComment";
+
 import styles from "@configs/styles";
 import posts from "@util/posts";
 import users from "@util/users";
@@ -8,9 +10,35 @@ import PostInterface from "@interfaces/Posts";
 
 export default function PostDetail() {
   const { groupId, postId } = useParams();
+  const [commentCount, setCommentCount] = useState(0);
   const [error, setError] = useState<null | string>(null);
   const [post, setPost] = useState<null | PostInterface>(null);
   const [username, setUsername] = useState<null | string>(null);
+
+  const getAuthorUsername = async (author: string) => {
+    const authorResult = await users.getUserInfo(author);
+    if (authorResult.status === 200 && authorResult.user) {
+      setError(null);
+      // then get the author's username from their id
+      setUsername(authorResult.user.username);
+    } else {
+      setUsername(null);
+      setError(authorResult.message);
+      console.error(authorResult);
+    }
+  };
+
+  const getCommentCount = async (groupId: string, postId: string) => {
+    const countResult = await posts.getCommentCount(groupId, postId);
+    if (countResult.status === 200) {
+      setError(null);
+      setCommentCount(countResult.count);
+    } else {
+      setCommentCount(0);
+      setError(countResult.message);
+      console.error(countResult);
+    }
+  };
 
   const getPost = async () => {
     if (!groupId || !postId) {
@@ -21,16 +49,10 @@ export default function PostDetail() {
         setError(null);
         // first set the post info
         setPost(result.post);
-        const authorResult = await users.getUserInfo(result.post.author);
-        if (authorResult.status === 200 && authorResult.user) {
-          setError(null);
-          // then get the author's username from their id
-          setUsername(authorResult.user.username);
-        } else {
-          setUsername(null);
-          setError(authorResult.message);
-          console.error(authorResult);
-        }
+        // then convert author user id to username
+        await getAuthorUsername(result.post.author);
+        // finally get the comment count
+        await getCommentCount(result.post.group, result.post.id);
       } else {
         setError(result.message);
         // XXX
@@ -74,8 +96,13 @@ export default function PostDetail() {
         <p>{post.text}</p>
         <p>{new Date(post.timestamp).toLocaleString()}</p>
         <p>{username || ""}</p>
+        <p>
+          {post.likes.length} like{post.likes.length === 1 ? "" : "s"}
+        </p>
+        <p>
+          {commentCount} comment{commentCount === 1 ? "" : "s"}
+        </p>
         <div>
-          <p>{post.likes.length} likes</p>
           <button
             className={styles.buttonConfirm}
             onClick={likePost}
@@ -89,5 +116,16 @@ export default function PostDetail() {
     );
   };
 
-  return displayPost();
+  if (!groupId || !postId) {
+    return (
+      <div className={styles.error}>Missing group or post id</div>
+    );
+  }
+
+  return (
+    <>
+      {displayPost()}
+      <NewComment getPost={getPost} groupId={groupId} postId={postId} />
+    </>
+  );
 }
