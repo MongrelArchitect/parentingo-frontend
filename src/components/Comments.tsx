@@ -20,7 +20,7 @@ export default function Comments({ groupId, postId, updateComments }: Props) {
   useEffect(() => {
     const getComments = async () => {
       const result = await posts.getPostComments(groupId, postId);
-      if (result.status === 200 && result.comments) {
+      if (result.status === 200) {
         setComments(result.comments);
       } else {
         // XXX
