@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import Comments from "@components/Comments";
 import NewComment from "@components/NewComment";
 
 import styles from "@configs/styles";
@@ -13,6 +14,7 @@ export default function PostDetail() {
   const [commentCount, setCommentCount] = useState(0);
   const [error, setError] = useState<null | string>(null);
   const [post, setPost] = useState<null | PostInterface>(null);
+  const [updateComments, setUpdateComments] = useState(false);
   const [username, setUsername] = useState<null | string>(null);
 
   const getAuthorUsername = async (author: string) => {
@@ -117,15 +119,27 @@ export default function PostDetail() {
   };
 
   if (!groupId || !postId) {
-    return (
-      <div className={styles.error}>Missing group or post id</div>
-    );
+    return <div className={styles.error}>Missing group or post id</div>;
   }
+
+  const toggleUpdateComments = () => {
+    setUpdateComments(!updateComments);
+  };
 
   return (
     <>
       {displayPost()}
-      <NewComment getPost={getPost} groupId={groupId} postId={postId} />
+      <NewComment
+        getPost={getPost}
+        groupId={groupId}
+        postId={postId}
+        toggleUpdateComments={toggleUpdateComments}
+      />
+      <Comments
+        groupId={groupId}
+        postId={postId}
+        updateComments={updateComments}
+      />
     </>
   );
 }

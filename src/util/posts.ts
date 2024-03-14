@@ -1,9 +1,14 @@
 import api from "@configs/api";
 import Response from "@interfaces/Response";
+import { CommentList } from "@interfaces/Comments";
 import PostInterface, { PostList } from "@interfaces/Posts";
 
 interface CommentCountResponse extends Response {
   count: number;
+}
+
+interface CommentsResponse extends Response {
+  comments: null | CommentList;
 }
 
 interface NewPostResponse extends Response {
@@ -201,6 +206,47 @@ async function getGroupPosts(groupId: string) {
   }
 }
 
+async function getPostComments(groupId: string, postId: string) {
+  try {
+    const response = await fetch(
+      `${api.url}/groups/${groupId}/posts/${postId}/comments`,
+      {
+        credentials: "include",
+        method: "GET",
+        mode: "cors",
+      },
+    );
+    const responseBody = await response.json();
+    const commentsResponse: CommentsResponse = {
+      status: response.status,
+      message: responseBody.message,
+      comments: null,
+    };
+    if (response.status === 200) {
+      // everything went ok! give em the group info
+      commentsResponse.comments = responseBody.comments;
+    }
+    // this happens with a 500 response, either from a problem getting the
+    // group info  or for some other unforseen server issue
+    if (responseBody.error) {
+      commentsResponse.error = responseBody.error;
+    }
+    return commentsResponse;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+      comments: null,
+    };
+  }
+}
+
 async function getSinglePost(groupId: string, postId: string) {
   try {
     const response = await fetch(
@@ -282,6 +328,7 @@ const posts = {
   createNewPost,
   getCommentCount,
   getGroupPosts,
+  getPostComments,
   getSinglePost,
   likePost,
 };

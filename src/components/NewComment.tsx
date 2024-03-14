@@ -7,9 +7,10 @@ interface Props {
   getPost: () => void;
   groupId: string;
   postId: string;
+  toggleUpdateComments: () => void;
 }
 
-export default function NewComment({ getPost, groupId, postId }: Props) {
+export default function NewComment({ getPost, groupId, postId, toggleUpdateComments }: Props) {
   const [error, setError] = useState<null | string>(null);
   const [text, setText] = useState({
     value: "",
@@ -30,6 +31,7 @@ export default function NewComment({ getPost, groupId, postId }: Props) {
     if (result.status === 200) {
       // success, reload the post info
       getPost();
+      toggleUpdateComments();
       setText({
         value: "",
         valid: false,
