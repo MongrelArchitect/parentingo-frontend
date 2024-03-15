@@ -14,6 +14,7 @@ import Groups from "@pages/Groups";
 import GroupsSummary from "@pages/GroupsSummary";
 import Home from "@pages/Home";
 import Login from "@pages/Login";
+import MyGroups from "@pages/MyGroups";
 import NewGroup from "@pages/NewGroup";
 import NotFound from "@pages/NotFound";
 import PostDetail from "@pages/PostDetail";
@@ -46,6 +47,10 @@ function getRoutesWithUser() {
                 {
                   index: true,
                   element: <GroupsSummary />,
+                },
+                {
+                  path: "mine",
+                  element: <MyGroups />,
                 },
                 {
                   path: ":groupId",
