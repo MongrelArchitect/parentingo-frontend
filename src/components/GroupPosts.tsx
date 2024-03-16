@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
+import ErrorMessage from "./ErrorMessage";
 import PostSummary from "./PostSummary";
-import styles from "@configs/styles";
+
 import { PostList } from "@interfaces/Posts";
+
 import posts from "@util/posts";
 
 interface Props {
@@ -55,7 +57,7 @@ export default function GroupPosts({ groupId }: Props) {
   return (
     <div>
       {displayPosts()}
-      {error ? <div className={styles.error}>{error}</div> : null}
+      <ErrorMessage error={error} />
     </div>
   );
 }

@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "@configs/styles";
+
+import Button from "./Button";
+import ErrorMessage from "./ErrorMessage";
+import Form from "./Form";
+import Input from "./Input";
+import TextArea from "./TextArea";
+
 import posts from "@util/posts";
 
 interface Props {
@@ -70,32 +76,28 @@ export default function NewPost({ groupId }: Props) {
   };
 
   return (
-    <form className={styles.form}>
+    <Form>
       <h2>New Post</h2>
-      <label htmlFor="title">title:</label>
-      <input
-        className={styles.input}
+      <Input
         id="title"
+        labelText="title:"
         maxLength={255}
         onChange={handleChange}
         required
         type="text"
         value={formInfo.title.value || ""}
       />
-      <label htmlFor="text">text:</label>
-      <textarea
-        className={styles.input}
+      <TextArea 
         id="text"
+        labelText="text:"
         maxLength={255}
         onChange={handleChange}
         required
         rows={5}
         value={formInfo.text.value || ""}
       />
-      <button className={styles.buttonConfirm} onClick={submit} type="button">
-        Submit
-      </button>
-      {error ? <div className={styles.error}>{error}</div> : null}
-    </form>
+      <Button onClick={submit}>Submit</Button>
+      <ErrorMessage error={error} />
+    </Form>
   );
 }

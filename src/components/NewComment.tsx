@@ -1,7 +1,11 @@
 import { useState } from "react";
 
+import Button from "./Button";
+import ErrorMessage from "./ErrorMessage";
+import Form from "./Form";
+import TextArea from "./TextArea";
+
 import posts from "@util/posts";
-import styles from "@configs/styles";
 
 interface Props {
   getPost: () => void;
@@ -45,21 +49,18 @@ export default function NewComment({ getPost, groupId, postId, toggleUpdateComme
   };
 
   return (
-    <form className={styles.form}>
-      <label htmlFor="text">comment:</label>
-      <textarea
-        className={styles.input}
+    <Form>
+      <TextArea 
         id="text"
+        labelText="comment:"
         maxLength={255}
         onChange={handleChange}
         required
         rows={5}
         value={text.value || ""}
       />
-      <button className={styles.buttonConfirm} onClick={submit} type="button">
-        Submit
-      </button>
-      {error ? <div className={styles.error}>{error}</div> : null}
-    </form>
+      <Button onClick={submit}>Submit</Button>
+      <ErrorMessage error={error} />
+    </Form>
   );
 }

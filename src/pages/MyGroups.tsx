@@ -1,8 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "@contexts/Users";
+
+import ErrorMessage from "@components/ErrorMessage";
 import GroupSummary from "@components/GroupSummary";
-import styles from "@configs/styles";
+
+import { UserContext } from "@contexts/Users";
+
 import { GroupList } from "@interfaces/Groups";
+
 import groups from "@util/groups";
 
 export default function MyGroups() {
@@ -63,7 +67,7 @@ export default function MyGroups() {
     <div>
       <h1>My Groups</h1>
       <ul>{displayMemberGroups()}</ul>
-      {error ? <div className={styles.error}>{error}</div> : null}
+      <ErrorMessage error={error} />
     </div>
   );
 }

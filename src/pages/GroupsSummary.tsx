@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+
+import ErrorMessage from "@components/ErrorMessage";
 import GroupSummary from "@components/GroupSummary";
+
 import { GroupList } from "@interfaces/Groups";
+
 import groups from "@util/groups";
-import styles from "@configs/styles";
 
 export default function GroupsSummary() {
   const [error, setError] = useState<null | string>(null);
@@ -16,7 +19,7 @@ export default function GroupsSummary() {
       } else {
         // XXX
         // need to parse error messages & provide feedback to user
-        console.log(result);
+        console.error(result);
         setError(result.message);
       }
     };
@@ -44,7 +47,7 @@ export default function GroupsSummary() {
     <div>
       <h1>All Groups</h1>
       {displayGroups()}
-      {error ? <div className={styles.error}>{error}</div> : null}
+      <ErrorMessage error={error} />
     </div>
   );
 }

@@ -1,8 +1,12 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "@contexts/Users";
 
-import styles from "@configs/styles";
+import Button from "@components/Button";
+import ErrorMessage from "@components/ErrorMessage";
+import Form from "@components/Form";
+import Input from "@components/Input";
+
+import { UserContext } from "@contexts/Users";
 
 export default function Login() {
   const auth = useContext(UserContext);
@@ -73,38 +77,30 @@ export default function Login() {
   };
 
   return (
-    <form className={styles.form}>
+    <Form>
       <h1>Login</h1>
-      <label htmlFor="username">username:</label>
-      <input
-        className={styles.input}
+      <Input 
         id="username"
+        labelText="username:"
         onChange={handleChange}
         required
         type="text"
         value={formInfo.username.value || ""}
       />
-      <label htmlFor="password">password:</label>
-      <input
-        className={styles.input}
+      <Input 
         id="password"
+        labelText="password:"
         onChange={handleChange}
         required
         type="password"
         value={formInfo.password.value || ""}
       />
-      <button
-        className={styles.buttonConfirm}
-        onClick={submit}
-        type="button"
-      >
-        Submit
-      </button>
-      {error ? <div className={styles.error}>{error}</div> : null}
+      <Button onClick={submit}>Submit</Button>
+      <ErrorMessage error={error} />
       <div>
         <span>Need an account? </span>
         <Link className="text-teal-800 underline" to="signup">Sign up</Link>!
       </div>
-    </form>
+    </Form>
   );
 }

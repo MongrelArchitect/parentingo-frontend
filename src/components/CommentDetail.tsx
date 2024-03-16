@@ -1,6 +1,10 @@
+import he from "he";
 import { useEffect, useState } from "react";
+
+import ErrorMessage from "./ErrorMessage";
+
 import CommentInterface from "@interfaces/Comments";
-import styles from "@configs/styles";
+
 import users from "@util/users";
 
 interface Props {
@@ -29,10 +33,10 @@ export default function CommentDetail({ comment }: Props) {
 
   return (
     <li>
-      <p>{comment.text}</p>
-      <p>{username || ""}</p>
+      <p>{he.decode(comment.text)}</p>
+      <p>{username ? he.decode(username) : ""}</p>
       <p>{new Date(comment.timestamp).toLocaleString()}</p>
-      {error ? <div className={styles.error}>{error}</div> : null}
+      <ErrorMessage error={error} />
       <hr />
     </li>
   );

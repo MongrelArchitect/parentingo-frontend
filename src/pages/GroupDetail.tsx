@@ -1,12 +1,17 @@
 import he from "he";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import NewPost from "@components/NewPost";
+
+import Button from "@components/Button";
+import ErrorMessage from "@components/ErrorMessage";
 import GroupPosts from "@components/GroupPosts";
+import NewPost from "@components/NewPost";
+
 import { UserContext } from "@contexts/Users";
+
 import GroupInterface from "@interfaces/Groups";
+
 import groups from "@util/groups";
-import styles from "@configs/styles";
 
 export default function GroupDetail() {
   const { user } = useContext(UserContext);
@@ -52,6 +57,23 @@ export default function GroupDetail() {
     );
   };
 
+  const toggleMembership = async () => {
+    if (group) {
+      const isMember = group.members.includes(user.id);
+      const result = !isMember
+        ? await groups.joinGroup(group.id)
+        : await groups.leaveGroup(group.id);
+      if (result.status === 200) {
+        getGroupInfo();
+      } else {
+        setError(result.message);
+        // XXX
+        // display info more elegantly?
+        console.error(result);
+      }
+    }
+  };
+
   const displayMembershipControl = () => {
     const isAdmin = group && group.admin === user.id;
     if (isAdmin || !group) {
@@ -61,25 +83,9 @@ export default function GroupDetail() {
 
     const isMember = group.members.includes(user.id);
     return (
-      <button
-        className={styles.buttonConfirm}
-        onClick={async () => {
-          const result = !isMember
-            ? await groups.joinGroup(group.id)
-            : await groups.leaveGroup(group.id);
-          if (result.status === 200) {
-            getGroupInfo();
-          } else {
-            setError(result.message);
-            // XXX
-            // display info more elegantly?
-            console.error(result);
-          }
-        }}
-        type="button"
-      >
+      <Button onClick={toggleMembership}>
         {isMember ? "Leave group" : "Join group"}
-      </button>
+      </Button>
     );
   };
 
@@ -89,7 +95,7 @@ export default function GroupDetail() {
       {displayMembershipControl()}
       {group ? <NewPost groupId={group.id} /> : null}
       {group ? <GroupPosts groupId={group.id} /> : null}
-      {error ? <div className={styles.error}>error</div> : null}
+      <ErrorMessage error={error} />
     </div>
   );
 }

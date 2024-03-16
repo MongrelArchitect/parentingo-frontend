@@ -1,7 +1,12 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+import Button from "@components/Button";
+import ErrorMessage from "@components/ErrorMessage";
+import Input from "@components/Input";
+import Form from "@components/Form";
+
 import { UserContext } from "@contexts/Users";
-import styles from "@configs/styles";
 
 export default function SignUp() {
   const auth = useContext(UserContext);
@@ -135,18 +140,17 @@ export default function SignUp() {
     } else {
       // XXX
       // need to parse error messages & provide feedback to user
-      console.log(result);
+      console.error(result);
       setError(result.message);
     }
   };
 
   return (
-    <form className={styles.form}>
+    <Form>
       <h1>Sign Up</h1>
-      <label htmlFor="username">username:</label>
-      <input
-        className={styles.input}
+      <Input
         id="username"
+        labelText="username:"
         maxLength={20}
         minLength={3}
         onChange={handleChange}
@@ -154,10 +158,10 @@ export default function SignUp() {
         type="text"
         value={formInfo.username.value || ""}
       />
-      <label htmlFor="password">password:</label>
-      <input
-        className={styles.input}
+
+      <Input
         id="password"
+        labelText="password:"
         onChange={handleChange}
         pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9]).{8,}$"
         required
@@ -165,10 +169,10 @@ export default function SignUp() {
         type="password"
         value={formInfo.password.value || ""}
       />
-      <label htmlFor="confirm">confirm password:</label>
-      <input
-        className={styles.input}
+
+      <Input
         id="confirm"
+        labelText="confirm password:"
         onChange={(event) => {
           handleChange(event);
           handleConfirmValidity(event);
@@ -177,34 +181,36 @@ export default function SignUp() {
         type="password"
         value={formInfo.confirm.value || ""}
       />
-      <label htmlFor="email">email:</label>
-      <input
-        className={styles.input}
+
+      <Input
         id="email"
+        labelText="email:"
         maxLength={255}
         onChange={handleChange}
         required
         type="email"
         value={formInfo.email.value || ""}
       />
-      <label htmlFor="name">name:</label>
-      <input
-        className={styles.input}
+
+      <Input
         id="name"
+        labelText="name:"
         maxLength={255}
         onChange={handleChange}
         required
         type="text"
         value={formInfo.name.value || ""}
       />
-      <button className={styles.buttonConfirm} onClick={submit} type="button">
-        Submit
-      </button>
-      {error ? <div className={styles.error}>{error}</div> : null}
+
+      <Button onClick={submit}>Submit</Button>
+      <ErrorMessage error={error} />
       <div>
         <span>Already have an account? </span>
-        <Link className="text-teal-800 underline" to="/">Log in</Link>!
+        <Link className="text-teal-800 underline" to="/">
+          Log in
+        </Link>
+        !
       </div>
-    </form>
+    </Form>
   );
 }

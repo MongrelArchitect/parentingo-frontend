@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 import CommentDetail from "./CommentDetail";
-
-import styles from "@configs/styles";
-import posts from "@util/posts";
+import ErrorMessage from "./ErrorMessage";
 
 import { CommentList } from "@interfaces/Comments";
+
+import posts from "@util/posts";
 
 interface Props {
   groupId: string;
@@ -60,7 +60,7 @@ export default function Comments({ groupId, postId, updateComments }: Props) {
   return (
     <div>
       {displayComments()}
-      {error ? <div className={styles.error}>{error}</div> : null}
+      <ErrorMessage error={error} />
     </div>
   );
 }

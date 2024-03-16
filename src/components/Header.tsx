@@ -1,5 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+import Button from "./Button";
+
 import { UserContext } from "@contexts/Users";
 
 export default function Header() {
@@ -34,20 +37,16 @@ export default function Header() {
   }, [error]);
 
   return (
-    <header className="flex flex-wrap justify-between bg-teal-600 text-neutral-100">
-      <Link to="/">
-        Parentingo
-      </Link>
-      <div className="flex flex-wrap gap-2">
+    <header className="flex flex-wrap items-center justify-between bg-teal-600 p-2 text-neutral-100">
+      <Link to="/">Parentingo</Link>
+      <div className="flex flex-wrap items-center gap-2">
         {user ? <div>{user.username}</div> : null}
         {user ? (
-          <button
-            className="bg-slate-400 text-slate-900"
-            type="button"
+          <Button
             onClick={logOut}
           >
             Log out
-          </button>
+          </Button>
         ) : null}
       </div>
     </header>

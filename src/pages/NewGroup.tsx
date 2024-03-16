@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import Button from "@components/Button";
+import ErrorMessage from "@components/ErrorMessage";
+import Form from "@components/Form";
+import Input from "@components/Input";
+import TextArea from "@components/TextArea";
+
 import groups from "@util/groups";
-import styles from "@configs/styles";
 
 export default function NewGroup() {
   const [error, setError] = useState<string | null>(null);
@@ -53,16 +59,14 @@ export default function NewGroup() {
         break;
     }
   };
-  
+
   const navigate = useNavigate();
 
   const submit = async () => {
-    const result = await groups.attemptNewGroup(
-      {
-        name: formInfo.name.value,
-        description: formInfo.description.value,
-      },
-    );
+    const result = await groups.attemptNewGroup({
+      name: formInfo.name.value,
+      description: formInfo.description.value,
+    });
     if (result.status === 201 && result.group) {
       // success, redirect to group
       console.log(result);
@@ -76,34 +80,28 @@ export default function NewGroup() {
   };
 
   return (
-    <div>
-      <form className={styles.form}>
-        <h1>New Group</h1>
-        <label htmlFor="name">name:</label>
-        <input
-          className={styles.input}
-          id="name"
-          max={255}
-          onChange={handleChange}
-          required
-          type="text"
-          value={formInfo.name.value || ""}
-        />
-        <label htmlFor="description">description:</label>
-        <textarea
-          className={styles.input}
-          id="description"
-          maxLength={255}
-          onChange={handleChange}
-          required
-          rows={5}
-          value={formInfo.description.value || ""}
-        />
-        <button className={styles.buttonConfirm} onClick={submit} type="button">
-          Submit
-        </button>
-        {error ? <div className={styles.error}>{error}</div> : null}
-      </form>
-    </div>
+    <Form>
+      <h1>New Group</h1>
+      <Input
+        id="name"
+        labelText="name:"
+        maxLength={255}
+        onChange={handleChange}
+        required
+        type="text"
+        value={formInfo.name.value || ""}
+      />
+      <TextArea
+        id="description"
+        labelText="description:"
+        maxLength={255}
+        onChange={handleChange}
+        required
+        rows={5}
+        value={formInfo.description.value || ""}
+      />
+      <Button onClick={submit}>Submit</Button>
+      <ErrorMessage error={error} />
+    </Form>
   );
 }

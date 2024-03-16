@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+import ErrorMessage from "./ErrorMessage";
+
 import PostInterface from "@interfaces/Posts";
+
 import posts from "@util/posts";
 import users from "@util/users";
-import styles from "@configs/styles";
+
 
 interface Props {
   post: PostInterface;
@@ -59,7 +63,7 @@ export default function PostSummary({ post }: Props) {
         >
           View post
         </Link>
-        {error ? <div className={styles.error}>{error}</div> : null}
+        <ErrorMessage error={error} />
       </article>
       <hr />
     </li>

@@ -1,13 +1,16 @@
+import he from "he";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import Button from "@components/Button";
 import Comments from "@components/Comments";
+import ErrorMessage from "@components/ErrorMessage";
 import NewComment from "@components/NewComment";
 
-import styles from "@configs/styles";
+import PostInterface from "@interfaces/Posts";
+
 import posts from "@util/posts";
 import users from "@util/users";
-import PostInterface from "@interfaces/Posts";
 
 export default function PostDetail() {
   const { groupId, postId } = useParams();
@@ -90,37 +93,29 @@ export default function PostDetail() {
   const displayPost = () => {
     if (!post) {
       return (
-        <div>{error ? <div className={styles.error}>{error}</div> : null}</div>
+        <ErrorMessage error={error} />
       );
     }
     return (
       <article>
-        <h2>{post.title}</h2>
-        <p>{post.text}</p>
+        <h2>{he.decode(post.title)}</h2>
+        <p>{he.decode(post.text)}</p>
         <p>{new Date(post.timestamp).toLocaleString()}</p>
-        <p>{username || ""}</p>
+        <p>{username ? he.decode(username) : ""}</p>
         <p>
           {post.likes.length} like{post.likes.length === 1 ? "" : "s"}
         </p>
         <p>
           {commentCount} comment{commentCount === 1 ? "" : "s"}
         </p>
-        <div>
-          <button
-            className={styles.buttonConfirm}
-            onClick={likePost}
-            type="button"
-          >
-            like
-          </button>
-        </div>
-        {error ? <div className={styles.error}>{error}</div> : null}
+        <Button onClick={likePost}>Like</Button>
+        <ErrorMessage error={error} />
       </article>
     );
   };
 
   if (!groupId || !postId) {
-    return <div className={styles.error}>Missing group or post id</div>;
+    return <ErrorMessage error={"Missing group or post id"} />
   }
 
   const toggleUpdateComments = () => {
