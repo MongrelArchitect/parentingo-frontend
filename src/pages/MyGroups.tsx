@@ -34,7 +34,17 @@ export default function MyGroups() {
       return <li>Not a member of any groups</li>;
     }
 
-    const groupIds = Object.keys(memberGroups);
+    const groupIds = Object.keys(memberGroups).sort((a, b) => {
+      const isAdminGroupA = memberGroups[a].admin === user.id;
+      const isAdminGroupB = memberGroups[b].admin === user.id;
+      if (isAdminGroupA && !isAdminGroupB) {
+        return -1;
+      }
+      if (!isAdminGroupA && isAdminGroupB) {
+        return 1;
+      }
+      return 0;
+    });
 
     return groupIds.map((groupId) => {
       const group = memberGroups[groupId];
