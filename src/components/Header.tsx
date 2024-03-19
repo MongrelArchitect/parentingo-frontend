@@ -37,7 +37,7 @@ export default function Header() {
   }, [error]);
 
   return (
-    <header className="flex flex-wrap items-center justify-between bg-sky-800 p-2 text-lg text-neutral-100">
+    <header className="flex flex-wrap items-center justify-between bg-sky-800 p-2 text-lg text-neutral-100 sticky top-0">
       <Link to="/">Parentingo</Link>
       <div className="flex flex-wrap items-center gap-2">
         {user ? <div>{user.username}</div> : null}

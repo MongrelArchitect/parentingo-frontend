@@ -7,7 +7,10 @@ interface Props {
 
 export default function LinkStyled({ children, to }: PropsWithChildren<Props>) {
   return (
-    <NavLink className="border-2 border-b-transparent hover:border-b-rose-700" to={to}>
+    <NavLink
+      className="border-2 border-transparent hover:border-b-rose-700"
+      to={to}
+    >
       {children}
     </NavLink>
   );

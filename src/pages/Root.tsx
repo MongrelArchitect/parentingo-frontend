@@ -3,9 +3,9 @@ import Header from "@components/Header";
 
 export default function Root() {
   return (
-    <div className="grid min-h-[100lvh] grid-rows-[auto_1fr]">
+    <div className="min-h-[100lvh] bg-stone-200 text-slate-800">
       <Header />
-      <main className="bg-neutral-200 text-slate-800">
+      <main>
         <Outlet />
       </main>
     </div>
