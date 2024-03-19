@@ -56,7 +56,7 @@ export default function PostSummary({ post }: Props) {
   return (
     <li className="rounded bg-white shadow-md shadow-slate-400">
       <Link
-        className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-sky-600 p-1 text-xl"
+        className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-emerald-600 p-1 text-xl"
         to={`/groups/${post.group}/posts/${post.id}`}
       >
         <h2 className="capitalize text-neutral-100">{post.title}</h2>
@@ -66,7 +66,9 @@ export default function PostSummary({ post }: Props) {
           <p>{username || ""}</p>
           <p>{new Date(post.timestamp).toLocaleString()}</p>
         </div>
-        <p className="text-lg">{getContentPreview()}</p>
+        <pre className="whitespace-pre-wrap font-sans text-lg">
+          {getContentPreview()}
+        </pre>
         <div className="flex justify-between gap-2 text-xl">
           <p className="flex gap-1">
             <span className="text-red-600" title="likes">

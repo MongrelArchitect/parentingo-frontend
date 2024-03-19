@@ -43,18 +43,20 @@ export default function GroupSummary({ admin, group }: Props) {
         <h2 className="capitalize text-neutral-100">{group.name}</h2>
         {admin ? <p className="text-3xl font-bold text-yellow-400">★</p> : null}
       </Link>
-      <div className="flex flex-col gap-2 p-1">
+      <div className="flex flex-col gap-4 p-1">
         <div className="flex flex-wrap justify-between gap-1 font-mono">
           <p>
             {group.members.length} member
             {group.members.length === 1 ? "" : "s"}
           </p>
           <p>
-            {postCount} post 
+            {postCount} post
             {postCount === 1 ? "" : "s"}
           </p>
         </div>
-        <p className="text-lg">{he.decode(group.description)}</p>
+        <pre className="whitespace-pre-wrap font-sans text-lg">
+          {he.decode(group.description)}
+        </pre>
       </div>
       <ErrorMessage error={error} />
     </li>
