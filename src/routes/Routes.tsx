@@ -7,11 +7,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { UserContext } from "@contexts/Users";
 
 // page module imports
+import AllGroups from "@pages/AllGroups";
 import Dashboard from "@pages/Dashboard";
 import ErrorPage from "@pages/ErrorPage";
 import GroupDetail from "@pages/GroupDetail";
 import Groups from "@pages/Groups";
-import GroupsSummary from "@pages/GroupsSummary";
 import Home from "@pages/Home";
 import Login from "@pages/Login";
 import MyGroups from "@pages/MyGroups";
@@ -46,7 +46,7 @@ function getRoutesWithUser() {
               children: [
                 {
                   index: true,
-                  element: <GroupsSummary />,
+                  element: <AllGroups />,
                 },
                 {
                   path: "mine",

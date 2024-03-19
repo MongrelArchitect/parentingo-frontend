@@ -81,7 +81,7 @@ export default function NewGroup() {
 
   return (
     <Form>
-      <h1>New Group</h1>
+      <h1 className="text-2xl">New Group</h1>
       <Input
         id="name"
         labelText="name:"

@@ -18,10 +18,10 @@ export default function TextArea({
   value,
 }: Props) {
   return (
-    <>
+    <div className="flex flex-col">
       <label htmlFor={id}>{labelText}</label>
       <textarea
-        className="border-2 border-slate-600"
+        className="rounded border-2 border-sky-800 p-1"
         id={id}
         maxLength={maxLength}
         onChange={onChange}
@@ -29,6 +29,6 @@ export default function TextArea({
         rows={rows}
         value={value}
       />
-    </>
+    </div>
   );
 }

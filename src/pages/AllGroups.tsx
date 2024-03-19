@@ -7,7 +7,7 @@ import { GroupList } from "@interfaces/Groups";
 
 import groups from "@util/groups";
 
-export default function GroupsSummary() {
+export default function AllGroups() {
   const [error, setError] = useState<null | string>(null);
   const [allGroups, setAllGroups] = useState<null | GroupList>(null);
 
@@ -32,7 +32,7 @@ export default function GroupsSummary() {
     }
     const groupIds = Object.keys(allGroups);
     return (
-      <ul>
+      <ul className="flex flex-col gap-4">
         {groupIds.map((id) => {
           const currentGroup = allGroups[id];
           return (
@@ -44,8 +44,8 @@ export default function GroupsSummary() {
   };
 
   return (
-    <div>
-      <h1>All Groups</h1>
+    <div className="flex flex-col gap-2">
+      <h1 className="text-2xl">All Groups</h1>
       {displayGroups()}
       <ErrorMessage error={error} />
     </div>

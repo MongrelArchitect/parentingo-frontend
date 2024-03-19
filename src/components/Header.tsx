@@ -37,17 +37,11 @@ export default function Header() {
   }, [error]);
 
   return (
-    <header className="flex flex-wrap items-center justify-between bg-teal-600 p-2 text-neutral-100">
+    <header className="flex flex-wrap items-center justify-between bg-sky-800 p-2 text-neutral-100 text-lg">
       <Link to="/">Parentingo</Link>
       <div className="flex flex-wrap items-center gap-2">
         {user ? <div>{user.username}</div> : null}
-        {user ? (
-          <Button
-            onClick={logOut}
-          >
-            Log out
-          </Button>
-        ) : null}
+        {user ? <Button onClick={logOut}>Log out</Button> : null}
       </div>
     </header>
   );

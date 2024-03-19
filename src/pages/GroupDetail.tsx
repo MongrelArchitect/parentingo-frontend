@@ -38,7 +38,7 @@ export default function GroupDetail() {
 
   useEffect(() => {
     getGroupInfo();
-  });
+  }, []);
 
   if (!user) {
     return null;
@@ -50,9 +50,12 @@ export default function GroupDetail() {
     }
     return (
       <div>
-        <h1>{group.name}</h1>
-        <p>members: {group.members.length}</p>
-        <p>{he.decode(group.description)}</p>
+        <h1 className="text-2xl capitalize">{group.name}</h1>
+          <p className="italic">
+            {group.members.length} member
+            {group.members.length > 1 ? "s" : ""}
+          </p>
+          <p>{he.decode(group.description)}</p>
       </div>
     );
   };
@@ -90,7 +93,7 @@ export default function GroupDetail() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {displayGroupInfo()}
       {displayMembershipControl()}
       {group ? <NewPost groupId={group.id} /> : null}

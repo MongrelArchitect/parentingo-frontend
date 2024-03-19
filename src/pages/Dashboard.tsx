@@ -3,9 +3,11 @@ import Sidebar from "@components/Sidebar";
 
 export default function Dashboard() {
   return (
-    <div className="grid h-full grid-cols-[auto_1fr] gap-2">
+    <div className="flex h-full flex-col">
       <Sidebar />
-      <Outlet />
+      <div className="p-2">
+        <Outlet />
+      </div>
     </div>
   );
 }

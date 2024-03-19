@@ -34,10 +34,10 @@ export default function Input({
   value,
 }: Props) {
   return (
-    <>
+    <div className="flex flex-col">
       <label htmlFor={id}>{labelText}</label>
       <input
-        className="border-2 border-slate-600"
+        className="rounded border-2 border-sky-800 p-1"
         id={id}
         maxLength={maxLength}
         minLength={minLength}
@@ -48,6 +48,6 @@ export default function Input({
         type={type}
         value={value}
       />
-    </>
+    </div>
   );
 }

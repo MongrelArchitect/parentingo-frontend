@@ -64,9 +64,9 @@ export default function MyGroups() {
   };
 
   return (
-    <div>
-      <h1>My Groups</h1>
-      <ul>{displayMemberGroups()}</ul>
+    <div className="flex flex-col gap-2">
+      <h1 className="text-2xl">My Groups</h1>
+      <ul className="flex flex-col gap-4">{displayMemberGroups()}</ul>
       <ErrorMessage error={error} />
     </div>
   );

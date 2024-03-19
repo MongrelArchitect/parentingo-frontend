@@ -10,7 +10,7 @@ export default function Button({
 }: PropsWithChildren<Props>) {
   return (
     <button
-      className="border-2 border-slate-800 bg-slate-600 p-1 text-white"
+      className="rounded bg-rose-700 p-1 text-neutral-100 hover:bg-rose-800 hover:outline hover:outline-2 hover:outline-slate-800 focus:bg-rose-800 focus:outline focus:outline-2 focus:outline-slate-800"
       onClick={onClick}
       type="button"
     >

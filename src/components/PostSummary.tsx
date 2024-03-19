@@ -8,7 +8,6 @@ import PostInterface from "@interfaces/Posts";
 import posts from "@util/posts";
 import users from "@util/users";
 
-
 interface Props {
   post: PostInterface;
 }
@@ -18,54 +17,70 @@ export default function PostSummary({ post }: Props) {
   const [commentCount, setCommentCount] = useState(0);
   const [username, setUsername] = useState<null | string>(null);
 
-  useEffect(() => {
-    const getInfo = async () => {
+  const getInfo = async () => {
+    setError(null);
+    // convert post author from userid to username
+    const result = await users.getUserInfo(post.author);
+    if (result.status === 200 && result.user) {
       setError(null);
-      // convert post author from userid to username
-      const result = await users.getUserInfo(post.author);
-      if (result.status === 200 && result.user) {
+      setUsername(result.user.username);
+      // now get our comment count
+      const countResult = await posts.getCommentCount(post.group, post.id);
+      if (countResult.status === 200) {
         setError(null);
-        setUsername(result.user.username);
-        // now get our comment count
-        const countResult = await posts.getCommentCount(post.group, post.id);
-        if (countResult.status === 200) {
-          setError(null);
-          setCommentCount(countResult.count);
-        } else {
-          setCommentCount(0);
-          setError(countResult.message);
-          console.error(countResult);
-        }
+        setCommentCount(countResult.count);
       } else {
-        setUsername(null);
-        setError(result.message);
-        console.error(result);
+        setCommentCount(0);
+        setError(countResult.message);
+        console.error(countResult);
       }
-    };
+    } else {
+      setUsername(null);
+      setError(result.message);
+      console.error(result);
+    }
+  };
+
+  useEffect(() => {
     getInfo();
-  }, [post]);
+  }, []);
+
+  const getContentPreview = () => {
+    const { text } = post;
+    if (text.length < 40) {
+      return text;
+    }
+    return `${text.slice(0, 40)}...`;
+  };
 
   return (
-    <li>
-      <article>
-        <h2>{post.title}</h2>
+    <li className="rounded bg-white shadow-md shadow-slate-400">
+      <Link
+        className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-sky-600 p-1 text-xl"
+        to={`/groups/${post.group}/posts/${post.id}`}
+      >
+        <h2 className="capitalize text-neutral-100">{post.title}</h2>
+      </Link>
+      <div className="flex flex-col p-1">
         <p>{new Date(post.timestamp).toLocaleString()}</p>
         <p>{username || ""}</p>
-        <p>
-          {post.likes.length} like{post.likes.length === 1 ? "" : "s"}
-        </p>
-        <p>
-          {commentCount} comment{commentCount === 1 ? "" : "s"}
-        </p>
-        <Link
-          className="text-teal-800 underline"
-          to={`/groups/${post.group}/posts/${post.id}`}
-        >
-          View post
-        </Link>
+        {getContentPreview()}
+        <div className="flex justify-between gap-2 text-xl">
+          <p className="flex gap-1">
+            <span className="text-red-600" title="likes">
+              ♥
+            </span>
+            {post.likes.length}
+          </p>
+          <p className="flex gap-1">
+            <span className="text-lg" title="comments">
+              💬
+            </span>
+            {commentCount}
+          </p>
+        </div>
         <ErrorMessage error={error} />
-      </article>
-      <hr />
+      </div>
     </li>
   );
 }
