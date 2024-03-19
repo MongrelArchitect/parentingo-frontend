@@ -1,6 +1,12 @@
 import he from "he";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+import ErrorMessage from "./ErrorMessage";
+
 import GroupInterface from "@interfaces/Groups";
+
+import posts from "@util/posts";
 
 interface Props {
   admin?: boolean;
@@ -8,6 +14,26 @@ interface Props {
 }
 
 export default function GroupSummary({ admin, group }: Props) {
+  const [error, setError] = useState<null | string>(null);
+  const [postCount, setPostCount] = useState(0);
+
+  const getCount = async () => {
+    setError(null);
+    const result = await posts.getPostCount(group.id);
+    if (result.status === 200) {
+      setError(null);
+      setPostCount(result.count);
+    } else {
+      setPostCount(0);
+      setError(result.message);
+      console.error(result);
+    }
+  };
+
+  useEffect(() => {
+    getCount();
+  }, []);
+
   return (
     <li className="rounded bg-white shadow-md shadow-slate-400">
       <Link
@@ -18,12 +44,19 @@ export default function GroupSummary({ admin, group }: Props) {
         {admin ? <p className="text-3xl font-bold text-yellow-400">★</p> : null}
       </Link>
       <div className="flex flex-col gap-2 p-1">
-        <p className="italic">
-          {group.members.length} member
-          {group.members.length > 1 ? "s" : ""}
-        </p>
-        <p>{he.decode(group.description)}</p>
+        <div className="flex flex-wrap justify-between gap-1 font-mono">
+          <p>
+            {group.members.length} member
+            {group.members.length === 1 ? "" : "s"}
+          </p>
+          <p>
+            {postCount} post 
+            {postCount === 1 ? "" : "s"}
+          </p>
+        </div>
+        <p className="text-lg">{he.decode(group.description)}</p>
       </div>
+      <ErrorMessage error={error} />
     </li>
   );
 }
