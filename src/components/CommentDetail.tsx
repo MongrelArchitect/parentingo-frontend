@@ -29,15 +29,22 @@ export default function CommentDetail({ comment }: Props) {
 
   useEffect(() => {
     getAuthorUsername(comment.author);
-  }, [comment]);
+  }, []);
 
   return (
-    <li>
-      <p>{he.decode(comment.text)}</p>
-      <p>{username ? he.decode(username) : ""}</p>
-      <p>{new Date(comment.timestamp).toLocaleString()}</p>
-      <ErrorMessage error={error} />
-      <hr />
+    <li className="rounded bg-white shadow-md shadow-slate-400">
+      <div className="rounded-t bg-fuchsia-600 p-1 text-xl text-neutral-100">
+        <p>{username ? he.decode(username) : ""}</p>
+      </div>
+      <div className="flex flex-col gap-4 p-1">
+        <pre className="whitespace-pre-wrap font-sans text-lg">
+          {he.decode(comment.text)}
+        </pre>
+        <p className="font-mono text-sm">
+          {new Date(comment.timestamp).toLocaleString()}
+        </p>
+        <ErrorMessage error={error} />
+      </div>
     </li>
   );
 }

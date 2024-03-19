@@ -49,7 +49,7 @@ export default function Comments({ groupId, postId, updateComments }: Props) {
     });
 
     return (
-      <ul>
+      <ul className="flex flex-col gap-4">
         {commentIds.map((commentId) => {
           return <CommentDetail key={commentId} comment={comments[commentId]}/>;
         })}
@@ -58,7 +58,8 @@ export default function Comments({ groupId, postId, updateComments }: Props) {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <h2 className="text-xl">Comments</h2>
       {displayComments()}
       <ErrorMessage error={error} />
     </div>

@@ -150,7 +150,7 @@ export default function PostDetail() {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {displayPost()}
       <NewComment
         getPost={getPost}
@@ -163,6 +163,6 @@ export default function PostDetail() {
         postId={postId}
         updateComments={updateComments}
       />
-    </>
+    </div>
   );
 }
