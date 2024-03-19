@@ -11,7 +11,6 @@ import AllGroups from "@pages/AllGroups";
 import Dashboard from "@pages/Dashboard";
 import ErrorPage from "@pages/ErrorPage";
 import GroupDetail from "@pages/GroupDetail";
-import Groups from "@pages/Groups";
 import Home from "@pages/Home";
 import Login from "@pages/Login";
 import MyGroups from "@pages/MyGroups";
@@ -41,26 +40,20 @@ function getRoutesWithUser() {
               element: <NewGroup />,
             },
             {
-              path: "/groups",
-              element: <Groups />,
-              children: [
-                {
-                  index: true,
-                  element: <AllGroups />,
-                },
-                {
-                  path: "mine",
-                  element: <MyGroups />,
-                },
-                {
-                  path: ":groupId",
-                  element: <GroupDetail />,
-                },
-                {
-                  path: ":groupId/posts/:postId",
-                  element: <PostDetail />,
-                },
-              ],
+              path: "allgroups",
+              element: <AllGroups />,
+            },
+            {
+              path: "mygroups",
+              element: <MyGroups />,
+            },
+            {
+              path: "groups/:groupId",
+              element: <GroupDetail />,
+            },
+            {
+              path: "groups/:groupId/posts/:postId",
+              element: <PostDetail />,
             },
           ],
         },

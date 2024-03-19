@@ -3,8 +3,8 @@ import LinkStyled from "./LinkStyled";
 export default function Sidebar() {
   const links = [
     { path: "/newgroup", text: "New group" },
-    { path: "/groups", text: "All groups" },
-    { path: "/groups/mine", text: "My groups" },
+    { path: "/allgroups", text: "All groups" },
+    { path: "/mygroups", text: "My groups" },
   ];
 
   return (
