@@ -1,11 +1,12 @@
 import he from "he";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Button from "@components/Button";
 import Comments from "@components/Comments";
 import ErrorMessage from "@components/ErrorMessage";
 import NewComment from "@components/NewComment";
+
+import { UserContext } from "@contexts/Users";
 
 import PostInterface from "@interfaces/Posts";
 
@@ -73,11 +74,17 @@ export default function PostDetail() {
     // eslint-disable-next-line
   }, []);
 
-  const likePost = async () => {
+  const { user } = useContext(UserContext);
+  if (!user || !post) {
+    return null;
+  }
+
+  const toggleLike = async () => {
     if (!groupId || !postId) {
       setError("Missing group or post id");
     } else {
-      const result = await posts.likePost(groupId, postId);
+      const liked = post.likes.includes(user.id);
+      const result = await posts.toggleLikePost(groupId, postId, liked);
       if (result.status === 200) {
         // succesfully liked, reload the post
         getPost();
@@ -92,30 +99,50 @@ export default function PostDetail() {
 
   const displayPost = () => {
     if (!post) {
-      return (
-        <ErrorMessage error={error} />
-      );
+      return <ErrorMessage error={error} />;
     }
     return (
-      <article>
-        <h2>{he.decode(post.title)}</h2>
-        <p>{he.decode(post.text)}</p>
-        <p>{new Date(post.timestamp).toLocaleString()}</p>
-        <p>{username ? he.decode(username) : ""}</p>
-        <p>
-          {post.likes.length} like{post.likes.length === 1 ? "" : "s"}
-        </p>
-        <p>
-          {commentCount} comment{commentCount === 1 ? "" : "s"}
-        </p>
-        <Button onClick={likePost}>Like</Button>
-        <ErrorMessage error={error} />
+      <article className="rounded bg-white shadow-md shadow-slate-400">
+        <h2 className="rounded-t bg-sky-600 p-1 text-xl capitalize text-neutral-100">
+          {he.decode(post.title)}
+        </h2>
+        <div className="flex flex-col gap-4 p-1">
+          <div className="flex flex-wrap justify-between gap-1 font-mono">
+            <p>{username ? he.decode(username) : ""}</p>
+            <p>{new Date(post.timestamp).toLocaleString()}</p>
+          </div>
+
+          <pre className="whitespace-pre-wrap font-sans text-lg">
+            {he.decode(post.text)}
+          </pre>
+
+          <div className="flex justify-between gap-2 text-xl">
+            <p className="flex gap-1">
+              <button
+                className="text-red-600"
+                onClick={toggleLike}
+                title={post.likes.includes(user.id) ? "unlike" : "like"}
+                type="button"
+              >
+                {post.likes.includes(user.id) ? "♥" : "♡"}
+              </button>
+              {post.likes.length}
+            </p>
+            <p className="flex gap-1">
+              <span className="text-lg" title="comments">
+                💬
+              </span>
+              {commentCount}
+            </p>
+          </div>
+          <ErrorMessage error={error} />
+        </div>
       </article>
     );
   };
 
   if (!groupId || !postId) {
-    return <ErrorMessage error={"Missing group or post id"} />
+    return <ErrorMessage error={"Missing group or post id"} />;
   }
 
   const toggleUpdateComments = () => {

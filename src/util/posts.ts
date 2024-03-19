@@ -292,10 +292,11 @@ async function getSinglePost(groupId: string, postId: string) {
   }
 }
 
-async function likePost(groupId: string, postId: string) {
+async function toggleLikePost(groupId: string, postId: string, liked: boolean) {
+  const path = !liked ? "like" : "unlike";
   try {
     const response = await fetch(
-      `${api.url}/groups/${groupId}/posts/${postId}/like`,
+      `${api.url}/groups/${groupId}/posts/${postId}/${path}`,
       {
         credentials: "include",
         method: "PATCH",
@@ -334,7 +335,7 @@ const posts = {
   getGroupPosts,
   getPostComments,
   getSinglePost,
-  likePost,
+  toggleLikePost,
 };
 
 export default posts;

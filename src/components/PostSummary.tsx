@@ -61,10 +61,12 @@ export default function PostSummary({ post }: Props) {
       >
         <h2 className="capitalize text-neutral-100">{post.title}</h2>
       </Link>
-      <div className="flex flex-col p-1">
-        <p>{new Date(post.timestamp).toLocaleString()}</p>
-        <p>{username || ""}</p>
-        {getContentPreview()}
+      <div className="flex flex-col gap-4 p-1">
+        <div className="flex flex-wrap justify-between gap-1 font-mono">
+          <p>{username || ""}</p>
+          <p>{new Date(post.timestamp).toLocaleString()}</p>
+        </div>
+        <p className="text-lg">{getContentPreview()}</p>
         <div className="flex justify-between gap-2 text-xl">
           <p className="flex gap-1">
             <span className="text-red-600" title="likes">
