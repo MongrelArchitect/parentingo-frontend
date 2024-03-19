@@ -58,8 +58,7 @@ export default function Comments({ groupId, postId, updateComments }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-xl">Comments</h2>
+    <div>
       {displayComments()}
       <ErrorMessage error={error} />
     </div>
