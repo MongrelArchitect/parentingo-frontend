@@ -51,7 +51,7 @@ export default function GroupDetail() {
     return (
       <div>
         <h1 className="text-2xl capitalize">{group.name}</h1>
-          <p className="italic">
+          <p className="itali">
             {group.members.length} member
             {group.members.length > 1 ? "s" : ""}
           </p>
@@ -93,7 +93,7 @@ export default function GroupDetail() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       {displayGroupInfo()}
       {displayMembershipControl()}
       {group ? <NewPost groupId={group.id} /> : null}

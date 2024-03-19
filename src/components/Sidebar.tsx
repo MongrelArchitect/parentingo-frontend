@@ -8,7 +8,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="flex gap-2 bg-sky-400 flex-wrap p-2 text-lg justify-between">
+    <div className="flex gap-2 flex-wrap p-2 text-lg justify-between">
       {links.map((link) => {
         return (
           <LinkStyled
