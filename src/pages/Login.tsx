@@ -10,7 +10,7 @@ import { UserContext } from "@contexts/Users";
 
 export default function Login() {
   const auth = useContext(UserContext);
-  const attemptLogin = auth.attemptLogin;
+  const { attemptLogin }  = auth;
 
   const [error, setError] = useState<string | null>(null);
 
@@ -61,17 +61,18 @@ export default function Login() {
   const navigate = useNavigate();
 
   const submit = async () => {
-    const status = await attemptLogin(
+    const result = await attemptLogin(
       formInfo.username.value,
       formInfo.password.value,
     );
-    if (status === 400 || status === 401) {
+    if (result.status === 400 || result.status === 401) {
       setError("Incorrect username or password");
     }
-    if (status === 500) {
-      setError("Server error");
+    if (result.status === 500) {
+      console.error(result.error);
+      setError(result.message);
     }
-    if (status === 200) {
+    if (result.status === 200) {
       navigate("/");
     }
   };

@@ -15,7 +15,7 @@ interface SignUpForm {
 }
 
 interface ContextValue {
-  attemptLogin: (username: string, password: string) => Promise<number>;
+  attemptLogin: (username: string, password: string) => Promise<Response>;
   attemptLogout: () => Promise<number>;
   attemptSignup: (formInfo: SignUpForm) => Promise<Response>;
   clearUser: () => void;
@@ -24,7 +24,10 @@ interface ContextValue {
 
 export const UserContext = createContext<ContextValue>({
   attemptLogin: async () => {
-    return 500;
+    return {
+      status: 500,
+      message: "",
+    };
   },
   attemptLogout: async () => {
     return 500;
@@ -83,7 +86,7 @@ export default function UserContextProvider({ children }: ContextProps) {
     }
   };
 
-  const attemptLogin = async (username: string, password: string) => {
+  const attemptLogin = async (username: string, password: string): Promise<Response> => {
     // fetch will serialize this to x-www-form-urlencoded (what server expects)
     const formBody = new URLSearchParams();
     formBody.append("username", username);
@@ -99,15 +102,27 @@ export default function UserContextProvider({ children }: ContextProps) {
         method: "POST",
         mode: "cors",
       });
+      const responseBody = await response.json();
+      let message = responseBody.message;
       if (response.status === 200) {
         await getCurrentUser();
+        message = "Successfully logged in";
       }
-      return response.status;
+      return {
+        message: message,
+        status: response.status,
+        error: responseBody.error ? responseBody.error : null,
+      };
     } catch (err) {
       // XXX
       // display this error in ui?
       console.error(err);
-      return 500;
+      return {
+        message: "Error logging in",
+        status: 500,
+        // XXX wonky
+        error: "unknown error",
+      }
     }
   };
 
