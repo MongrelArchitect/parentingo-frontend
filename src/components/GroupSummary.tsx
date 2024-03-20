@@ -3,17 +3,18 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import ErrorMessage from "./ErrorMessage";
+import MembershipControl from "./MembershipControl";
 
 import GroupInterface from "@interfaces/Groups";
 
 import posts from "@util/posts";
 
 interface Props {
-  admin?: boolean;
   group: GroupInterface;
+  updateGroup: () => void;
 }
 
-export default function GroupSummary({ admin, group }: Props) {
+export default function GroupSummary({ group, updateGroup }: Props) {
   const [error, setError] = useState<null | string>(null);
   const [postCount, setPostCount] = useState(0);
 
@@ -36,13 +37,12 @@ export default function GroupSummary({ admin, group }: Props) {
 
   return (
     <li className="rounded bg-white shadow-md shadow-slate-400">
-      <Link
-        className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-sky-600 p-1 text-xl"
-        to={`/groups/${group.id}`}
-      >
-        <h2 className="capitalize text-neutral-100">{group.name}</h2>
-        {admin ? <p className="text-3xl font-bold text-yellow-400">★</p> : null}
-      </Link>
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-sky-600 p-1 text-xl">
+        <Link to={`/groups/${group.id}`}>
+          <h2 className="capitalize text-neutral-100">{group.name}</h2>
+        </Link>
+        <MembershipControl group={group} updateGroup={updateGroup} />
+      </div>
       <div className="flex flex-col gap-4 p-1">
         <div className="flex flex-wrap justify-between gap-1 font-mono">
           <p>

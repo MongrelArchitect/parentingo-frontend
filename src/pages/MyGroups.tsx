@@ -14,18 +14,19 @@ export default function MyGroups() {
   const [memberGroups, setMemberGroups] = useState<null | GroupList>(null);
   const { user } = useContext(UserContext);
 
+  const getGroups = async () => {
+    const result = await groups.getMemberGroups();
+    if (result.status === 200) {
+      setMemberGroups(result.groups);
+    } else {
+      // XXX
+      // need to parse error messages & provide feedback to user
+      console.log(result);
+      setError(result.message);
+    }
+  };
+
   useEffect(() => {
-    const getGroups = async () => {
-      const result = await groups.getMemberGroups();
-      if (result.status === 200) {
-        setMemberGroups(result.groups);
-      } else {
-        // XXX
-        // need to parse error messages & provide feedback to user
-        console.log(result);
-        setError(result.message);
-      }
-    };
     getGroups();
   }, []);
 
@@ -58,6 +59,7 @@ export default function MyGroups() {
           admin={group.admin === user.id}
           group={group}
           key={groupId}
+          updateGroup={getGroups}
         />
       );
     });
