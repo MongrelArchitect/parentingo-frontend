@@ -10,7 +10,7 @@ import { UserContext } from "@contexts/Users";
 
 export default function Login() {
   const auth = useContext(UserContext);
-  const { attemptLogin }  = auth;
+  const { attemptLogin } = auth;
 
   const [error, setError] = useState<string | null>(null);
 
@@ -78,30 +78,41 @@ export default function Login() {
   };
 
   return (
-    <Form>
-      <h1>Login</h1>
-      <Input 
-        id="username"
-        labelText="username:"
-        onChange={handleChange}
-        required
-        type="text"
-        value={formInfo.username.value || ""}
-      />
-      <Input 
-        id="password"
-        labelText="password:"
-        onChange={handleChange}
-        required
-        type="password"
-        value={formInfo.password.value || ""}
-      />
-      <Button onClick={submit}>Submit</Button>
-      <ErrorMessage error={error} />
-      <div>
-        <span>Need an account? </span>
-        <Link className="text-teal-800 underline" to="signup">Sign up</Link>!
+    <div className="flex flex-col gap-4 p-2">
+      <div className="rounded bg-white shadow-md shadow-slate-400">
+        <h1 className="rounded-t bg-sky-600 p-1 text-2xl text-neutral-100">
+          Login
+        </h1>
+        <div className="flex flex-col gap-4 p-1">
+          <Form>
+            <Input
+              id="username"
+              labelText="username:"
+              onChange={handleChange}
+              required
+              type="text"
+              value={formInfo.username.value || ""}
+            />
+            <Input
+              id="password"
+              labelText="password:"
+              onChange={handleChange}
+              required
+              type="password"
+              value={formInfo.password.value || ""}
+            />
+            <Button onClick={submit}>Submit</Button>
+          </Form>
+          <div className="text-lg">
+            <span>Need an account? </span>
+            <Link className="text-sky-800 underline" to="signup">
+              Sign up
+            </Link>
+            !
+          </div>
+        </div>
       </div>
-    </Form>
+      <ErrorMessage error={error} />
+    </div>
   );
 }

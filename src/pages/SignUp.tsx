@@ -146,71 +146,79 @@ export default function SignUp() {
   };
 
   return (
-    <Form>
-      <h1>Sign Up</h1>
-      <Input
-        id="username"
-        labelText="username:"
-        maxLength={20}
-        minLength={3}
-        onChange={handleChange}
-        required
-        type="text"
-        value={formInfo.username.value || ""}
-      />
+    <div className="p-2">
+      <div className="rounded bg-white shadow-md shadow-slate-400">
+        <h1 className="rounded-t bg-sky-600 p-1 text-2xl text-neutral-100">
+          Sign up
+        </h1>
+        <div className="flex flex-col gap-4 p-1">
+          <Form>
+            <Input
+              id="username"
+              labelText="username:"
+              maxLength={20}
+              minLength={3}
+              onChange={handleChange}
+              required
+              type="text"
+              value={formInfo.username.value || ""}
+            />
 
-      <Input
-        id="password"
-        labelText="password:"
-        onChange={handleChange}
-        pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9]).{8,}$"
-        required
-        title="8 characters minimum, 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol"
-        type="password"
-        value={formInfo.password.value || ""}
-      />
+            <Input
+              id="password"
+              labelText="password:"
+              onChange={handleChange}
+              pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9]).{8,}$"
+              required
+              title="8 characters minimum, 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol"
+              type="password"
+              value={formInfo.password.value || ""}
+            />
 
-      <Input
-        id="confirm"
-        labelText="confirm password:"
-        onChange={(event) => {
-          handleChange(event);
-          handleConfirmValidity(event);
-        }}
-        required
-        type="password"
-        value={formInfo.confirm.value || ""}
-      />
+            <Input
+              id="confirm"
+              labelText="confirm password:"
+              onChange={(event) => {
+                handleChange(event);
+                handleConfirmValidity(event);
+              }}
+              required
+              type="password"
+              value={formInfo.confirm.value || ""}
+            />
 
-      <Input
-        id="email"
-        labelText="email:"
-        maxLength={255}
-        onChange={handleChange}
-        required
-        type="email"
-        value={formInfo.email.value || ""}
-      />
+            <Input
+              id="email"
+              labelText="email:"
+              maxLength={255}
+              onChange={handleChange}
+              required
+              type="email"
+              value={formInfo.email.value || ""}
+            />
 
-      <Input
-        id="name"
-        labelText="name:"
-        maxLength={255}
-        onChange={handleChange}
-        required
-        type="text"
-        value={formInfo.name.value || ""}
-      />
+            <Input
+              id="name"
+              labelText="name:"
+              maxLength={255}
+              onChange={handleChange}
+              required
+              type="text"
+              value={formInfo.name.value || ""}
+            />
 
-      <Button onClick={submit}>Submit</Button>
-      <ErrorMessage error={error} />
-      <div>
-        <span>Already have an account? </span>
-        <Link className="text-teal-800 underline" to="/">
-          Log in
-        </Link>
-        !
+            <Button onClick={submit}>Submit</Button>
+            <ErrorMessage error={error} />
+          </Form>
+          <div className="text-lg">
+            <span>Already have an account? </span>
+            <Link className="text-sky-800 underline" to="/">
+              Log in
+            </Link>
+            !
+          </div>
+        </div>
       </div>
-    </Form>
+    </div>
   );
 }

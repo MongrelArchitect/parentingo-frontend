@@ -9,7 +9,7 @@ export default function ErrorMessage({ error }: Props) {
         <h2 className="rounded-t bg-red-600 p-1 text-xl text-neutral-100">
           Error
         </h2>
-        <p className="p-1 text-red-600">{error}</p>
+        <p className="p-1 text-lg text-red-700">{error}</p>
       </div>
     );
   }
