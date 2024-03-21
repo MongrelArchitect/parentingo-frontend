@@ -12,6 +12,7 @@ export default function Login() {
   const auth = useContext(UserContext);
   const { attemptLogin } = auth;
 
+  const [attempted, setAttempted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const defaultFormInfo = {
@@ -61,19 +62,24 @@ export default function Login() {
   const navigate = useNavigate();
 
   const submit = async () => {
-    const result = await attemptLogin(
-      formInfo.username.value,
-      formInfo.password.value,
-    );
-    if (result.status === 400 || result.status === 401) {
-      setError("Incorrect username or password");
-    }
-    if (result.status === 500) {
-      console.error(result.error);
-      setError(result.message);
-    }
-    if (result.status === 200) {
-      navigate("/");
+    setAttempted(true);
+    if (!formInfo.username.valid || !formInfo.password.valid) {
+      setError("Username and password required");
+    } else {
+      const result = await attemptLogin(
+        formInfo.username.value,
+        formInfo.password.value,
+      );
+      if (result.status === 400 || result.status === 401) {
+        setError("Incorrect username or password");
+      }
+      if (result.status === 500) {
+        console.error(result.error);
+        setError(result.message);
+      }
+      if (result.status === 200) {
+        navigate("/");
+      }
     }
   };
 
@@ -86,19 +92,25 @@ export default function Login() {
         <div className="flex flex-col gap-4 p-1">
           <Form>
             <Input
+              attempted={attempted}
               id="username"
               labelText="username:"
+              message="Username required"
               onChange={handleChange}
               required
               type="text"
+              valid={formInfo.username.valid}
               value={formInfo.username.value || ""}
             />
             <Input
+              attempted={attempted}
               id="password"
               labelText="password:"
+              message="Password required"
               onChange={handleChange}
               required
               type="password"
+              valid={formInfo.password.valid}
               value={formInfo.password.value || ""}
             />
             <Button onClick={submit}>Submit</Button>
