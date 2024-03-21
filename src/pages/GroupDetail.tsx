@@ -6,6 +6,7 @@ import ErrorMessage from "@components/ErrorMessage";
 import GroupPosts from "@components/GroupPosts";
 import MembershipControl from "@components/MembershipControl";
 import NewPost from "@components/NewPost";
+import Username from "@components/Username";
 
 import { UserContext } from "@contexts/Users";
 
@@ -69,7 +70,7 @@ export default function GroupDetail() {
           <MembershipControl updateGroup={getGroupInfo} group={group} />
         </h1>
         <div className="flex flex-col gap-4 p-1">
-          <div className="flex flex-wrap justify-between gap-1 font-mono">
+          <div className="flex flex-wrap justify-between gap-2 font-mono">
             <p>
               {group.members.length} member
               {group.members.length === 1 ? "" : "s"}
@@ -78,6 +79,10 @@ export default function GroupDetail() {
               {postCount} post
               {postCount === 1 ? "" : "s"}
             </p>
+            <div className="flex gap-1 flex-wrap">
+              <span>admin:</span>
+              <Username userId={group.admin} />
+            </div>
           </div>
           <pre className="whitespace-pre-wrap font-sans text-lg">
             {he.decode(group.description)}
