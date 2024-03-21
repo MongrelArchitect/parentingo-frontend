@@ -1,14 +1,11 @@
 import api from "@configs/api";
-import GroupInterface, {GroupList} from "@interfaces/Groups";
-import Response from "@interfaces/Response";
+
+import { GroupList } from "@interfaces/Groups";
+import Response, { GroupResponse } from "@interfaces/Response";
 
 interface NewGroupForm {
   name: string;
   description: string;
-}
-
-interface GroupResponse extends Response {
-  group?: GroupInterface;
 }
 
 interface AllGroups extends Response {
