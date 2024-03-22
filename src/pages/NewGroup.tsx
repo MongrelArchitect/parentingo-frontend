@@ -7,11 +7,15 @@ import Form from "@components/Form";
 import Input from "@components/Input";
 import TextArea from "@components/TextArea";
 
+import useTitle from "@hooks/useTitle";
+
 import { GroupResponse } from "@interfaces/Response";
 
 import groups from "@util/groups";
 
 export default function NewGroup() {
+  useTitle("New Group");
+
   const [attempted, setAttempted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const defaultNameMessage = "Name required, 255 characters max";

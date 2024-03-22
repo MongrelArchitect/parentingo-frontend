@@ -8,9 +8,13 @@ import Form from "@components/Form";
 
 import { UserContext } from "@contexts/Users";
 
+import useTitle from "@hooks/useTitle";
+
 import Response from "@interfaces/Response";
 
 export default function SignUp() {
+  useTitle("Sign Up");
+
   const auth = useContext(UserContext);
   const { attemptSignup } = auth;
 

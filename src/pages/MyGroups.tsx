@@ -5,11 +5,15 @@ import GroupSummary from "@components/GroupSummary";
 
 import { UserContext } from "@contexts/Users";
 
+import useTitle from "@hooks/useTitle";
+
 import { GroupList } from "@interfaces/Groups";
 
 import groups from "@util/groups";
 
 export default function MyGroups() {
+  useTitle("My Groups");
+
   const [error, setError] = useState<null | string>(null);
   const [memberGroups, setMemberGroups] = useState<null | GroupList>(null);
   const { user } = useContext(UserContext);

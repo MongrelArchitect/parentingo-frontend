@@ -3,11 +3,15 @@ import { useEffect, useState } from "react";
 import ErrorMessage from "@components/ErrorMessage";
 import GroupSummary from "@components/GroupSummary";
 
+import useTitle from "@hooks/useTitle";
+
 import { GroupList } from "@interfaces/Groups";
 
 import groups from "@util/groups";
 
 export default function AllGroups() {
+  useTitle("All Groups");
+
   const [error, setError] = useState<null | string>(null);
   const [allGroups, setAllGroups] = useState<null | GroupList>(null);
 

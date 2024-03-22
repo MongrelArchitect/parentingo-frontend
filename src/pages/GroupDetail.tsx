@@ -10,6 +10,8 @@ import Username from "@components/Username";
 
 import { UserContext } from "@contexts/Users";
 
+import useTitle from "@hooks/useTitle";
+
 import GroupInterface from "@interfaces/Groups";
 
 import groups from "@util/groups";
@@ -53,6 +55,8 @@ export default function GroupDetail() {
   useEffect(() => {
     getGroupInfo();
   }, []);
+
+  useTitle(group ? he.decode(group.name) : "");
 
   if (!user) {
     return null;

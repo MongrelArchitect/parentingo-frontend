@@ -9,6 +9,8 @@ import Username from "@components/Username";
 
 import { UserContext } from "@contexts/Users";
 
+import useTitle from "@hooks/useTitle";
+
 import PostInterface from "@interfaces/Posts";
 
 import posts from "@util/posts";
@@ -51,6 +53,8 @@ export default function PostDetail() {
       }
     }
   };
+
+  useTitle(post ? he.decode(post.title) : "");
 
   useEffect(() => {
     getPost();

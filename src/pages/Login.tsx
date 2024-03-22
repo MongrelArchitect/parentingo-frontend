@@ -8,7 +8,11 @@ import Input from "@components/Input";
 
 import { UserContext } from "@contexts/Users";
 
+import useTitle from "@hooks/useTitle";
+
 export default function Login() {
+  useTitle("Login");
+
   const auth = useContext(UserContext);
   const { attemptLogin } = auth;
 
