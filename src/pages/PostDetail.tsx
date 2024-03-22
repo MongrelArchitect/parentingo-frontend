@@ -87,7 +87,7 @@ export default function PostDetail() {
     }
     return (
       <article className="rounded bg-white shadow-md shadow-slate-400">
-        <h2 className="rounded-t bg-emerald-600 p-1 text-xl capitalize text-neutral-100">
+        <h2 className="rounded-t bg-emerald-600 p-1 text-2xl capitalize text-neutral-100">
           {he.decode(post.title)}
         </h2>
         <div className="flex flex-col gap-4 p-1">

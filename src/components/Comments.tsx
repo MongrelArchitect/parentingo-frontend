@@ -36,8 +36,8 @@ export default function Comments({ groupId, postId, updateComments }: Props) {
   const displayComments = () => {
     if (!comments) {
       return (
-        <div>
-          No comments found
+        <div className="rounded bg-white shadow-md shadow-slate-400 text-xl p-2">
+          This post has no comments.
         </div>
       );
     }

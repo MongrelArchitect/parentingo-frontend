@@ -11,7 +11,7 @@ interface Props {
 export default function CommentDetail({ comment }: Props) {
   return (
     <li className="rounded bg-white shadow-md shadow-slate-400">
-      <div className="rounded-t bg-fuchsia-600 p-1 text-xl text-neutral-100">
+      <div className="rounded-t bg-fuchsia-700 p-1 text-xl text-neutral-100">
         <Username userId={comment.author} />
       </div>
       <div className="flex flex-col gap-4 p-1">
