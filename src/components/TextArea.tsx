@@ -1,13 +1,13 @@
 interface Props {
-  attempted?: boolean;
+  attempted: boolean;
   maxLength?: number;
-  message?: string;
+  message: string;
   id: string;
   labelText: string;
   onChange: (event: React.SyntheticEvent) => void;
   required?: boolean;
   rows?: number;
-  valid?: boolean;
+  valid: boolean;
   value: string;
 }
 

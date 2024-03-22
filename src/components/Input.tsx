@@ -1,10 +1,10 @@
 interface Props {
-  attempted?: boolean;
+  attempted: boolean;
   maxLength?: number;
   minLength?: number;
   id: string;
   labelText: string;
-  message?: string;
+  message: string;
   onChange: (event: React.SyntheticEvent) => void;
   pattern?: string;
   required?: boolean;
@@ -20,7 +20,7 @@ interface Props {
     | "radio"
     | "tel"
     | "text";
-  valid?: boolean;
+  valid: boolean;
   value: string;
 }
 
