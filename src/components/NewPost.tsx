@@ -14,6 +14,7 @@ interface Props {
 }
 
 export default function NewPost({ groupId }: Props) {
+  const [attempted, setAttempted] = useState(false);
   const [error, setError] = useState<null | string>(null);
   const defaultFormInfo = {
     title: { value: "", valid: false },
@@ -60,6 +61,10 @@ export default function NewPost({ groupId }: Props) {
   const navigate = useNavigate();
 
   const submit = async () => {
+    setAttempted(true);
+    if (!formInfo.title.valid || !formInfo.text.valid) {
+      setError("Invalid input(s) - check each field");
+    } else {
     const result = await posts.createNewPost(groupId, {
       title: formInfo.title.value,
       text: formInfo.text.value,
@@ -73,31 +78,46 @@ export default function NewPost({ groupId }: Props) {
       console.log(result);
       setError(result.message);
     }
+    }
   };
 
   return (
-    <Form>
-      <h2>New Post</h2>
-      <Input
-        id="title"
-        labelText="title:"
-        maxLength={255}
-        onChange={handleChange}
-        required
-        type="text"
-        value={formInfo.title.value || ""}
-      />
-      <TextArea 
-        id="text"
-        labelText="text:"
-        maxLength={255}
-        onChange={handleChange}
-        required
-        rows={5}
-        value={formInfo.text.value || ""}
-      />
-      <Button onClick={submit}>Submit</Button>
+    <div className="flex flex-col gap-4">
+      <div className="rounded bg-white shadow-md shadow-slate-400">
+        <h1 className="rounded-t bg-emerald-600 p-1 text-2xl text-neutral-100">
+          New Post
+        </h1>
+        <div className="flex flex-col gap-4 p-1">
+          <Form>
+            <Input
+              attempted={attempted}
+              id="title"
+              labelText="title:"
+              maxLength={255}
+              message="Title required, 255 characters max"
+              onChange={handleChange}
+              required
+              type="text"
+              valid={formInfo.title.valid}
+              value={formInfo.title.value || ""}
+            />
+            <TextArea
+              attempted={attempted}
+              id="text"
+              labelText="text:"
+              maxLength={50000}
+              message="Text required, 50,000 characters max"
+              onChange={handleChange}
+              required
+              rows={5}
+              valid={formInfo.text.valid}
+              value={formInfo.text.value || ""}
+            />
+            <Button onClick={submit}>Submit</Button>
+          </Form>
+        </div>
+      </div>
       <ErrorMessage error={error} />
-    </Form>
+    </div>
   );
 }

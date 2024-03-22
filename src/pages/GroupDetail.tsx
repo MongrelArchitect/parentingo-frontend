@@ -65,7 +65,7 @@ export default function GroupDetail() {
 
     return (
       <>
-        <h1 className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-sky-600 p-1 text-xl capitalize text-neutral-100">
+        <h1 className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-sky-600 p-1 text-2xl capitalize text-neutral-100">
           {group.name}
           <MembershipControl updateGroup={getGroupInfo} group={group} />
         </h1>
@@ -98,7 +98,6 @@ export default function GroupDetail() {
         {displayGroupInfo()}
       </div>
       {group ? <NewPost groupId={group.id} /> : null}
-      <h2 className="text-xl">Posts</h2>
       {group ? <GroupPosts groupId={group.id} /> : null}
       <ErrorMessage error={error} />
     </div>

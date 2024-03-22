@@ -71,8 +71,8 @@ export default function NewComment({
               attempted={attempted}
               id="text"
               labelText="comment:"
-              maxLength={255}
-              message="Comment required, 255 characters max"
+              maxLength={20000}
+              message="Comment required, 20,000 characters max"
               onChange={handleChange}
               required
               rows={5}

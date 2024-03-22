@@ -33,7 +33,11 @@ export default function GroupPosts({ groupId }: Props) {
 
   const displayPosts = () => {
     if (!groupPosts) {
-      return <p>No posts in this group</p>;
+      return (
+        <div className="rounded bg-white p-2 text-xl shadow-md shadow-slate-400">
+          This group has no posts
+        </div>
+      );
     }
     // sort by timestamp
     const postIds = Object.keys(groupPosts).sort((a, b) => {
