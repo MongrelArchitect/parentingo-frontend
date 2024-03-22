@@ -5,13 +5,13 @@ import { useParams } from "react-router-dom";
 import Comments from "@components/Comments";
 import ErrorMessage from "@components/ErrorMessage";
 import NewComment from "@components/NewComment";
+import Username from "@components/Username";
 
 import { UserContext } from "@contexts/Users";
 
 import PostInterface from "@interfaces/Posts";
 
 import posts from "@util/posts";
-import users from "@util/users";
 
 export default function PostDetail() {
   const { groupId, postId } = useParams();
@@ -19,20 +19,6 @@ export default function PostDetail() {
   const [error, setError] = useState<null | string>(null);
   const [post, setPost] = useState<null | PostInterface>(null);
   const [updateComments, setUpdateComments] = useState(false);
-  const [username, setUsername] = useState<null | string>(null);
-
-  const getAuthorUsername = async (author: string) => {
-    const authorResult = await users.getUserInfo(author);
-    if (authorResult.status === 200 && authorResult.user) {
-      setError(null);
-      // then get the author's username from their id
-      setUsername(authorResult.user.username);
-    } else {
-      setUsername(null);
-      setError(authorResult.message);
-      console.error(authorResult);
-    }
-  };
 
   const getCommentCount = async (groupId: string, postId: string) => {
     const countResult = await posts.getCommentCount(groupId, postId);
@@ -55,9 +41,7 @@ export default function PostDetail() {
         setError(null);
         // first set the post info
         setPost(result.post);
-        // then convert author user id to username
-        await getAuthorUsername(result.post.author);
-        // finally get the comment count
+        // then comment count
         await getCommentCount(result.post.group, result.post.id);
       } else {
         setError(result.message);
@@ -108,7 +92,7 @@ export default function PostDetail() {
         </h2>
         <div className="flex flex-col gap-4 p-1">
           <div className="flex flex-wrap justify-between gap-1 font-mono">
-            <p>{username ? he.decode(username) : ""}</p>
+            <Username userId={post.author} />
             <p>{new Date(post.timestamp).toLocaleString()}</p>
           </div>
 

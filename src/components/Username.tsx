@@ -1,3 +1,4 @@
+import he from "he";
 import { useEffect, useState } from "react";
 
 import ErrorMessage from "./ErrorMessage";
@@ -36,7 +37,7 @@ export default function Username({ userId }: Props) {
 
   return (
     <div className="flex flex-col">
-      <span>{username}</span>
+      <span>{he.decode(username)}</span>
       <ErrorMessage error={error} />
     </div>
   );

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import ErrorMessage from "./ErrorMessage";
+import Username from "./Username";
 
 import PostInterface from "@interfaces/Posts";
 
 import posts from "@util/posts";
-import users from "@util/users";
 
 interface Props {
   post: PostInterface;
@@ -15,29 +15,18 @@ interface Props {
 export default function PostSummary({ post }: Props) {
   const [error, setError] = useState<null | string>(null);
   const [commentCount, setCommentCount] = useState(0);
-  const [username, setUsername] = useState<null | string>(null);
 
   const getInfo = async () => {
     setError(null);
-    // convert post author from userid to username
-    const result = await users.getUserInfo(post.author);
-    if (result.status === 200 && result.user) {
+    // now get our comment count
+    const countResult = await posts.getCommentCount(post.group, post.id);
+    if (countResult.status === 200) {
       setError(null);
-      setUsername(result.user.username);
-      // now get our comment count
-      const countResult = await posts.getCommentCount(post.group, post.id);
-      if (countResult.status === 200) {
-        setError(null);
-        setCommentCount(countResult.count);
-      } else {
-        setCommentCount(0);
-        setError(countResult.message);
-        console.error(countResult);
-      }
+      setCommentCount(countResult.count);
     } else {
-      setUsername(null);
-      setError(result.message);
-      console.error(result);
+      setCommentCount(0);
+      setError(countResult.message);
+      console.error(countResult);
     }
   };
 
@@ -63,7 +52,7 @@ export default function PostSummary({ post }: Props) {
       </Link>
       <div className="flex flex-col gap-4 p-1">
         <div className="flex flex-wrap justify-between gap-1 font-mono">
-          <p>{username || ""}</p>
+          <Username userId={post.author} />
           <p>{new Date(post.timestamp).toLocaleString()}</p>
         </div>
         <pre className="whitespace-pre-wrap font-sans text-lg">
