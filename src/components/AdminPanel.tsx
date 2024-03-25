@@ -11,13 +11,14 @@ import users from "@util/users";
 
 interface Props {
   group: GroupInterface;
+  updateGroupInfo: () => void;
 }
 
 interface MemberList {
   [key: string]: string;
 }
 
-export default function AdminPanel({ group }: Props) {
+export default function AdminPanel({ group, updateGroupInfo }: Props) {
   const { members } = group;
 
   const [error, setError] = useState<null | string>(null);
@@ -61,6 +62,7 @@ export default function AdminPanel({ group }: Props) {
             groupId={group.id}
             memberList={memberList}
             mods={group.mods}
+            updateGroupInfo={updateGroupInfo}
           />
         ) : null}
         {memberList ? (
@@ -68,6 +70,7 @@ export default function AdminPanel({ group }: Props) {
             groupId={group.id}
             memberList={memberList}
             mods={group.mods}
+            updateGroupInfo={updateGroupInfo}
           />
         ) : null}
         {memberList ? (

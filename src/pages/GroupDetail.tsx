@@ -80,7 +80,7 @@ export default function GroupDetail() {
               {postCount} post
               {postCount === 1 ? "" : "s"}
             </p>
-            <div className="flex gap-1 flex-wrap">
+            <div className="flex flex-wrap gap-1">
               <span>admin:</span>
               <Username userId={group.admin} />
             </div>
@@ -96,7 +96,9 @@ export default function GroupDetail() {
   return (
     <div className="flex flex-col gap-4">
       {displayGroupInfo()}
-      {group.admin === user.id ? <AdminPanel group={group} /> : null}
+      {group.admin === user.id ? (
+        <AdminPanel group={group} updateGroupInfo={getGroupInfo} />
+      ) : null}
       {group ? <NewPost groupId={group.id} /> : null}
       {group ? <GroupPosts groupId={group.id} /> : null}
       <ErrorMessage error={error} />

@@ -13,9 +13,10 @@ interface Props {
   groupId: string;
   memberList: MemberList;
   mods: string[];
+  updateGroupInfo: () => void;
 }
 
-export default function MemberControls({ groupId, memberList, mods }: Props) {
+export default function MemberControls({ groupId, memberList, mods, updateGroupInfo }: Props) {
   const [error, setError] = useState<null | string>(null);
   const [selectedUser, setSelectedUser] = useState<null | string>(null);
 
@@ -46,13 +47,11 @@ export default function MemberControls({ groupId, memberList, mods }: Props) {
     if (selectedUser) {
       const result = await groups.promoteUserToMod(groupId, selectedUser);
       if (result.status !== 200) {
-        // XXX problem, do something
-        // need to parse error messages & provide feedback to user
-        console.log(result);
+        console.error(result);
         setError(result.message);
       } else {
-        // XXX do what?
         console.log(result);
+        updateGroupInfo();
       }
     }
   };
