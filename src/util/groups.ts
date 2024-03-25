@@ -65,6 +65,40 @@ async function attemptNewGroup(formInfo: NewGroupForm) {
   }
 }
 
+async function demoteMod(groupId: string, userId: string) {
+  try {
+    const response = await fetch(
+      `${api.url}/groups/${groupId}/mods/demote/${userId}`,
+      {
+        credentials: "include",
+        method: "PATCH",
+        mode: "cors",
+      },
+    );
+    const responseBody = await response.json();
+    const result: Response = {
+      status: response.status,
+      message: responseBody.message,
+    };
+    // this happens with a 500 response from the server
+    if (responseBody.error) {
+      result.error = responseBody.error;
+    }
+    return result;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+    };
+  }
+}
+
 async function getAllGroups() {
   try {
     const response = await fetch(`${api.url}/groups/`, {
@@ -242,13 +276,49 @@ async function joinGroup(groupId: string) {
   }
 }
 
+async function promoteUserToMod(groupId: string, userId: string) {
+  try {
+    const response = await fetch(
+      `${api.url}/groups/${groupId}/mods/${userId}`,
+      {
+        credentials: "include",
+        method: "PATCH",
+        mode: "cors",
+      },
+    );
+    const responseBody = await response.json();
+    const result: Response = {
+      status: response.status,
+      message: responseBody.message,
+    };
+    // this happens with a 500 response from the server
+    if (responseBody.error) {
+      result.error = responseBody.error;
+    }
+    return result;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+    };
+  }
+}
+
 const groups = {
   attemptNewGroup,
+  demoteMod,
   getAllGroups,
   getGroupInfo,
   getMemberGroups,
   joinGroup,
   leaveGroup,
+  promoteUserToMod,
 };
 
 export default groups;

@@ -1,15 +1,24 @@
+import { useState } from "react";
+
 import Button from "./Button";
+import ErrorMessage from "./ErrorMessage";
+
+import groups from "@util/groups";
 
 interface MemberList {
   [key: string]: string;
 }
 
 interface Props {
+  groupId: string;
   memberList: MemberList;
   mods: string[];
 }
 
-export default function ModControls({ memberList, mods }: Props) {
+export default function ModControls({ groupId, memberList, mods }: Props) {
+  const [error, setError] = useState<null | string>(null);
+  const [selectedUser, setSelectedUser] = useState<null | string>(null);
+
   const modOptions = Object.keys(memberList)
     .filter((memberId) => {
       return mods.includes(memberId);
@@ -27,7 +36,26 @@ export default function ModControls({ memberList, mods }: Props) {
       );
     });
 
-  const demote = () => {};
+  const selectUser = (event: React.SyntheticEvent) => {
+    const target = event.target as HTMLSelectElement;
+    setSelectedUser(target.value);
+  };
+
+  const demote = async () => {
+    if (selectedUser) {
+      const result = await groups.demoteMod(groupId, selectedUser);
+      if (result.status !== 200) {
+        // XXX problem, do something
+        // need to parse error messages & provide feedback to user
+        console.log(result);
+        setError(result.message);
+      } else {
+        // XXX
+        // do what?
+        console.log(result);
+      }
+    }
+  };
 
   const ban = () => {};
 
@@ -37,7 +65,12 @@ export default function ModControls({ memberList, mods }: Props) {
     }
 
     return (
-      <select className="rounded p-1" defaultValue="" id="mods">
+      <select
+        className="rounded p-1"
+        defaultValue=""
+        id="mods"
+        onChange={selectUser}
+      >
         <option value="" disabled>
           Select a user
         </option>
@@ -65,6 +98,7 @@ export default function ModControls({ memberList, mods }: Props) {
       </label>
       {modSelect()}
       {controlButtons()}
+      <ErrorMessage error={error} />
     </>
   );
 }

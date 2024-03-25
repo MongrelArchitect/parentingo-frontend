@@ -65,19 +65,19 @@ export default function NewPost({ groupId }: Props) {
     if (!formInfo.title.valid || !formInfo.text.valid) {
       setError("Invalid input(s) - check each field");
     } else {
-    const result = await posts.createNewPost(groupId, {
-      title: formInfo.title.value,
-      text: formInfo.text.value,
-    });
-    if (result.status === 201 && result.post) {
-      // success, redirect to post detail
-      navigate(result.post.uri);
-    } else {
-      // XXX
-      // need to parse error messages & provide feedback to user
-      console.log(result);
-      setError(result.message);
-    }
+      const result = await posts.createNewPost(groupId, {
+        title: formInfo.title.value,
+        text: formInfo.text.value,
+      });
+      if (result.status === 201 && result.post) {
+        // success, redirect to post detail
+        navigate(result.post.uri);
+      } else {
+        // XXX
+        // need to parse error messages & provide feedback to user
+        console.log(result);
+        setError(result.message);
+      }
     }
   };
 

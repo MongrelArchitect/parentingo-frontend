@@ -56,9 +56,19 @@ export default function AdminPanel({ group }: Props) {
         Admin Panel
       </h1>
       <div className="flex flex-col gap-2 p-1 text-lg">
-        {memberList ? <MemberControls memberList={memberList} /> : null}
         {memberList ? (
-          <ModControls memberList={memberList} mods={group.mods} />
+          <MemberControls
+            groupId={group.id}
+            memberList={memberList}
+            mods={group.mods}
+          />
+        ) : null}
+        {memberList ? (
+          <ModControls
+            groupId={group.id}
+            memberList={memberList}
+            mods={group.mods}
+          />
         ) : null}
         {memberList ? (
           <BannedControls memberList={memberList} banned={group.banned} />

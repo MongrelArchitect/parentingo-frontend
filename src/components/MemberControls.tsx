@@ -1,15 +1,28 @@
+import { useState } from "react";
+
 import Button from "./Button";
+import ErrorMessage from "./ErrorMessage";
+
+import groups from "@util/groups";
 
 interface MemberList {
   [key: string]: string;
 }
 
 interface Props {
+  groupId: string;
   memberList: MemberList;
+  mods: string[];
 }
 
-export default function MemberControls({ memberList }: Props) {
+export default function MemberControls({ groupId, memberList, mods }: Props) {
+  const [error, setError] = useState<null | string>(null);
+  const [selectedUser, setSelectedUser] = useState<null | string>(null);
+
   const memberOptions = Object.keys(memberList)
+    .filter((memberId) => {
+      return !mods.includes(memberId);
+    })
     .sort((a, b) => {
       const memberA = memberList[a];
       const memberB = memberList[b];
@@ -23,7 +36,26 @@ export default function MemberControls({ memberList }: Props) {
       );
     });
 
-  const promote = () => {};
+  const selectUser = (event: React.SyntheticEvent) => {
+    setError(null);
+    const target = event.target as HTMLSelectElement;
+    setSelectedUser(target.value);
+  };
+
+  const promote = async () => {
+    if (selectedUser) {
+      const result = await groups.promoteUserToMod(groupId, selectedUser);
+      if (result.status !== 200) {
+        // XXX problem, do something
+        // need to parse error messages & provide feedback to user
+        console.log(result);
+        setError(result.message);
+      } else {
+        // XXX do what?
+        console.log(result);
+      }
+    }
+  };
 
   const ban = () => {};
 
@@ -33,7 +65,12 @@ export default function MemberControls({ memberList }: Props) {
     }
 
     return (
-      <select className="rounded p-1" defaultValue="" id="members">
+      <select
+        className="rounded p-1"
+        defaultValue=""
+        id="members"
+        onChange={selectUser}
+      >
         <option value="" disabled>
           Select a user
         </option>
@@ -61,6 +98,7 @@ export default function MemberControls({ memberList }: Props) {
       </label>
       {memberSelect()}
       {controlButtons()}
+      <ErrorMessage error={error} />
     </>
   );
 }
