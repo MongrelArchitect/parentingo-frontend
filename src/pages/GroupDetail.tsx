@@ -2,6 +2,7 @@ import he from "he";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import AdminPanel from "@components/AdminPanel";
 import ErrorMessage from "@components/ErrorMessage";
 import GroupPosts from "@components/GroupPosts";
 import MembershipControl from "@components/MembershipControl";
@@ -58,17 +59,13 @@ export default function GroupDetail() {
 
   useTitle(group ? he.decode(group.name) : "");
 
-  if (!user) {
+  if (!user || !group) {
     return null;
   }
 
   const displayGroupInfo = () => {
-    if (!group) {
-      return null;
-    }
-
     return (
-      <>
+      <div className="rounded bg-white shadow-md shadow-slate-400">
         <h1 className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-sky-600 p-1 text-2xl capitalize text-neutral-100">
           {group.name}
           <MembershipControl updateGroup={getGroupInfo} group={group} />
@@ -92,15 +89,14 @@ export default function GroupDetail() {
             {he.decode(group.description)}
           </pre>
         </div>
-      </>
+      </div>
     );
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded bg-white shadow-md shadow-slate-400">
-        {displayGroupInfo()}
-      </div>
+      {displayGroupInfo()}
+      {group.admin === user.id ? <AdminPanel group={group} /> : null}
       {group ? <NewPost groupId={group.id} /> : null}
       {group ? <GroupPosts groupId={group.id} /> : null}
       <ErrorMessage error={error} />

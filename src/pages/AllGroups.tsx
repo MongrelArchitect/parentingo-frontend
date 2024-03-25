@@ -35,9 +35,12 @@ export default function AllGroups() {
     if (!allGroups) {
       return <p>No groups found</p>;
     }
-    // XXX TODO
-    // sort these...by what criteria?
-    const groupIds = Object.keys(allGroups);
+    // sort alphabetically by name
+    const groupIds = Object.keys(allGroups).sort((a, b) => {
+      const groupA = allGroups[a];
+      const groupB = allGroups[b];
+      return groupA.name.localeCompare((groupB.name));
+    });
     return (
       <ul className="flex flex-col gap-4">
         {groupIds.map((id) => {

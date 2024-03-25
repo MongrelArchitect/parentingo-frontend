@@ -1,8 +1,6 @@
 import he from "he";
 import { useEffect, useState } from "react";
 
-import ErrorMessage from "./ErrorMessage";
-
 import users from "@util/users";
 
 interface Props {
@@ -36,9 +34,8 @@ export default function Username({ userId }: Props) {
   }
 
   return (
-    <div className="flex flex-col">
-      <span>{he.decode(username)}</span>
-      <ErrorMessage error={error} />
-    </div>
+    <>
+      {error || he.decode(username)}
+    </>
   );
 }
