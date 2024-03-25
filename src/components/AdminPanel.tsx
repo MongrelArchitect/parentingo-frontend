@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import Button from "./Button";
+import BannedControls from "./BannedControls";
 import ErrorMessage from "./ErrorMessage";
 import MemberControls from "./MemberControls";
 import ModControls from "./ModControls";
@@ -59,6 +59,9 @@ export default function AdminPanel({ group }: Props) {
         {memberList ? <MemberControls memberList={memberList} /> : null}
         {memberList ? (
           <ModControls memberList={memberList} mods={group.mods} />
+        ) : null}
+        {memberList ? (
+          <BannedControls memberList={memberList} banned={group.banned} />
         ) : null}
       </div>
 
