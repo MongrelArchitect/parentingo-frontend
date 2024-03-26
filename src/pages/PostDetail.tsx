@@ -5,20 +5,24 @@ import { useParams } from "react-router-dom";
 import Comments from "@components/Comments";
 import ErrorMessage from "@components/ErrorMessage";
 import NewComment from "@components/NewComment";
+import PostControl from "@components/PostControl";
 import Username from "@components/Username";
 
 import { UserContext } from "@contexts/Users";
 
 import useTitle from "@hooks/useTitle";
 
+import GroupInterface from "@interfaces/Groups";
 import PostInterface from "@interfaces/Posts";
 
+import groups from "@util/groups";
 import posts from "@util/posts";
 
 export default function PostDetail() {
   const { groupId, postId } = useParams();
   const [commentCount, setCommentCount] = useState(0);
   const [error, setError] = useState<null | string>(null);
+  const [group, setGroup] = useState<null | GroupInterface>(null);
   const [post, setPost] = useState<null | PostInterface>(null);
   const [updateComments, setUpdateComments] = useState(false);
 
@@ -54,18 +58,35 @@ export default function PostDetail() {
     }
   };
 
-  useTitle(post ? he.decode(post.title) : "");
+  const getGroup = async () => {
+    if (!groupId) {
+      setError("Missing group id");
+    } else {
+      const result = await groups.getGroupInfo(groupId);
+      if (result.status === 200 && result.group) {
+        setError(null);
+        setGroup(result.group);
+        // XXX
+      } else {
+        setError(result.message);
+        console.error(result);
+      }
+    }
+  };
+
+  useTitle(post && group ? he.decode(`${group.name} - ${post.title}`) : "");
 
   useEffect(() => {
     getPost();
-    // we want the empty dependency array: only get the post info on mount
-    // eslint-disable-next-line
+    getGroup();
   }, []);
 
   const { user } = useContext(UserContext);
-  if (!user || !post) {
+  if (!user || !post || !group) {
     return null;
   }
+
+  const isAdmin = user.id === group.admin;
 
   const toggleLike = async () => {
     if (!groupId || !postId) {
@@ -91,14 +112,16 @@ export default function PostDetail() {
     }
     return (
       <article className="rounded bg-white shadow-md shadow-slate-400">
-        <h2 className="rounded-t bg-emerald-600 p-1 text-2xl capitalize text-neutral-100">
+        <h1 className="rounded-t bg-emerald-600 p-1 text-2xl capitalize text-neutral-100">
           {he.decode(post.title)}
-        </h2>
+        </h1>
         <div className="flex flex-col gap-4 p-1">
           <div className="flex flex-wrap justify-between gap-1 font-mono">
             <Username userId={post.author} />
             <p>{new Date(post.timestamp).toLocaleString()}</p>
           </div>
+
+          {isAdmin && post.author !== group.admin ? <PostControl /> : null}
 
           <pre className="whitespace-pre-wrap font-sans text-lg">
             {he.decode(post.text)}
