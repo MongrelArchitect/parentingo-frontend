@@ -1,33 +1,60 @@
+import { useState } from "react";
+
 import Button from "./Button";
+import ErrorMessage from "./ErrorMessage";
+
+import groups from "@util/groups";
 
 interface MemberList {
   [key: string]: string;
 }
 
 interface Props {
-  memberList: MemberList;
-  banned: string[];
+  bannedList: MemberList;
+  groupId: string;
+  updateGroupInfo: () => void;
 }
 
-export default function BannedControls({ memberList, banned}: Props) {
-  const bannedOptions = Object.keys(memberList)
-    .filter((memberId) => {
-      return banned.includes(memberId);
-    })
+export default function BannedControls({
+  bannedList,
+  groupId,
+  updateGroupInfo,
+}: Props) {
+  const [error, setError] = useState<null | string>(null);
+  const [selectedUser, setSelectedUser] = useState<null | string>(null);
+
+  const bannedOptions = Object.keys(bannedList)
     .sort((a, b) => {
-      const memberA = memberList[a];
-      const memberB = memberList[b];
-      return memberA.localeCompare(memberB);
+      const userA = bannedList[a];
+      const userB = bannedList[b];
+      return userA.localeCompare(userB);
     })
-    .map((memberId) => {
+    .map((userId) => {
       return (
-        <option key={`banned-${memberId}`} value={memberId}>
-          {memberList[memberId]}
+        <option key={`banned-${userId}`} value={userId}>
+          {bannedList[userId]}
         </option>
       );
     });
 
-  const unban = () => {};
+  const selectUser = (event: React.SyntheticEvent) => {
+    const target = event.target as HTMLSelectElement;
+    setSelectedUser(target.value);
+  };
+
+  const unban = async () => {
+    if (selectedUser) {
+      const result = await groups.unbanUser(groupId, selectedUser);
+      if (result.status !== 200) {
+        console.error(result);
+        setError(result.message);
+      } else {
+        console.log(result);
+        updateGroupInfo();
+        setSelectedUser(null);
+      }
+    }
+  };
 
   const bannedSelect = () => {
     if (!bannedOptions.length) {
@@ -35,7 +62,12 @@ export default function BannedControls({ memberList, banned}: Props) {
     }
 
     return (
-      <select className="rounded p-1" defaultValue="" id="banned">
+      <select
+        className="rounded p-1"
+        id="banned"
+        onChange={selectUser}
+        value={selectedUser || ""}
+      >
         <option value="" disabled>
           Select a user
         </option>
@@ -45,7 +77,7 @@ export default function BannedControls({ memberList, banned}: Props) {
   };
 
   const controlButtons = () => {
-    if (!bannedOptions.length) {
+    if (!bannedOptions.length || !selectedUser) {
       return null;
     }
     return (
@@ -62,6 +94,7 @@ export default function BannedControls({ memberList, banned}: Props) {
       </label>
       {bannedSelect()}
       {controlButtons()}
+      <ErrorMessage error={error} />
     </>
   );
 }

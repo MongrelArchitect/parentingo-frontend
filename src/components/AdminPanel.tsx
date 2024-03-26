@@ -19,8 +19,9 @@ interface MemberList {
 }
 
 export default function AdminPanel({ group, updateGroupInfo }: Props) {
-  const { members } = group;
+  const { banned, members } = group;
 
+  const [bannedList, setBannedList] = useState<null | MemberList>(null);
   const [error, setError] = useState<null | string>(null);
   const [memberList, setMemberList] = useState<null | MemberList>(null);
 
@@ -48,8 +49,18 @@ export default function AdminPanel({ group, updateGroupInfo }: Props) {
       }
       setMemberList(list);
     };
+
+    const generateBannedList = async () => {
+      const list: MemberList = {};
+      for (const userId of banned) {
+        list[userId] = await getUsername(userId);
+      }
+      setBannedList(list);
+    };
+
     generateMemberList();
-  }, []);
+    generateBannedList();
+  }, [banned, members]);
 
   return (
     <div className="rounded bg-white shadow-md shadow-slate-400">
@@ -73,8 +84,12 @@ export default function AdminPanel({ group, updateGroupInfo }: Props) {
             updateGroupInfo={updateGroupInfo}
           />
         ) : null}
-        {memberList ? (
-          <BannedControls memberList={memberList} banned={group.banned} />
+        {bannedList ? (
+          <BannedControls
+            groupId={group.id}
+            bannedList={bannedList}
+            updateGroupInfo={updateGroupInfo}
+          />
         ) : null}
       </div>
 

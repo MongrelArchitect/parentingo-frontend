@@ -16,7 +16,12 @@ interface Props {
   updateGroupInfo: () => void;
 }
 
-export default function MemberControls({ groupId, memberList, mods, updateGroupInfo }: Props) {
+export default function MemberControls({
+  groupId,
+  memberList,
+  mods,
+  updateGroupInfo,
+}: Props) {
   const [error, setError] = useState<null | string>(null);
   const [selectedUser, setSelectedUser] = useState<null | string>(null);
 
@@ -31,7 +36,10 @@ export default function MemberControls({ groupId, memberList, mods, updateGroupI
     })
     .map((memberId) => {
       return (
-        <option key={`member-${memberId}`} value={memberId}>
+        <option
+          key={`member-${memberId}`}
+          value={memberId}
+        >
           {memberList[memberId]}
         </option>
       );
@@ -52,11 +60,24 @@ export default function MemberControls({ groupId, memberList, mods, updateGroupI
       } else {
         console.log(result);
         updateGroupInfo();
+        setSelectedUser(null);
       }
     }
   };
 
-  const ban = () => {};
+  const ban = async () => {
+    if (selectedUser) {
+      const result = await groups.banUser(groupId, selectedUser);
+      if (result.status !== 200) {
+        console.error(result);
+        setError(result.message);
+      } else {
+        console.log(result);
+        updateGroupInfo();
+        setSelectedUser(null);
+      }
+    }
+  };
 
   const memberSelect = () => {
     if (!memberOptions.length) {
@@ -66,9 +87,9 @@ export default function MemberControls({ groupId, memberList, mods, updateGroupI
     return (
       <select
         className="rounded p-1"
-        defaultValue=""
         id="members"
         onChange={selectUser}
+        value={selectedUser || ""}
       >
         <option value="" disabled>
           Select a user
@@ -79,7 +100,7 @@ export default function MemberControls({ groupId, memberList, mods, updateGroupI
   };
 
   const controlButtons = () => {
-    if (!memberOptions.length) {
+    if (!memberOptions.length || !selectedUser) {
       return null;
     }
     return (

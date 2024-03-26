@@ -4,6 +4,7 @@ import ErrorMessage from "./ErrorMessage";
 
 import accountIcon from "@assets/icons/account.svg";
 import accountOffIcon from "@assets/icons/account-off-outline.svg";
+import alertIcon from "@assets/icons/alert-octagon-outline.svg";
 
 import { UserContext } from "@contexts/Users";
 
@@ -44,7 +45,19 @@ export default function MembershipControl({ group, updateGroup }: Props) {
     return <p className="text-3xl font-bold text-yellow-400">★</p>;
   }
 
+  const isBanned = group.banned.includes(user.id);
+
+  if (isBanned) {
+    return (
+      <div className="flex flex-wrap items-center gap-1 text-lg text-neutral-50">
+        banned
+        <img className="h-[24px] invert" src={alertIcon} />
+      </div>
+    );
+  }
+
   const isMember = group.members.includes(user.id);
+
   return (
     <>
       <button
@@ -57,7 +70,11 @@ export default function MembershipControl({ group, updateGroup }: Props) {
           src={isMember ? accountIcon : accountOffIcon}
         />
       </button>
-      <ErrorMessage error={error} />
+      {error ? (
+        <div className="w-full">
+          <ErrorMessage error={error} />
+        </div>
+      ) : null}
     </>
   );
 }

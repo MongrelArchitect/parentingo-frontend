@@ -56,11 +56,24 @@ export default function ModControls({
       } else {
         console.log(result);
         updateGroupInfo();
+        setSelectedUser(null);
       }
     }
   };
 
-  const ban = () => {};
+  const ban = async () => {
+    if (selectedUser) {
+      const result = await groups.banUser(groupId, selectedUser);
+      if (result.status !== 200) {
+        console.error(result);
+        setError(result.message);
+      } else {
+        console.log(result);
+        updateGroupInfo();
+        setSelectedUser(null);
+      }
+    }
+  };
 
   const modSelect = () => {
     if (!modOptions.length) {
@@ -70,9 +83,9 @@ export default function ModControls({
     return (
       <select
         className="rounded p-1"
-        defaultValue=""
         id="mods"
         onChange={selectUser}
+        value={selectedUser || ""}
       >
         <option value="" disabled>
           Select a user
@@ -83,7 +96,7 @@ export default function ModControls({
   };
 
   const controlButtons = () => {
-    if (!modOptions.length) {
+    if (!modOptions.length || !selectedUser) {
       return null;
     }
     return (
