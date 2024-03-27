@@ -4,44 +4,45 @@ import CommentDetail from "./CommentDetail";
 import ErrorMessage from "./ErrorMessage";
 
 import { CommentList } from "@interfaces/Comments";
+import GroupInterface from "@interfaces/Groups";
 
 import posts from "@util/posts";
 
 interface Props {
-  groupId: string;
+  group: GroupInterface;
   postId: string;
   updateComments: boolean;
 }
 
-export default function Comments({ groupId, postId, updateComments }: Props) {
+export default function Comments({ group, postId, updateComments }: Props) {
   const [comments, setComments] = useState<null | CommentList>(null);
   const [error, setError] = useState<null | string>(null);
 
-  useEffect(() => {
-    const getComments = async () => {
-      const result = await posts.getPostComments(groupId, postId);
-      if (result.status === 200) {
-        setComments(result.comments);
-      } else {
-        // XXX
-        // need to parse error messages & provide feedback to user
-        console.error(result);
-        setError(result.message);
-      }
-    };
+  const getComments = async () => {
+    const result = await posts.getPostComments(group.id, postId);
+    if (result.status === 200) {
+      setComments(result.comments);
+    } else {
+      // XXX
+      // need to parse error messages & provide feedback to user
+      console.error(result);
+      setError(result.message);
+    }
+  };
 
+  useEffect(() => {
     getComments();
-  }, [groupId, postId, updateComments]);
+  }, [group, postId, updateComments]);
 
   const displayComments = () => {
     if (!comments) {
       return (
-        <div className="rounded bg-white shadow-md shadow-slate-400 text-xl p-2">
+        <div className="rounded bg-white p-2 text-xl shadow-md shadow-slate-400">
           This post has no comments.
         </div>
       );
     }
-    
+
     const commentIds = Object.keys(comments).sort((a, b) => {
       const dateA = new Date(comments[a].timestamp);
       const dateB = new Date(comments[b].timestamp);
@@ -51,7 +52,15 @@ export default function Comments({ groupId, postId, updateComments }: Props) {
     return (
       <ul className="flex flex-col gap-4">
         {commentIds.map((commentId) => {
-          return <CommentDetail key={commentId} comment={comments[commentId]}/>;
+          return (
+            <CommentDetail
+              key={commentId}
+              comment={comments[commentId]}
+              group={group}
+              postId={postId}
+              updateComments={getComments}
+            />
+          );
         })}
       </ul>
     );

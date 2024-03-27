@@ -184,7 +184,7 @@ export default function PostDetail() {
         toggleUpdateComments={toggleUpdateComments}
       />
       <Comments
-        groupId={groupId}
+        group={group}
         postId={postId}
         updateComments={updateComments}
       />
