@@ -66,7 +66,6 @@ export default function PostDetail() {
       if (result.status === 200 && result.group) {
         setError(null);
         setGroup(result.group);
-        // XXX
       } else {
         setError(result.message);
         console.error(result);
@@ -86,8 +85,6 @@ export default function PostDetail() {
     return null;
   }
 
-  const isAdmin = user.id === group.admin;
-
   const toggleLike = async () => {
     if (!groupId || !postId) {
       setError("Missing group or post id");
@@ -106,6 +103,14 @@ export default function PostDetail() {
     }
   };
 
+  // this detemrines if the PostControl component is rendered
+  const isAdmin = user.id === group.admin;
+
+  // these will determine if the "ban user" checkbox shows up in PostControl
+  const eligibleForBan =
+    !group.banned.includes(post.author) && group.members.includes(post.author);
+  const postByAdmin = post.author === group.admin;
+
   const displayPost = () => {
     if (!post) {
       return <ErrorMessage error={error} />;
@@ -121,7 +126,16 @@ export default function PostDetail() {
             <p>{new Date(post.timestamp).toLocaleString()}</p>
           </div>
 
-          {isAdmin && post.author !== group.admin ? <PostControl /> : null}
+          {isAdmin ? (
+            <PostControl
+              author={post.author}
+              eligibleForBan={eligibleForBan}
+              groupId={group.id}
+              postByAdmin={postByAdmin}
+              postId={post.id}
+              updateGroupInfo={getGroup}
+            />
+          ) : null}
 
           <pre className="whitespace-pre-wrap font-sans text-lg">
             {he.decode(post.text)}

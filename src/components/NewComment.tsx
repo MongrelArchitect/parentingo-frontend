@@ -46,6 +46,7 @@ export default function NewComment({
       // success, reload the post info
       getPost();
       toggleUpdateComments();
+      setAttempted(false);
       setText({
         value: "",
         valid: false,

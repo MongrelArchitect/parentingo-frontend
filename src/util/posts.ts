@@ -135,6 +135,41 @@ async function createNewComment(groupId: string, postId: string, text: string) {
   }
 }
 
+async function deletePost(groupId: string, postId: string) {
+  try {
+    const response = await fetch(
+      `${api.url}/groups/${groupId}/posts/${postId}/`,
+      {
+        credentials: "include",
+        method: "DELETE",
+        mode: "cors",
+      },
+    );
+    const responseBody = await response.json();
+    // successful response sends comment uri, but don't need it here
+    const deleteResponse: Response = {
+      status: response.status,
+      message: responseBody.message,
+    };
+    // this happens with a 500 response from the server
+    if (responseBody.error) {
+      deleteResponse.error = responseBody.error;
+    }
+    return deleteResponse;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+    };
+  }
+}
+
 async function getCommentCount(groupId: string, postId: string) {
   try {
     const response = await fetch(
@@ -376,6 +411,7 @@ async function toggleLikePost(groupId: string, postId: string, liked: boolean) {
 const posts = {
   createNewComment,
   createNewPost,
+  deletePost,
   getCommentCount,
   getGroupPosts,
   getPostComments,

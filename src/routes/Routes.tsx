@@ -16,6 +16,7 @@ import Login from "@pages/Login";
 import MyGroups from "@pages/MyGroups";
 import NewGroup from "@pages/NewGroup";
 import NotFound from "@pages/NotFound";
+import PostDeleted from "@pages/PostDeleted";
 import PostDetail from "@pages/PostDetail";
 import Root from "@pages/Root";
 import SignUp from "@pages/SignUp";
@@ -50,6 +51,10 @@ function getRoutesWithUser() {
             {
               path: "groups/:groupId",
               element: <GroupDetail />,
+            },
+            {
+              path: "groups/:groupId/posts/deleted",
+              element: <PostDeleted />,
             },
             {
               path: "groups/:groupId/posts/:postId",
