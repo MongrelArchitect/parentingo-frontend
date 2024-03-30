@@ -93,11 +93,14 @@ export default function GroupDetail() {
     );
   };
 
+  const userIsAdmin = user.id === group.admin;
+  const userIsMod = group.mods.includes(user.id);
+
   return (
     <div className="flex flex-col gap-4">
       {displayGroupInfo()}
-      {group.admin === user.id ? (
-        <AdminPanel group={group} updateGroupInfo={getGroupInfo} />
+      {userIsAdmin || userIsMod ? (
+        <AdminPanel group={group} userIsAdmin={userIsAdmin} updateGroupInfo={getGroupInfo} />
       ) : null}
       {group ? <NewPost groupId={group.id} /> : null}
       {group ? <GroupPosts groupId={group.id} /> : null}

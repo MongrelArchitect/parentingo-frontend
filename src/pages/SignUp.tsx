@@ -277,6 +277,8 @@ export default function SignUp() {
         name: formInfo.name.value,
       });
       if (result.status === 201) {
+        // XXX TODO
+        // we get a 404 when signing up...why?
         // success, redirect to landing page
         navigate("/");
       } else if (result.status === 400) {

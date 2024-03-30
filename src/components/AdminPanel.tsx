@@ -12,13 +12,18 @@ import users from "@util/users";
 interface Props {
   group: GroupInterface;
   updateGroupInfo: () => void;
+  userIsAdmin: boolean;
 }
 
 interface MemberList {
   [key: string]: string;
 }
 
-export default function AdminPanel({ group, updateGroupInfo }: Props) {
+export default function AdminPanel({
+  group,
+  updateGroupInfo,
+  userIsAdmin,
+}: Props) {
   const { banned, members } = group;
 
   const [bannedList, setBannedList] = useState<null | MemberList>(null);
@@ -65,7 +70,7 @@ export default function AdminPanel({ group, updateGroupInfo }: Props) {
   return (
     <div className="rounded bg-white shadow-md shadow-slate-400">
       <h1 className="rounded-t bg-orange-600 p-1 text-2xl capitalize text-neutral-100">
-        Admin Panel
+        {userIsAdmin ? "Admin Panel" : "Mod Panel"}
       </h1>
       <div className="flex flex-col gap-2 p-1 text-lg">
         {memberList ? (
@@ -74,9 +79,10 @@ export default function AdminPanel({ group, updateGroupInfo }: Props) {
             memberList={memberList}
             mods={group.mods}
             updateGroupInfo={updateGroupInfo}
+            userIsAdmin={userIsAdmin}
           />
         ) : null}
-        {memberList ? (
+        {memberList && userIsAdmin ? (
           <ModControls
             groupId={group.id}
             memberList={memberList}

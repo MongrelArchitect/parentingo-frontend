@@ -14,6 +14,7 @@ interface Props {
   memberList: MemberList;
   mods: string[];
   updateGroupInfo: () => void;
+  userIsAdmin: boolean;
 }
 
 export default function MemberControls({
@@ -21,6 +22,7 @@ export default function MemberControls({
   memberList,
   mods,
   updateGroupInfo,
+  userIsAdmin,
 }: Props) {
   const [error, setError] = useState<null | string>(null);
   const [selectedUser, setSelectedUser] = useState<null | string>(null);
@@ -105,7 +107,7 @@ export default function MemberControls({
     }
     return (
       <div className="flex flex-wrap justify-between gap-2">
-        <Button onClick={promote}>Promote to mod</Button>
+        {userIsAdmin ? <Button onClick={promote}>Promote to mod</Button> : null}
         <Button onClick={ban}>Ban user</Button>
       </div>
     );
