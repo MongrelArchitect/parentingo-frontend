@@ -104,12 +104,27 @@ export default function PostDetail() {
   };
 
   // this detemrines if the PostControl component is rendered
-  const isAdmin = user.id === group.admin;
+  const userIsAdmin = user.id === group.admin;
+  const userIsMod = group.mods.includes(user.id);
 
   // these will determine if the "ban user" checkbox shows up in PostControl
   const eligibleForBan =
     !group.banned.includes(post.author) && group.members.includes(post.author);
   const postByAdmin = post.author === group.admin;
+
+  // these will determine what posts a mod can or cannot delete
+  const postByMod = group.mods.includes(post.author);
+  const isOwnPost = user.id === post.author;
+
+  const showPostControl = () => {
+    if (!userIsAdmin && !userIsMod) {
+      return false;
+    }
+    if (userIsMod && (postByAdmin || (postByMod && !isOwnPost))) {
+      return false;
+    }
+    return true;
+  };
 
   const displayPost = () => {
     if (!post) {
@@ -126,14 +141,17 @@ export default function PostDetail() {
             <p>{new Date(post.timestamp).toLocaleString()}</p>
           </div>
 
-          {isAdmin ? (
+          {showPostControl() ? (
             <PostControl
               author={post.author}
               eligibleForBan={eligibleForBan}
               groupId={group.id}
+              isOwnPost={isOwnPost}
               postByAdmin={postByAdmin}
+              postByMod={postByMod}
               postId={post.id}
               updateGroupInfo={getGroup}
+              userIsAdmin={userIsAdmin}
             />
           ) : null}
 

@@ -38,10 +38,7 @@ export default function MemberControls({
     })
     .map((memberId) => {
       return (
-        <option
-          key={`member-${memberId}`}
-          value={memberId}
-        >
+        <option key={`member-${memberId}`} value={memberId}>
           {memberList[memberId]}
         </option>
       );
@@ -83,7 +80,11 @@ export default function MemberControls({
 
   const memberSelect = () => {
     if (!memberOptions.length) {
-      return <span className="italic">Group has no non-admin members</span>;
+      return (
+        <span className="italic">
+          Group has no standard members
+        </span>
+      );
     }
 
     return (

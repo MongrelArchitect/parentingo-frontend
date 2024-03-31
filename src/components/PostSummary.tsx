@@ -1,3 +1,4 @@
+import he from "he";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -36,10 +37,10 @@ export default function PostSummary({ post }: Props) {
 
   const getContentPreview = () => {
     const { text } = post;
-    if (text.length < 40) {
-      return text;
+    if (he.decode(text).length < 40) {
+      return he.decode(text);
     }
-    return `${text.slice(0, 40)}...`;
+    return `${he.decode(text).slice(0, 40)}...`;
   };
 
   return (
@@ -48,7 +49,7 @@ export default function PostSummary({ post }: Props) {
         className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-emerald-600 p-1 text-xl"
         to={`/groups/${post.group}/posts/${post.id}`}
       >
-        <h2 className="capitalize text-neutral-100">{post.title}</h2>
+        <h2 className="capitalize text-neutral-100">{he.decode(post.title)}</h2>
       </Link>
       <div className="flex flex-col gap-4 p-1">
         <div className="flex flex-wrap justify-between gap-1 font-mono">

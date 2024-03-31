@@ -77,7 +77,7 @@ export default function ModControls({
 
   const modSelect = () => {
     if (!modOptions.length) {
-      return <span className="italic">Group has no non-admin mods</span>;
+      return <span className="italic">Group has no mods</span>;
     }
 
     return (

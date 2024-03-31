@@ -13,18 +13,24 @@ interface Props {
   author: string;
   eligibleForBan: boolean;
   groupId: string;
+  isOwnPost: boolean;
   postByAdmin: boolean;
+  postByMod: boolean;
   postId: string;
   updateGroupInfo: () => void;
+  userIsAdmin: boolean;
 }
 
 export default function PostControl({
   author,
   eligibleForBan,
   groupId,
+  isOwnPost,
   postByAdmin,
+  postByMod,
   postId,
   updateGroupInfo,
+  userIsAdmin,
 }: Props) {
   const [banUser, setBanUser] = useState(false);
   const [deletePost, setDeletePost] = useState(false);
@@ -66,6 +72,27 @@ export default function PostControl({
     }
   };
 
+  const showDeletePost = () => {
+    // admin can delete any post, mods cannot delete posts by admin or other mods
+    if (!userIsAdmin && (postByAdmin || (postByMod && !isOwnPost))) {
+      return false;
+    }
+    return true;
+  };
+
+  const showBanUser = () => {
+    // first check if their eleigible for a ban or if its an admin's post
+    if (!eligibleForBan || postByAdmin) {
+      return false;
+    }
+    // now, if they're a mod they cannot ban themselves or other mods
+    if (!userIsAdmin && postByMod) {
+      return false;
+    }
+    // otherwise show the option
+    return true;
+  };
+
   return (
     <div className="rounded border-2 border-orange-600 bg-white">
       <h2 className="bg-orange-600 p-1 text-2xl capitalize text-neutral-100">
@@ -73,13 +100,15 @@ export default function PostControl({
       </h2>
       <div className="flex flex-col gap-2 p-1">
         <Form>
-          <Checkbox
-            checkedState={deletePost}
-            id="deletepost"
-            onChange={toggleDelete}
-            labelText="delete post"
-          />
-          {!postByAdmin && eligibleForBan ? (
+          {showDeletePost() ? (
+            <Checkbox
+              checkedState={deletePost}
+              id="deletepost"
+              onChange={toggleDelete}
+              labelText="delete post"
+            />
+          ) : null}
+          {showBanUser() ? (
             <Checkbox
               checkedState={banUser}
               id="banuser"
