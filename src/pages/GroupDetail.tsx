@@ -100,7 +100,11 @@ export default function GroupDetail() {
     <div className="flex flex-col gap-4">
       {displayGroupInfo()}
       {userIsAdmin || userIsMod ? (
-        <AdminPanel group={group} userIsAdmin={userIsAdmin} updateGroupInfo={getGroupInfo} />
+        <AdminPanel
+          group={group}
+          userIsAdmin={userIsAdmin}
+          updateGroupInfo={getGroupInfo}
+        />
       ) : null}
       {group ? <NewPost groupId={group.id} /> : null}
       {group ? <GroupPosts groupId={group.id} /> : null}

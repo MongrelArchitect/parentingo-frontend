@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 
 import accountIcon from "@assets/icons/account.svg";
+import modIcon from "@assets/icons/account-tie.svg";
 import accountOffIcon from "@assets/icons/account-off-outline.svg";
 import alertIcon from "@assets/icons/alert-octagon-outline.svg";
 
@@ -42,7 +43,12 @@ export default function MembershipControl({ group, updateGroup }: Props) {
 
   const isAdmin = group.admin === user.id;
   if (isAdmin) {
-    return <p className="text-3xl font-bold text-yellow-400">★</p>;
+    return (
+      <div className="flex flex-wrap items-center gap-1 text-neutral-50 ">
+        <span className="text-lg">ADMIN</span>
+        <span className="text-3xl font-bold">★</span>
+      </div>
+    );
   }
 
   const isBanned = group.banned.includes(user.id);
@@ -57,24 +63,33 @@ export default function MembershipControl({ group, updateGroup }: Props) {
   }
 
   const isMember = group.members.includes(user.id);
+  const isMod = group.mods.includes(user.id);
+
+  const determineMemberIcon = () => {
+    if (isMod) {
+      return modIcon;
+    }
+    if (isMember) {
+      return accountIcon;
+    }
+    return accountOffIcon;
+  };
 
   return (
-    <>
+    <div className="flex flex-wrap items-center gap-1 text-neutral-50">
+      {isMod ? <span className="text-lg">MOD</span> : null}
       <button
         onClick={toggleMembership}
         title={isMember ? "Leave group" : "Join group"}
         type="button"
       >
-        <img
-          className="h-[24px] invert"
-          src={isMember ? accountIcon : accountOffIcon}
-        />
+        <img className="h-[24px] invert" src={determineMemberIcon()} />
       </button>
       {error ? (
         <div className="w-full">
           <ErrorMessage error={error} />
         </div>
       ) : null}
-    </>
+    </div>
   );
 }
