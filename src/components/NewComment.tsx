@@ -41,29 +41,29 @@ export default function NewComment({
     if (!text.valid) {
       setError("Comment text required");
     } else {
-    const result = await posts.createNewComment(groupId, postId, text.value);
-    if (result.status === 200) {
-      // success, reload the post info
-      getPost();
-      toggleUpdateComments();
-      setAttempted(false);
-      setText({
-        value: "",
-        valid: false,
-      });
-    } else {
-      // XXX
-      // need to parse error messages & provide feedback to user
-      console.error(result);
-      setError(result.message);
-    }
+      const result = await posts.createNewComment(groupId, postId, text.value);
+      if (result.status === 200) {
+        // success, reload the post info
+        getPost();
+        toggleUpdateComments();
+        setAttempted(false);
+        setText({
+          value: "",
+          valid: false,
+        });
+      } else {
+        // XXX
+        // need to parse error messages & provide feedback to user
+        console.error(result);
+        setError(result.message);
+      }
     }
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded bg-white shadow-md shadow-slate-400">
-        <h1 className="rounded-t bg-fuchsia-700 p-1 text-2xl text-neutral-100">
+      <div className="rounded border-2 border-fuchsia-700 bg-white shadow-md shadow-slate-400">
+        <h1 className="bg-fuchsia-700 p-1 text-2xl text-neutral-100">
           New Comment
         </h1>
         <div className="flex flex-col gap-4 p-1">

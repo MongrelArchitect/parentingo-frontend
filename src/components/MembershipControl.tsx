@@ -46,7 +46,7 @@ export default function MembershipControl({ group, updateGroup }: Props) {
     return (
       <div className="flex flex-wrap items-center gap-1 text-neutral-50 ">
         <span className="text-lg">ADMIN</span>
-        <span className="text-3xl font-bold">★</span>
+        <span className="text-2xl">★</span>
       </div>
     );
   }

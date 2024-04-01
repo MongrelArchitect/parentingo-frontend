@@ -89,8 +89,8 @@ export default function Login() {
 
   return (
     <div className="flex flex-col gap-4 p-2">
-      <div className="rounded bg-white shadow-md shadow-slate-400">
-        <h1 className="rounded-t bg-sky-600 p-1 text-2xl text-neutral-100">
+      <div className="rounded border-2 border-sky-600 bg-white shadow-md shadow-slate-400">
+        <h1 className="bg-sky-600 p-1 text-2xl text-neutral-100">
           Login
         </h1>
         <div className="flex flex-col gap-4 p-1">

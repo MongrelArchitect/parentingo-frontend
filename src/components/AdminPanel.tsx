@@ -68,8 +68,8 @@ export default function AdminPanel({
   }, [banned, members]);
 
   return (
-    <div className="rounded bg-white shadow-md shadow-slate-400">
-      <h1 className="rounded-t bg-orange-600 p-1 text-2xl capitalize text-neutral-100">
+    <div className="rounded border-2 border-orange-600 bg-white shadow-md shadow-slate-400">
+      <h1 className="bg-orange-600 p-1 text-2xl capitalize text-neutral-100">
         {userIsAdmin ? "Admin Panel" : "Mod Panel"}
       </h1>
       <div className="flex flex-col gap-2 p-1 text-lg">

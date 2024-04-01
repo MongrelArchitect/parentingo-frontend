@@ -36,8 +36,8 @@ export default function GroupSummary({ group, updateGroup }: Props) {
   }, []);
 
   return (
-    <li className="rounded bg-white shadow-md shadow-slate-400">
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-sky-600 p-1 text-xl">
+    <li className="border-2 border-sky-600 rounded bg-white shadow-md shadow-slate-400">
+      <div className="flex flex-wrap items-center justify-between gap-2 bg-sky-600 p-1 text-xl">
         <Link to={`/groups/${group.id}`}>
           <h2 className="capitalize text-neutral-100">{group.name}</h2>
         </Link>

@@ -16,9 +16,14 @@ interface Props {
   updateComments: () => void;
 }
 
-export default function CommentDetail({ comment, group, postId, updateComments }: Props) {
+export default function CommentDetail({
+  comment,
+  group,
+  postId,
+  updateComments,
+}: Props) {
   const { user } = useContext(UserContext);
-  
+
   if (!user) {
     return null;
   }
@@ -29,7 +34,8 @@ export default function CommentDetail({ comment, group, postId, updateComments }
 
   // these will determine if the "ban user" checkbox shows up in PostControl
   const eligibleForBan =
-    !group.banned.includes(comment.author) && group.members.includes(comment.author);
+    !group.banned.includes(comment.author) &&
+    group.members.includes(comment.author);
   const commentByAdmin = comment.author === group.admin;
 
   // these will determine what comments a mod can or cannot delete
@@ -47,8 +53,8 @@ export default function CommentDetail({ comment, group, postId, updateComments }
   };
 
   return (
-    <li className="rounded bg-white shadow-md shadow-slate-400">
-      <div className="rounded-t bg-fuchsia-700 p-1 text-xl text-neutral-100">
+    <li className="rounded border-2 border-fuchsia-700 bg-white shadow-md shadow-slate-400">
+      <div className="bg-fuchsia-700 p-1 text-xl text-neutral-100">
         <Username userId={comment.author} />
       </div>
       <div className="flex flex-col gap-4 p-1">

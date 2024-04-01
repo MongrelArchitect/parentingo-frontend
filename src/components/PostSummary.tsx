@@ -44,9 +44,9 @@ export default function PostSummary({ post }: Props) {
   };
 
   return (
-    <li className="rounded bg-white shadow-md shadow-slate-400">
+    <li className="rounded border-2 border-emerald-600 bg-white shadow-md shadow-slate-400">
       <Link
-        className="flex flex-wrap items-center justify-between gap-2 rounded-t bg-emerald-600 p-1 text-xl"
+        className="flex flex-wrap items-center justify-between gap-2 bg-emerald-600 p-1 text-xl"
         to={`/groups/${post.group}/posts/${post.id}`}
       >
         <h2 className="capitalize text-neutral-100">{he.decode(post.title)}</h2>

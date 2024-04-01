@@ -131,8 +131,8 @@ export default function PostDetail() {
       return <ErrorMessage error={error} />;
     }
     return (
-      <article className="rounded bg-white shadow-md shadow-slate-400">
-        <h1 className="rounded-t bg-emerald-600 p-1 text-2xl capitalize text-neutral-100">
+      <article className="rounded border-2 border-emerald-600 bg-white shadow-md shadow-slate-400">
+        <h1 className="bg-emerald-600 p-1 text-2xl capitalize text-neutral-100">
           {he.decode(post.title)}
         </h1>
         <div className="flex flex-col gap-4 p-1">
@@ -201,11 +201,7 @@ export default function PostDetail() {
         postId={postId}
         toggleUpdateComments={toggleUpdateComments}
       />
-      <Comments
-        group={group}
-        postId={postId}
-        updateComments={updateComments}
-      />
+      <Comments group={group} postId={postId} updateComments={updateComments} />
     </div>
   );
 }

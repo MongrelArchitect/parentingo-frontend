@@ -34,7 +34,7 @@ export default function GroupPosts({ groupId }: Props) {
   const displayPosts = () => {
     if (!groupPosts) {
       return (
-        <div className="rounded bg-white p-2 text-xl shadow-md shadow-slate-400">
+        <div className="rounded border-2 border-emerald-600 bg-white p-2 text-xl shadow-md shadow-slate-400">
           This group has no posts
         </div>
       );
