@@ -20,6 +20,7 @@ import PostDeleted from "@pages/PostDeleted";
 import PostDetail from "@pages/PostDetail";
 import Root from "@pages/Root";
 import SignUp from "@pages/SignUp";
+import UserDetail from "@pages/UserDetail";
 
 function getRoutesWithUser() {
   return createBrowserRouter([
@@ -59,6 +60,10 @@ function getRoutesWithUser() {
             {
               path: "groups/:groupId/posts/:postId",
               element: <PostDetail />,
+            },
+            {
+              path: "users/:userId",
+              element: <UserDetail />
             },
           ],
         },

@@ -1,12 +1,6 @@
 import api from "@configs/api";
-import Response from "@interfaces/Response";
 
-interface UserResponse extends Response {
-  user: null | {
-    username: string;
-    name: string;
-  };
-}
+import { UserResponse } from "@interfaces/Response";
 
 async function getUserInfo(userId: string) {
   try {

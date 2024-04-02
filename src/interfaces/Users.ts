@@ -8,3 +8,10 @@ export default interface UserInterface {
   name: string; // 255 chars max
   username: string; // unique, between 3-20 characters
 }
+
+export interface PublicUserInfo {
+  name: string;
+  username: string;
+  followers: string[];
+  following: string[];
+}

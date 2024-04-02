@@ -37,10 +37,16 @@ export default function Header() {
   }, [error]);
 
   return (
-    <header className="flex flex-wrap items-center justify-between bg-sky-900 p-2 text-lg text-neutral-100 sticky top-0 z-10">
+    <header className="sticky top-0 z-10 flex flex-wrap items-center justify-between bg-sky-900 p-2 text-lg text-neutral-100">
       <Link to="/">Parentingo</Link>
       <div className="flex flex-wrap items-center gap-2">
-        {user ? <div>{user.username}</div> : null}
+        {user ? (
+          <div>
+            <Link title="View your user profile" to={`/users/${user.id}`}>
+              {user.username}
+            </Link>
+          </div>
+        ) : null}
         {user ? <Button onClick={logOut}>Log out</Button> : null}
       </div>
     </header>

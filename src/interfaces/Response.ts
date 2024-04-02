@@ -1,4 +1,5 @@
 import GroupInterface from "./Groups";
+import { PublicUserInfo } from "./Users";
 
 export default interface Response {
   status: number;
@@ -13,5 +14,9 @@ export default interface Response {
 
 export interface GroupResponse extends Response {
   group?: GroupInterface | null;
+}
+
+export interface UserResponse extends Response {
+  user: null | PublicUserInfo;
 }
 
