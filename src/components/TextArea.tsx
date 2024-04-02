@@ -5,6 +5,7 @@ interface Props {
   id: string;
   labelText: string;
   onChange: (event: React.SyntheticEvent) => void;
+  placeholder?: string;
   required?: boolean;
   rows?: number;
   valid: boolean;
@@ -18,6 +19,7 @@ export default function TextArea({
   labelText,
   message,
   onChange,
+  placeholder,
   required,
   rows,
   valid,
@@ -31,6 +33,7 @@ export default function TextArea({
         id={id}
         maxLength={maxLength}
         onChange={onChange}
+        placeholder={placeholder}
         required={required}
         rows={rows}
         value={value}

@@ -1,5 +1,7 @@
 export default interface UserInterface {
   avatar?: string;
+  bio?: string;
+  created: Date;
   email: string; // unique, 255 chars max
   id: string;
   followers: string[];
@@ -10,6 +12,9 @@ export default interface UserInterface {
 }
 
 export interface PublicUserInfo {
+  avatar?: string;
+  bio?: string;
+  created: Date;
   name: string;
   username: string;
   followers: string[];

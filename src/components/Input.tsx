@@ -43,7 +43,7 @@ export default function Input({
     <div className="relative flex flex-col">
       <label htmlFor={id}>{labelText}</label>
       <input
-        className={`rounded border-2 ${attempted && !valid ? "border-red-600 focus:outline-red-600" : "border-sky-800 focus:outline-sky-800"} p-1 focus:outline focus:outline-2 ${attempted ? "invalid:border-red-600 invalid:focus:outline-red-600" : ""}`}
+        className={`rounded border-2 text-slate-900 ${attempted && !valid ? "border-red-600 focus:outline-red-600" : "border-sky-800 focus:outline-sky-800"} p-1 focus:outline focus:outline-2 ${attempted ? "invalid:border-red-600 invalid:focus:outline-red-600" : ""}`}
         id={id}
         maxLength={maxLength}
         minLength={minLength}
