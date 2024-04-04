@@ -60,6 +60,8 @@ export default function UserContextProvider({ children }: ContextProps) {
         case 200:
           console.log("User authenticated successfully");
           setUser({
+            bio: result.bio,
+            created: result.created,
             avatar: result.avatar || null,
             email: result.email,
             id: result.id,
@@ -76,7 +78,7 @@ export default function UserContextProvider({ children }: ContextProps) {
         default:
           console.log("UNEXPECTED RESPONSE");
           console.log(`status: ${response.status}`);
-          console.log(result);
+          console.error(result);
           break;
       }
     } catch (err) {

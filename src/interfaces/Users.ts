@@ -20,3 +20,22 @@ export interface PublicUserInfo {
   followers: string[];
   following: string[];
 }
+
+export interface UpdateFormInfo {
+  avatar: {
+    changed: boolean;
+    file: null | File;
+    valid: boolean;
+    value: string | undefined;
+  };
+  bio: {
+    changed: boolean;
+    valid: boolean;
+    value: string | undefined;
+  };
+  name: {
+    changed: boolean;
+    valid: boolean;
+    value: string;
+  };
+}

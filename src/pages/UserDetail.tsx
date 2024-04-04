@@ -40,7 +40,7 @@ export default function UserDetail() {
 
   useEffect(() => {
     getProfileInfo();
-  }, [userId, user]);
+  }, [editing, userId, user]);
 
   useTitle(profileInfo ? profileInfo.username : "");
 
@@ -55,15 +55,15 @@ export default function UserDetail() {
   };
 
   const displayProfile = (
-    <div className="rounded border-2 border-slate-600 bg-white text-lg shadow-md shadow-slate-400">
+    <div className="bg-text-lg rounded border-2 border-slate-600 bg-white shadow-md shadow-slate-400">
       <div className="flex flex-wrap justify-between gap-2 bg-slate-600 p-1 text-xl text-neutral-100">
         <span>{he.decode(profileInfo.username)}</span>
         <span className="italic">{he.decode(profileInfo.name)}</span>
       </div>
       <div className="flex flex-col gap-4 p-1">
-        <div className="flex flex-wrap gap-4 items-center">
+        <div className="flex flex-wrap items-center gap-4">
           <img
-            className="h-[80px]"
+            className="max-h-[120px] rounded-full"
             src={profileInfo.avatar ? profileInfo.avatar : defaultAvatarIcon}
           />
           <pre className="whitespace-pre-wrap font-sans text-lg">

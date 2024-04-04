@@ -12,8 +12,8 @@ import groups from "@util/groups";
 export default function AllGroups() {
   useTitle("All Groups");
 
-  const [error, setError] = useState<null | string>(null);
   const [allGroups, setAllGroups] = useState<null | GroupList>(null);
+  const [error, setError] = useState<null | string>(null);
 
   const getGroups = async () => {
     const result = await groups.getAllGroups();
