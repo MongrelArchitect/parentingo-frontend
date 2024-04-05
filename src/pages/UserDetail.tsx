@@ -54,6 +54,10 @@ export default function UserDetail() {
     setEditing(!editing);
   };
 
+  const avatarStyle = {
+    backgroundImage: `url("${profileInfo.avatar ? profileInfo.avatar : defaultAvatarIcon}")`,
+  };
+
   const displayProfile = (
     <div className="bg-text-lg rounded border-2 border-slate-600 bg-white shadow-md shadow-slate-400">
       <div className="flex flex-wrap justify-between gap-2 bg-slate-600 p-1 text-xl text-neutral-100">
@@ -61,10 +65,10 @@ export default function UserDetail() {
         <span className="italic">{he.decode(profileInfo.name)}</span>
       </div>
       <div className="flex flex-col gap-4 p-1">
-        <div className="flex flex-wrap items-center gap-4">
-          <img
-            className="max-h-[120px] rounded-full"
-            src={profileInfo.avatar ? profileInfo.avatar : defaultAvatarIcon}
+        <div className="flex flex-col flex-wrap items-center gap-4">
+          <div 
+            style={avatarStyle}
+            className={`w-full max-w-[320px] h-auto aspect-square rounded-full border-2 border-slate-900 bg-cover bg-center`}
           />
           <pre className="whitespace-pre-wrap font-sans text-lg">
             {profileInfo.bio

@@ -138,6 +138,10 @@ export default function EditUserInfo({ profileInfo, toggleEditing }: Props) {
     return `${file.name} - ${formatSize(file.size)}`;
   };
 
+  const avatarStyle = {
+    backgroundImage: `url("${formInfo.avatar.value ? formInfo.avatar.value : defaultAvatarIcon}")`,
+  };
+
   return (
     <div className="rounded border-2 border-orange-600 bg-white text-lg shadow-md shadow-slate-400">
       <div className="flex flex-wrap justify-between gap-2 bg-orange-600 p-1 text-xl text-neutral-100">
@@ -148,14 +152,11 @@ export default function EditUserInfo({ profileInfo, toggleEditing }: Props) {
         {loading ? <LoadingScreen /> : null}
         <Form>
           <div className="flex flex-col gap-1">
-            <img
-              className={`${attempted && !formInfo.avatar.valid ? "border-2 border-red-600" : ""} h-[120px] self-start rounded-full p-1`}
-              src={
-                formInfo.avatar.value
-                  ? formInfo.avatar.value
-                  : defaultAvatarIcon
-              }
-            />
+          <div 
+            style={avatarStyle}
+            className={`w-full max-w-[240px] h-auto aspect-square rounded-full border-2 ${attempted && !formInfo.avatar.valid ? "border-red-600" : "border-slate-900"} bg-cover bg-center`}
+          />
+
             <div className="text-sm">
               {formInfo.avatar.file
                 ? displayFileInfo(formInfo.avatar.file)
@@ -171,7 +172,7 @@ export default function EditUserInfo({ profileInfo, toggleEditing }: Props) {
           <FilePicker
             accept="image/*"
             id="avatar"
-            labelText={`${profileInfo.avatar ? "Update" : "Add"} profile image`}
+            labelText="Choose profile image"
             onChange={handleChange}
           />
           <Input
