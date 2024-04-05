@@ -19,6 +19,7 @@ interface ContextValue {
   attemptLogout: () => Promise<number>;
   attemptSignup: (formInfo: SignUpForm) => Promise<Response>;
   clearUser: () => void;
+  getCurrentUser: () => void;
   user: UserInterface | null;
 }
 
@@ -38,6 +39,7 @@ export const UserContext = createContext<ContextValue>({
       message: "Default message",
     };
   },
+  getCurrentUser: () => {},
   user: null,
   clearUser: () => {},
 });
@@ -204,7 +206,7 @@ export default function UserContextProvider({ children }: ContextProps) {
 
   return (
     <UserContext.Provider
-      value={{ attemptLogin, attemptLogout, attemptSignup, clearUser, user }}
+      value={{ attemptLogin, attemptLogout, attemptSignup, getCurrentUser, clearUser, user }}
     >
       {children}
     </UserContext.Provider>

@@ -2,8 +2,7 @@ import he from "he";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import defaultAvatarIcon from "@assets/icons/account-circle.svg";
-
+import Avatar from "@components/Avatar";
 import Button from "@components/Button";
 import EditUserInfo from "@components/EditUserInfo";
 import ErrorMessage from "@components/ErrorMessage";
@@ -54,10 +53,6 @@ export default function UserDetail() {
     setEditing(!editing);
   };
 
-  const avatarStyle = {
-    backgroundImage: `url("${profileInfo.avatar ? profileInfo.avatar : defaultAvatarIcon}")`,
-  };
-
   const displayProfile = (
     <div className="bg-text-lg rounded border-2 border-slate-600 bg-white shadow-md shadow-slate-400">
       <div className="flex flex-wrap justify-between gap-2 bg-slate-600 p-1 text-xl text-neutral-100">
@@ -66,10 +61,8 @@ export default function UserDetail() {
       </div>
       <div className="flex flex-col gap-4 p-1">
         <div className="flex flex-col flex-wrap items-center gap-4">
-          <div 
-            style={avatarStyle}
-            className={`w-full max-w-[320px] h-auto aspect-square rounded-full border-2 border-slate-900 bg-cover bg-center`}
-          />
+          <Avatar avatarURL={profileInfo.avatar} maxWidth={320} />
+
           <pre className="whitespace-pre-wrap font-sans text-lg">
             {profileInfo.bio
               ? he.decode(profileInfo.bio)

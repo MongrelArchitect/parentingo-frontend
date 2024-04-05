@@ -1,5 +1,5 @@
 import he from "he";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import Button from "./Button";
 import ErrorMessage from "./ErrorMessage";
@@ -10,6 +10,8 @@ import LoadingScreen from "./LoadingScreen";
 import TextArea from "./TextArea";
 
 import defaultAvatarIcon from "@assets/icons/account-circle.svg";
+
+import { UserContext } from "@contexts/Users";
 
 import { PublicUserInfo, UpdateFormInfo } from "@interfaces/Users";
 
@@ -97,15 +99,18 @@ export default function EditUserInfo({ profileInfo, toggleEditing }: Props) {
     toggleEditing();
   };
 
+  const { getCurrentUser } = useContext(UserContext);
+
   const submit = async () => {
     setAttempted(true);
-    setLoading(true);
     if (!formInfo.name.valid || !formInfo.bio.valid || !formInfo.avatar.valid) {
       setError("Invalid input(s) - check each field");
     } else {
+      setLoading(true);
       const result = await users.updateUserInfo(formInfo);
       if (result.status === 200) {
         toggleEditing();
+        getCurrentUser();
       } else {
         // XXX
         // need to parse error messages & provide feedback to user
@@ -113,7 +118,7 @@ export default function EditUserInfo({ profileInfo, toggleEditing }: Props) {
         setError(result.message);
       }
     }
-    setLoading(true);
+    setLoading(false);
   };
 
   const formatSize = (size: number) => {
@@ -152,10 +157,14 @@ export default function EditUserInfo({ profileInfo, toggleEditing }: Props) {
         {loading ? <LoadingScreen /> : null}
         <Form>
           <div className="flex flex-col gap-1">
-          <div 
-            style={avatarStyle}
-            className={`w-full max-w-[240px] h-auto aspect-square rounded-full border-2 ${attempted && !formInfo.avatar.valid ? "border-red-600" : "border-slate-900"} bg-cover bg-center`}
-          />
+            {/* 
+              not using our "Avatar" component here, in order to show the
+              preview image as it appears after cropping
+            */}
+            <div
+              style={avatarStyle}
+              className={`aspect-square h-auto w-full max-w-[240px] rounded-full border-2 ${attempted && !formInfo.avatar.valid ? "border-red-600" : "border-slate-900"} bg-cover bg-center`}
+            />
 
             <div className="text-sm">
               {formInfo.avatar.file

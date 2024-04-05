@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import Avatar from "./Avatar";
 import Button from "./Button";
 
 import { UserContext } from "@contexts/Users";
@@ -41,11 +42,16 @@ export default function Header() {
       <Link to="/">Parentingo</Link>
       <div className="flex flex-wrap items-center gap-2">
         {user ? (
-          <div>
-            <Link title="View your user profile" to={`/users/${user.id}`}>
-              {user.username}
+          <>
+            <Link
+              className="flex flex-wrap items-center gap-2"
+              title="View your user profile"
+              to={`/users/${user.id}`}
+            >
+              <Avatar avatarURL={user.avatar} maxWidth={48} />
+              <span>{user.username}</span>
             </Link>
-          </div>
+          </>
         ) : null}
         {user ? <Button onClick={logOut}>Log out</Button> : null}
       </div>
