@@ -1,13 +1,13 @@
 import he from "he";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import AdminPanel from "@components/AdminPanel";
 import ErrorMessage from "@components/ErrorMessage";
 import GroupPosts from "@components/GroupPosts";
 import MembershipControl from "@components/MembershipControl";
 import NewPost from "@components/NewPost";
-import Username from "@components/Username";
+import UserInfo from "@components/UserInfo";
 
 import { UserContext } from "@contexts/Users";
 
@@ -71,18 +71,32 @@ export default function GroupDetail() {
           <MembershipControl updateGroup={getGroupInfo} group={group} />
         </h1>
         <div className="flex flex-col gap-4 p-1">
-          <div className="flex flex-wrap justify-between gap-2 font-mono">
+          <div className="flex flex-wrap items-center justify-between gap-2 font-mono">
             <p>
               {group.members.length} member
               {group.members.length === 1 ? "" : "s"}
+              ,
             </p>
             <p>
               {postCount} post
               {postCount === 1 ? "" : "s"}
             </p>
-            <div className="flex flex-wrap gap-1">
-              <span>admin:</span>
-              <Username userId={group.admin} />
+            <div className="relative flex flex-1 flex-wrap items-center gap-1">
+              <Link
+                className="flex-1 text-sky-900"
+                title="View admin's profile"
+                to={`/users/${group.admin}`}
+              >
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  <UserInfo
+                    avatar
+                    avatarMaxWidth={48}
+                    username
+                    userId={group.admin}
+                  />
+                </div>
+              </Link>
+              <span className="absolute right-[56px] top-0 text-xs">admin</span>
             </div>
           </div>
           <pre className="whitespace-pre-wrap font-sans text-lg">

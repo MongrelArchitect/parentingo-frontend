@@ -40,18 +40,16 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-10 flex flex-wrap items-center justify-between bg-sky-900 p-2 text-lg text-neutral-100">
       <Link to="/">Parentingo</Link>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="justify-end flex-1 flex flex-wrap items-center gap-2">
         {user ? (
-          <>
-            <Link
-              className="flex flex-wrap items-center gap-2"
-              title="View your user profile"
-              to={`/users/${user.id}`}
-            >
-              <Avatar avatarURL={user.avatar} maxWidth={48} />
-              <span>{user.username}</span>
-            </Link>
-          </>
+          <Link
+            className="flex flex-1 flex-wrap justify-end items-center gap-2"
+            title="View your user profile"
+            to={`/users/${user.id}`}
+          >
+            <Avatar avatarURL={user.avatar} maxWidth={48} />
+            <span>{user.username}</span>
+          </Link>
         ) : null}
         {user ? <Button onClick={logOut}>Log out</Button> : null}
       </div>

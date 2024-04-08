@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import ErrorMessage from "./ErrorMessage";
-import Username from "./Username";
+import UserInfo from "./UserInfo";
 
 import PostInterface from "@interfaces/Posts";
 
@@ -52,9 +52,21 @@ export default function PostSummary({ post }: Props) {
         <h2 className="capitalize text-neutral-100">{he.decode(post.title)}</h2>
       </Link>
       <div className="flex flex-col gap-4 p-1">
-        <div className="flex flex-wrap justify-between gap-1 font-mono">
-          <Username userId={post.author} />
-          <p>{new Date(post.timestamp).toLocaleString()}</p>
+        <div className="flex flex-wrap items-center justify-between gap-1 font-mono">
+          <Link
+            className="flex flex-1 flex-wrap items-center gap-2 text-sky-900"
+            title="View post author's profile"
+            to={`/users/${post.author}`}
+          >
+            <UserInfo
+              avatar
+              avatarMaxWidth={40}
+              flipped
+              userId={post.author}
+              username
+            />
+          </Link>
+          <div>{new Date(post.timestamp).toLocaleString()}</div>
         </div>
         <pre className="whitespace-pre-wrap font-sans text-lg">
           {getContentPreview()}

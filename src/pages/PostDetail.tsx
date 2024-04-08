@@ -1,12 +1,12 @@
 import he from "he";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Comments from "@components/Comments";
 import ErrorMessage from "@components/ErrorMessage";
 import NewComment from "@components/NewComment";
 import PostControl from "@components/PostControl";
-import Username from "@components/Username";
+import UserInfo from "@components/UserInfo";
 
 import { UserContext } from "@contexts/Users";
 
@@ -136,9 +136,23 @@ export default function PostDetail() {
           {he.decode(post.title)}
         </h1>
         <div className="flex flex-col gap-4 p-1">
-          <div className="flex flex-wrap justify-between gap-1 font-mono">
-            <Username userId={post.author} />
-            <p>{new Date(post.timestamp).toLocaleString()}</p>
+
+        <div className="flex flex-wrap items-center justify-between gap-1 font-mono">
+          <Link
+            className="flex flex-1 flex-wrap items-center gap-2 text-sky-900"
+            title="View post author's profile"
+            to={`/users/${post.author}`}
+          >
+            <UserInfo
+              avatar
+              avatarMaxWidth={40}
+              flipped
+              userId={post.author}
+              username
+            />
+          </Link>
+          <div>{new Date(post.timestamp).toLocaleString()}</div>
+
           </div>
 
           {showPostControl() ? (

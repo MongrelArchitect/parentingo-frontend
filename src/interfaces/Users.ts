@@ -15,6 +15,7 @@ export interface PublicUserInfo {
   avatar?: string;
   bio?: string;
   created: Date;
+  id: string;
   name: string;
   username: string;
   followers: string[];

@@ -1,8 +1,9 @@
 import he from "he";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 import CommentControl from "./CommentControl";
-import Username from "./Username";
+import UserInfo from "./UserInfo";
 
 import { UserContext } from "@contexts/Users";
 
@@ -55,7 +56,19 @@ export default function CommentDetail({
   return (
     <li className="rounded border-2 border-fuchsia-700 bg-white shadow-md shadow-slate-400">
       <div className="bg-fuchsia-700 p-1 text-xl text-neutral-100">
-        <Username userId={comment.author} />
+          <Link
+            className="flex flex-1 flex-wrap items-center gap-2"
+            title="View post author's profile"
+            to={`/users/${comment.author}`}
+          >
+            <UserInfo
+              avatar
+              avatarMaxWidth={40}
+              flipped
+              userId={comment.author}
+              username
+            />
+          </Link>
       </div>
       <div className="flex flex-col gap-4 p-1">
         {showCommentControl() ? (

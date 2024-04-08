@@ -13,11 +13,16 @@ export default function Avatar({ avatarURL, invalid, maxWidth }: Props) {
   };
 
   return (
-    <img
-      alt=""
-      className="rounded-full border-2 h-auto w-full"
-      src={avatarURL || defaultAvatarIcon}
+    <div
       style={avatarStyle}
-    />
+      className="relative flex aspect-square h-auto w-full items-center justify-center rounded-full border-2 bg-white"
+    >
+      <img
+        alt=""
+        className="absolute left-0 top-0 h-auto w-full rounded-full"
+        src={avatarURL || defaultAvatarIcon}
+        style={avatarStyle}
+      />
+    </div>
   );
 }
