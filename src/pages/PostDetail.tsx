@@ -136,23 +136,21 @@ export default function PostDetail() {
           {he.decode(post.title)}
         </h1>
         <div className="flex flex-col gap-4 p-1">
-
-        <div className="flex flex-wrap items-center justify-between gap-1 font-mono">
-          <Link
-            className="flex flex-1 flex-wrap items-center gap-2 text-sky-900"
-            title="View post author's profile"
-            to={`/users/${post.author}`}
-          >
-            <UserInfo
-              avatar
-              avatarMaxWidth={40}
-              flipped
-              userId={post.author}
-              username
-            />
-          </Link>
-          <div>{new Date(post.timestamp).toLocaleString()}</div>
-
+          <div className="flex flex-wrap items-center justify-between gap-1 font-mono">
+            <Link
+              className="flex flex-1 flex-wrap items-center gap-2 text-sky-900"
+              title="View post author's profile"
+              to={`/users/${post.author}`}
+            >
+              <UserInfo
+                avatar
+                avatarMaxWidth={40}
+                flipped
+                userId={post.author}
+                username
+              />
+            </Link>
+            <div>{new Date(post.timestamp).toLocaleString()}</div>
           </div>
 
           {showPostControl() ? (
@@ -177,7 +175,9 @@ export default function PostDetail() {
             <p className="flex gap-1">
               <button
                 className="text-red-600"
-                onClick={toggleLike}
+                onClick={
+                  group.members.includes(user.id) ? toggleLike : () => {}
+                }
                 title={post.likes.includes(user.id) ? "unlike" : "like"}
                 type="button"
               >
@@ -209,12 +209,14 @@ export default function PostDetail() {
   return (
     <div className="flex flex-col gap-4">
       {displayPost()}
-      <NewComment
-        getPost={getPost}
-        groupId={groupId}
-        postId={postId}
-        toggleUpdateComments={toggleUpdateComments}
-      />
+      {group.members.includes(user.id) ? (
+        <NewComment
+          getPost={getPost}
+          groupId={groupId}
+          postId={postId}
+          toggleUpdateComments={toggleUpdateComments}
+        />
+      ) : null}
       <Comments group={group} postId={postId} updateComments={updateComments} />
     </div>
   );

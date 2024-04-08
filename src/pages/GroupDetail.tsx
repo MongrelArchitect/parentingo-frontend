@@ -74,8 +74,7 @@ export default function GroupDetail() {
           <div className="flex flex-wrap items-center justify-between gap-2 font-mono">
             <p>
               {group.members.length} member
-              {group.members.length === 1 ? "" : "s"}
-              ,
+              {group.members.length === 1 ? "" : "s"},
             </p>
             <p>
               {postCount} post
@@ -120,7 +119,9 @@ export default function GroupDetail() {
           updateGroupInfo={getGroupInfo}
         />
       ) : null}
-      {group ? <NewPost groupId={group.id} /> : null}
+      {group && group.members.includes(user.id) ? (
+        <NewPost groupId={group.id} />
+      ) : null}
       {group ? <GroupPosts groupId={group.id} /> : null}
       <ErrorMessage error={error} />
     </div>
