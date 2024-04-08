@@ -68,9 +68,21 @@ export default function PostSummary({ post }: Props) {
           </Link>
           <div>{new Date(post.timestamp).toLocaleString()}</div>
         </div>
+
+          <div className="flex flex-col items-start gap-4">
+            {post.image ? (
+              <img
+                alt=""
+                loading="lazy"
+                className="max-h-[320px] h-auto min-h-[200px] min-w-[200px] border-2 border-slate-900"
+                src={post.image}
+              />
+            ) : null}
         <pre className="whitespace-pre-wrap font-sans text-lg">
           {getContentPreview()}
         </pre>
+          </div>
+
         <div className="flex justify-between gap-2 text-xl">
           <p className="flex gap-1">
             <span className="text-red-600" title="likes">

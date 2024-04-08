@@ -20,7 +20,7 @@ export default function FilePicker({ accept, id, labelText, onChange }: Props) {
     <>
       <input accept={accept} hidden id={id} onChange={onChange} type="file" />
       <label
-        className="cursor-pointer select-none rounded bg-rose-800 p-1 text-neutral-100 hover:bg-rose-900 hover:outline hover:outline-2 hover:outline-slate-800 focus:bg-rose-900 focus:outline focus:outline-2 focus:outline-slate-800"
+        className="cursor-pointer select-none rounded bg-rose-800 p-1 text-center text-neutral-100 hover:bg-rose-900 hover:outline hover:outline-2 hover:outline-slate-800 focus:bg-rose-900 focus:outline focus:outline-2 focus:outline-slate-800"
         htmlFor={id}
         onKeyDown={handleKeyDown}
         role="button"

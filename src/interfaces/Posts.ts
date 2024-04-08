@@ -12,3 +12,19 @@ export default interface PostInterface {
 export interface PostList {
   [key: string]: PostInterface;
 }
+
+export interface NewPostForm {
+  image: {
+    file: null | File;
+    valid: boolean;
+    value: string | null;
+  };
+  text: {
+    valid: boolean;
+    value: string;
+  };
+  title: {
+    valid: boolean;
+    value: string;
+  };
+}

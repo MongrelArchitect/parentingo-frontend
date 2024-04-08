@@ -32,20 +32,20 @@ interface PostListResponse extends Response {
 
 async function createNewPost(
   groupId: string,
-  formInfo: { title: string; text: string },
+  formInfo: { image: File | null; title: string; text: string; },
 ) {
-  // fetch will serialize this to x-www-form-urlencoded (what server expects)
-  const formBody = new URLSearchParams();
-  formBody.append("title", formInfo.title);
-  formBody.append("text", formInfo.text);
+  // construct our multipart/form-data
+  const formData = new FormData();
+  formData.append("title", formInfo.title);
+  formData.append("text", formInfo.text);
+  if (formInfo.image) {
+    formData.append("image", formInfo.image);
+  }
 
   try {
     const response = await fetch(`${api.url}/groups/${groupId}/posts`, {
-      body: formBody,
+      body: formData,
       credentials: "include",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
       method: "POST",
       mode: "cors",
     });

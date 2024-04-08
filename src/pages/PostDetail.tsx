@@ -166,10 +166,20 @@ export default function PostDetail() {
               userIsAdmin={userIsAdmin}
             />
           ) : null}
+          <div className="flex flex-col items-start gap-4">
+            {post.image ? (
+              <img
+                alt=""
+                loading="lazy"
+                className="h-auto min-h-[200px] min-w-[200px] border-2 border-slate-900"
+                src={post.image}
+              />
+            ) : null}
 
-          <pre className="whitespace-pre-wrap font-sans text-lg">
-            {he.decode(post.text)}
-          </pre>
+            <pre className="whitespace-pre-wrap font-sans text-lg">
+              {he.decode(post.text)}
+            </pre>
+          </div>
 
           <div className="flex justify-between gap-2 text-xl">
             <p className="flex gap-1">
