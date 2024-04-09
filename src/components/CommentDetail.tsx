@@ -58,7 +58,7 @@ export default function CommentDetail({
       <div className="bg-fuchsia-700 p-1 text-xl text-neutral-100">
           <Link
             className="flex flex-1 flex-wrap items-center gap-2"
-            title="View post author's profile"
+            title="View comment author's profile"
             to={`/users/${comment.author}`}
           >
             <UserInfo

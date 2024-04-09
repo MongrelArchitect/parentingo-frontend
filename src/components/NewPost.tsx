@@ -9,6 +9,7 @@ import Input from "./Input";
 import LoadingScreen from "./LoadingScreen";
 import TextArea from "./TextArea";
 
+import chevronIcon from "@assets/icons/chevron-down.svg";
 import noFileIcon from "@assets/icons/file-hidden.svg";
 
 import { NewPostForm } from "@interfaces/Posts";
@@ -33,6 +34,7 @@ export default function NewPost({ groupId }: Props) {
   };
   const [formInfo, setFormInfo] = useState(defaultFormInfo);
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const checkImageValidity = (file: File) => {
     return file.type.split("/")[0] === "image" && file.size <= 10000000;
@@ -175,13 +177,34 @@ export default function NewPost({ groupId }: Props) {
     });
   };
 
+  const toggleForm = () => {
+    setVisible(!visible);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded border-2 border-emerald-600 bg-white shadow-md shadow-slate-400">
-        <h1 className="bg-emerald-600 p-1 text-2xl text-neutral-100">
-          New Post
-        </h1>
-        <div className="flex flex-col gap-4 p-1">
+        <button
+          aria-controls="post-form"
+          aria-expanded={visible ? "true" : "false"}
+          id="form-button"
+          onClick={toggleForm}
+          title={`${visible ? "Hide" : "Show"} new post form`}
+          type="button"
+          className="flex w-full flex-wrap justify-between gap-2 bg-emerald-600 p-1"
+        >
+          <h1 className="text-2xl text-neutral-100">Create New Post</h1>
+          <img
+            alt=""
+            className={`h-[32px] invert transition-transform ${visible ? "rotate-180" : ""}`}
+            src={chevronIcon}
+          />
+        </button>
+        <div
+          aria-labelledby="form-button"
+          className={`${visible ? "flex" : "hidden"} flex-col gap-4 p-1`}
+          id="post-form"
+        >
           {loading ? <LoadingScreen /> : null}
           <Form>
             <Input
