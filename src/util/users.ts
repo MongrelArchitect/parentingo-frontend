@@ -133,7 +133,7 @@ async function unfollowUser(userId: string) {
       status: response.status,
       message: responseBody.message,
     };
-    // this happens with a 500 response, either from a problem following the
+    // this happens with a 500 response, either from a problem unfollowing the
     // user or for some other unforseen server issue
     if (responseBody.error) {
       followResponse.error = responseBody.error;

@@ -9,6 +9,8 @@ import Avatar from "@components/Avatar";
 import Button from "@components/Button";
 import EditUserInfo from "@components/EditUserInfo";
 import ErrorMessage from "@components/ErrorMessage";
+import Followers from "@components/Followers";
+import Following from "@components/Following";
 
 import { UserContext } from "@contexts/Users";
 
@@ -27,6 +29,9 @@ export default function UserDetail() {
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState<null | string>(null);
   const [profileInfo, setProfileInfo] = useState<null | PublicUserInfo>(null);
+  const [viewing, setViewing] = useState<"profile" | "followers" | "following">(
+    "profile",
+  );
 
   const getProfileInfo = async () => {
     if (userId) {
@@ -42,6 +47,7 @@ export default function UserDetail() {
 
   useEffect(() => {
     getProfileInfo();
+    setViewing("profile");
   }, [editing, userId, user]);
 
   useTitle(profileInfo ? profileInfo.username : "");
@@ -69,12 +75,87 @@ export default function UserDetail() {
     }
   };
 
+  const showFollowers = () => {
+    setViewing("followers");
+  };
+
+  const showFollowing = () => {
+    setViewing("following");
+  };
+
+  const showProfile = () => {
+    setViewing("profile");
+  };
+
+  const chooseView = () => {
+    if (viewing === "followers") {
+      return (
+        <>
+          <button
+            className="font-mono text-sky-900 underline"
+            onClick={showProfile}
+            type="button"
+          >
+            Back to profile
+          </button>
+          <Followers
+            followers={profileInfo.followers}
+            username={profileInfo.username}
+          />
+        </>
+      );
+    }
+    if (viewing === "following") {
+      return (
+        <>
+          <button
+            className="font-mono text-sky-900 underline"
+            onClick={showProfile}
+            type="button"
+          >
+            Back to profile
+          </button>
+          <Following
+            following={profileInfo.following}
+            username={profileInfo.username}
+          />
+        </>
+      );
+    }
+    return (
+      <>
+        <div className="flex flex-wrap justify-between gap-2 font-mono text-sky-900 underline">
+          <button onClick={showFollowers} type="button">
+            {profileInfo.followers.length} follower
+            {profileInfo.followers.length === 1 ? "" : "s"}
+          </button>
+          <button onClick={showFollowing} type="button">
+            {profileInfo.following.length} following
+          </button>
+        </div>
+        <div className="flex flex-col flex-wrap items-center gap-4">
+          <Avatar avatarURL={profileInfo.avatar} maxWidth={320} />
+
+          <pre className="whitespace-pre-wrap font-sans text-lg">
+            {profileInfo.bio
+              ? he.decode(profileInfo.bio)
+              : `User since ${new Date(profileInfo.created).toLocaleDateString()}`}
+          </pre>
+        </div>
+        {ownProfile ? (
+          <Button onClick={toggleEditing}>Edit profile</Button>
+        ) : null}
+        <ErrorMessage error={error} />
+      </>
+    );
+  };
+
   const displayProfile = (
     <div className="bg-text-lg rounded border-2 border-slate-600 bg-white shadow-md shadow-slate-400">
       <div className="flex flex-wrap justify-between gap-2 bg-slate-600 p-1 text-xl text-neutral-100">
         <div className="flex flex-wrap gap-2">
           <span>{he.decode(profileInfo.username)}</span>
-          <span>
+          {ownProfile ? null : (
             <button
               onClick={toggleFollow}
               title={`${profileInfo.followers.includes(user.id) ? "Unfollow" : "Follow"} ${profileInfo.username}`}
@@ -90,32 +171,11 @@ export default function UserDetail() {
                 }
               />
             </button>
-          </span>
+          )}
         </div>
         <span className="italic">{he.decode(profileInfo.name)}</span>
       </div>
-      <div className="flex flex-col gap-4 p-1">
-        <div className="flex flex-wrap justify-between gap-2 font-mono text-sky-900 underline">
-          <span>
-            {profileInfo.followers.length} follower
-            {profileInfo.followers.length === 1 ? "" : "s"}
-          </span>
-          <span>{profileInfo.following.length} following</span>
-        </div>
-        <div className="flex flex-col flex-wrap items-center gap-4">
-          <Avatar avatarURL={profileInfo.avatar} maxWidth={320} />
-
-          <pre className="whitespace-pre-wrap font-sans text-lg">
-            {profileInfo.bio
-              ? he.decode(profileInfo.bio)
-              : `User since ${new Date(profileInfo.created).toLocaleDateString()}`}
-          </pre>
-        </div>
-        {ownProfile ? (
-          <Button onClick={toggleEditing}>Edit profile</Button>
-        ) : null}
-        <ErrorMessage error={error} />
-      </div>
+      <div className="flex flex-col gap-4 p-1">{chooseView()}</div>
     </div>
   );
 
