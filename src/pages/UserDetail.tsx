@@ -2,6 +2,9 @@ import he from "he";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import followingIcon from "@assets/icons/account-multiple.svg";
+import notFollowingIcon from "@assets/icons/account-multiple-outline.svg";
+
 import Avatar from "@components/Avatar";
 import Button from "@components/Button";
 import EditUserInfo from "@components/EditUserInfo";
@@ -53,13 +56,52 @@ export default function UserDetail() {
     setEditing(!editing);
   };
 
+  const toggleFollow = async () => {
+    const following = profileInfo.followers.includes(authUser.id);
+    const response = following
+      ? await users.unfollowUser(userId)
+      : await users.followUser(userId);
+    if (response.status === 200) {
+      getProfileInfo();
+      setError(null);
+    } else {
+      setError(response.message);
+    }
+  };
+
   const displayProfile = (
     <div className="bg-text-lg rounded border-2 border-slate-600 bg-white shadow-md shadow-slate-400">
       <div className="flex flex-wrap justify-between gap-2 bg-slate-600 p-1 text-xl text-neutral-100">
-        <span>{he.decode(profileInfo.username)}</span>
+        <div className="flex flex-wrap gap-2">
+          <span>{he.decode(profileInfo.username)}</span>
+          <span>
+            <button
+              onClick={toggleFollow}
+              title={`${profileInfo.followers.includes(user.id) ? "Unfollow" : "Follow"} ${profileInfo.username}`}
+              type="button"
+            >
+              <img
+                alt=""
+                className="h-[32px] invert"
+                src={
+                  profileInfo.followers.includes(user.id)
+                    ? followingIcon
+                    : notFollowingIcon
+                }
+              />
+            </button>
+          </span>
+        </div>
         <span className="italic">{he.decode(profileInfo.name)}</span>
       </div>
       <div className="flex flex-col gap-4 p-1">
+        <div className="flex flex-wrap justify-between gap-2 font-mono text-sky-900 underline">
+          <span>
+            {profileInfo.followers.length} follower
+            {profileInfo.followers.length === 1 ? "" : "s"}
+          </span>
+          <span>{profileInfo.following.length} following</span>
+        </div>
         <div className="flex flex-col flex-wrap items-center gap-4">
           <Avatar avatarURL={profileInfo.avatar} maxWidth={320} />
 
