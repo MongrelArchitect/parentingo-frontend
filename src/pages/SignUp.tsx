@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Button from "@components/Button";
 import ErrorMessage from "@components/ErrorMessage";
-import Input from "@components/Input";
 import Form from "@components/Form";
+import Input from "@components/Input";
+import LoadingScreen from "@components/LoadingScreen";
 
 import { UserContext } from "@contexts/Users";
 
@@ -52,6 +53,7 @@ export default function SignUp() {
   };
 
   const [formInfo, setFormInfo] = useState(defaultFormInfo);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event: React.SyntheticEvent) => {
     setError(null);
@@ -270,6 +272,7 @@ export default function SignUp() {
     if (!checkAllValid()) {
       setError("Invalid input(s) - check each field");
     } else {
+      setLoading(true);
       const result = await attemptSignup({
         username: formInfo.username.value,
         password: formInfo.password.value,
@@ -277,9 +280,6 @@ export default function SignUp() {
         name: formInfo.name.value,
       });
       if (result.status === 201) {
-        // XXX TODO
-        // we get a 404 when signing up...why?
-        // success, redirect to landing page
         navigate("/");
       } else if (result.status === 400) {
         const alreadyTaken = checkAlreadyTaken(result);
@@ -296,13 +296,15 @@ export default function SignUp() {
         setError(result.message);
       }
     }
+    setLoading(false);
   };
 
   return (
     <div className="flex flex-col gap-4 p-2">
       <div className="rounded border-2 border-sky-600 bg-white shadow-md shadow-slate-400">
         <h1 className="bg-sky-600 p-1 text-2xl text-neutral-100">Sign up</h1>
-        <div className="flex flex-col gap-4 p-1">
+        <div className="flex flex-col gap-4 p-1 relative">
+          {loading ? <LoadingScreen /> : null}
           <Form>
             <Input
               attempted={attempted}

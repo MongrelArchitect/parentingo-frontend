@@ -202,7 +202,7 @@ export default function NewPost({ groupId }: Props) {
         </button>
         <div
           aria-labelledby="form-button"
-          className={`${visible ? "flex" : "hidden"} flex-col gap-4 p-1`}
+          className={`${visible ? "flex" : "hidden"} relative flex-col gap-4 p-1`}
           id="post-form"
         >
           {loading ? <LoadingScreen /> : null}

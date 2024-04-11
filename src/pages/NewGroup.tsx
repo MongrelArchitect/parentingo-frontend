@@ -5,6 +5,7 @@ import Button from "@components/Button";
 import ErrorMessage from "@components/ErrorMessage";
 import Form from "@components/Form";
 import Input from "@components/Input";
+import LoadingScreen from "@components/LoadingScreen";
 import TextArea from "@components/TextArea";
 
 import useTitle from "@hooks/useTitle";
@@ -18,6 +19,7 @@ export default function NewGroup() {
 
   const [attempted, setAttempted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const defaultNameMessage = "Name required, 255 characters max";
   const [nameMessage, setNameMessage] = useState(defaultNameMessage);
 
@@ -103,6 +105,7 @@ export default function NewGroup() {
     if (!formInfo.name.valid || !formInfo.description.valid) {
       setError("Invalid input(s) - check each field");
     } else {
+      setLoading(true);
       const result = await groups.attemptNewGroup({
         name: formInfo.name.value,
         description: formInfo.description.value,
@@ -127,13 +130,15 @@ export default function NewGroup() {
         setError(result.message);
       }
     }
+      setLoading(false);
   };
 
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded border-2 border-sky-600 bg-white shadow-md shadow-slate-400">
         <h1 className="bg-sky-600 p-1 text-2xl text-neutral-100">New Group</h1>
-        <div className="flex flex-col gap-4 p-1">
+        <div className="relative flex flex-col gap-4 p-1">
+          {loading ? <LoadingScreen /> : null}
           <Form>
             <Input
               attempted={attempted}
