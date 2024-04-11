@@ -1,7 +1,7 @@
 import api from "@configs/api";
-import Response from "@interfaces/Response";
+import Response, { PostListResponse } from "@interfaces/Response";
 import { CommentList } from "@interfaces/Comments";
-import PostInterface, { PostList } from "@interfaces/Posts";
+import PostInterface from "@interfaces/Posts";
 
 interface CommentCountResponse extends Response {
   count: number;
@@ -26,13 +26,9 @@ interface PostResponse extends Response {
   post: null | PostInterface;
 }
 
-interface PostListResponse extends Response {
-  posts: null | PostList;
-}
-
 async function createNewPost(
   groupId: string,
-  formInfo: { image: File | null; title: string; text: string; },
+  formInfo: { image: File | null; title: string; text: string },
 ) {
   // construct our multipart/form-data
   const formData = new FormData();
@@ -135,7 +131,11 @@ async function createNewComment(groupId: string, postId: string, text: string) {
   }
 }
 
-async function deleteComment(groupId: string, postId: string, commentId: string,) {
+async function deleteComment(
+  groupId: string,
+  postId: string,
+  commentId: string,
+) {
   try {
     const response = await fetch(
       `${api.url}/groups/${groupId}/posts/${postId}/comments/${commentId}`,
@@ -246,9 +246,24 @@ async function getCommentCount(groupId: string, postId: string) {
   }
 }
 
-async function getGroupPosts(groupId: string) {
+async function getGroupPosts(
+  groupId: string,
+  options?: { limit?: number; skip?: number; sort?: string },
+) {
   try {
-    const response = await fetch(`${api.url}/groups/${groupId}/posts`, {
+    const url = new URL(`${api.url}/groups/${groupId}/posts`);
+    if (options) {
+      if (options.limit) {
+        url.searchParams.append("limit", options.limit.toString());
+      }
+      if (options.skip) {
+        url.searchParams.append("skip", options.skip.toString());
+      }
+      if (options.sort) {
+        url.searchParams.append("sort", options.sort.toString());
+      }
+    }
+    const response = await fetch(url, {
       credentials: "include",
       method: "GET",
       mode: "cors",
@@ -327,14 +342,11 @@ async function getPostComments(groupId: string, postId: string) {
 
 async function getPostCount(groupId: string) {
   try {
-    const response = await fetch(
-      `${api.url}/groups/${groupId}/posts/count`,
-      {
-        credentials: "include",
-        method: "GET",
-        mode: "cors",
-      },
-    );
+    const response = await fetch(`${api.url}/groups/${groupId}/posts/count`, {
+      credentials: "include",
+      method: "GET",
+      mode: "cors",
+    });
     const responseBody = await response.json();
     const commentsResponse: CountResponse = {
       status: response.status,

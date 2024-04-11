@@ -39,7 +39,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-10 flex flex-wrap items-center justify-between bg-sky-900 p-2 text-lg text-neutral-100">
-      <Link to="/">Parentingo</Link>
+      <Link title="View your landing page feed" to="/">Parentingo</Link>
       <div className="justify-end flex-1 flex flex-wrap items-center gap-2">
         {user ? (
           <Link
