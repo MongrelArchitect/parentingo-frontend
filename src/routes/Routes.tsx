@@ -6,6 +6,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // contexts
 import { UserContext } from "@contexts/Users";
 
+// components
+import Redirect from "@components/Redirect";
+
 // page module imports
 import AllGroups from "@pages/AllGroups";
 import Dashboard from "@pages/Dashboard";
@@ -66,6 +69,14 @@ function getRoutesWithUser() {
               element: <UserDetail />
             },
           ],
+        },
+        {
+          path: "/login",
+          element: <Redirect path="/"/>,
+        },
+        {
+          path: "/signup",
+          element: <Redirect path="/"/>,
         },
         {
           path: "*",
