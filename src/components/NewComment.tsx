@@ -42,7 +42,7 @@ export default function NewComment({
       setError("Comment text required");
     } else {
       const result = await posts.createNewComment(groupId, postId, text.value);
-      if (result.status === 200) {
+      if (result.status === 201) {
         // success, reload the post info
         getPost();
         toggleUpdateComments();
