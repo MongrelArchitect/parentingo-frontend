@@ -17,7 +17,7 @@ export default function AllGroups() {
 
   const getGroups = async () => {
     const result = await groups.getAllGroups();
-    if (result.status === 200 && result.groups) {
+    if (result.status === 200) {
       setAllGroups(result.groups);
     } else {
       // XXX
@@ -33,7 +33,7 @@ export default function AllGroups() {
 
   const displayGroups = () => {
     if (!allGroups) {
-      return <p>No groups found</p>;
+      return <p className="text-xl">No groups found</p>;
     }
     // sort alphabetically by name
     const groupIds = Object.keys(allGroups).sort((a, b) => {

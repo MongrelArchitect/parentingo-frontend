@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import BannedControls from "./BannedControls";
+import DeleteGroup from "./DeleteGroup";
 import ErrorMessage from "./ErrorMessage";
 import MemberControls from "./MemberControls";
 import ModControls from "./ModControls";
@@ -97,6 +98,7 @@ export default function AdminPanel({
             updateGroupInfo={updateGroupInfo}
           />
         ) : null}
+        {userIsAdmin ? <DeleteGroup groupId={group.id} /> : null}
       </div>
 
       <ErrorMessage error={error} />

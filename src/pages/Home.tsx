@@ -103,6 +103,10 @@ export default function Home() {
     }
 
     const groupIds = Object.keys(recentGroupPosts);
+    if (!groupIds.length) {
+      return <div>No posts available</div>;
+    }
+
     return groupIds.map((groupId) => {
       const groupPosts = recentGroupPosts[groupId];
       const postIds = Object.keys(groupPosts);
@@ -150,10 +154,14 @@ export default function Home() {
               />
             </Link>
           </h3>
-          {postIds.map((postId) => {
-            const post = userPosts[postId];
-            return <PostSummary key={postId} post={post} />;
-          })}
+          {postIds.length ? (
+            postIds.map((postId) => {
+              const post = userPosts[postId];
+              return <PostSummary key={postId} post={post} />;
+            })
+          ) : (
+            <div>No posts available</div>
+          )}
         </ul>
       );
     });

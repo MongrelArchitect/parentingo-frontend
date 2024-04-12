@@ -99,6 +99,40 @@ async function banUser(groupId: string, userId: string) {
   }
 }
 
+async function deleteGroup(groupId: string) {
+  try {
+    const response = await fetch(
+      `${api.url}/groups/${groupId}/`,
+      {
+        credentials: "include",
+        method: "DELETE",
+        mode: "cors",
+      },
+    );
+    const responseBody = await response.json();
+    const result: Response = {
+      status: response.status,
+      message: responseBody.message,
+    };
+    // this happens with a 500 response from the server
+    if (responseBody.error) {
+      result.error = responseBody.error;
+    }
+    return result;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+    };
+  }
+}
+
 async function demoteMod(groupId: string, userId: string) {
   try {
     const response = await fetch(
@@ -381,6 +415,7 @@ async function unbanUser(groupId: string, userId: string) {
 const groups = {
   attemptNewGroup,
   banUser,
+  deleteGroup,
   demoteMod,
   getAllGroups,
   getGroupInfo,

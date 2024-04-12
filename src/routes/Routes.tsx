@@ -13,6 +13,7 @@ import Redirect from "@components/Redirect";
 import AllGroups from "@pages/AllGroups";
 import Dashboard from "@pages/Dashboard";
 import ErrorPage from "@pages/ErrorPage";
+import GroupDeleted from "@pages/GroupDeleted";
 import GroupDetail from "@pages/GroupDetail";
 import Home from "@pages/Home";
 import Login from "@pages/Login";
@@ -51,6 +52,10 @@ function getRoutesWithUser() {
             {
               path: "mygroups",
               element: <MyGroups />,
+            },
+            {
+              path: "groups/deleted",
+              element: <GroupDeleted />,
             },
             {
               path: "groups/:groupId",
