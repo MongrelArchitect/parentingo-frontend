@@ -16,7 +16,7 @@ export default function GroupPosts({ groupId }: Props) {
   const [groupPosts, setGroupPosts] = useState<null | PostList>(null);
 
   const getPosts = async () => {
-    const result = await posts.getGroupPosts(groupId);
+    const result = await posts.getGroupPosts(groupId, {sort:"newest"});
     if (result.status === 200) {
       setGroupPosts(result.posts);
     } else {
@@ -39,12 +39,9 @@ export default function GroupPosts({ groupId }: Props) {
         </div>
       );
     }
-    // sort by timestamp
-    const postIds = Object.keys(groupPosts).sort((a, b) => {
-      const dateA = new Date(groupPosts[a].timestamp);
-      const dateB = new Date(groupPosts[b].timestamp);
-      return dateB.getTime() - dateA.getTime();
-    });
+
+    const postIds = Object.keys(groupPosts);
+
     return (
       <ul className="flex flex-col gap-4">
         {postIds.map((postId) => {
