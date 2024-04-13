@@ -88,7 +88,7 @@ export default function GroupDetail() {
           <span className="capitalize">{group.name}</span>
           <MembershipControl updateGroup={getGroupInfo} group={group} />
         </h1>
-        <div className="flex flex-col gap-4 p-1">
+        <div className="flex flex-col gap-4 p-1 text-lg">
           <div className="flex flex-wrap items-center justify-between gap-2 font-mono">
             <p>
               {group.members.length} member

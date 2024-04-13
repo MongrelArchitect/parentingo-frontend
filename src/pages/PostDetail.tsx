@@ -218,6 +218,17 @@ export default function PostDetail() {
 
   return (
     <div className="flex flex-col gap-4">
+      <p className="text-lg">
+        Posted in{" "}
+        <Link
+          className="text-sky-800 underline"
+          title={`Go to ${group.name} group page`}
+          to={`/groups/${group.id}`}
+        >
+          {group.name}
+        </Link>{" "}
+        group
+      </p>
       {displayPost()}
       {group.members.includes(user.id) ? (
         <NewComment
