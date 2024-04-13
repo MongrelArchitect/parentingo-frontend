@@ -67,14 +67,11 @@ async function attemptNewGroup(formInfo: NewGroupForm) {
 
 async function banUser(groupId: string, userId: string) {
   try {
-    const response = await fetch(
-      `${api.url}/groups/${groupId}/ban/${userId}`,
-      {
-        credentials: "include",
-        method: "PATCH",
-        mode: "cors",
-      },
-    );
+    const response = await fetch(`${api.url}/groups/${groupId}/ban/${userId}`, {
+      credentials: "include",
+      method: "PATCH",
+      mode: "cors",
+    });
     const responseBody = await response.json();
     const result: Response = {
       status: response.status,
@@ -101,14 +98,49 @@ async function banUser(groupId: string, userId: string) {
 
 async function deleteGroup(groupId: string) {
   try {
-    const response = await fetch(
-      `${api.url}/groups/${groupId}/`,
-      {
-        credentials: "include",
-        method: "DELETE",
-        mode: "cors",
+    const response = await fetch(`${api.url}/groups/${groupId}/`, {
+      credentials: "include",
+      method: "DELETE",
+      mode: "cors",
+    });
+    const responseBody = await response.json();
+    const result: Response = {
+      status: response.status,
+      message: responseBody.message,
+    };
+    // this happens with a 500 response from the server
+    if (responseBody.error) {
+      result.error = responseBody.error;
+    }
+    return result;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+    };
+  }
+}
+
+async function editDescription(groupId: string, newDescription: string) {
+  const formBody = new URLSearchParams();
+  formBody.append("description", newDescription);
+
+  try {
+    const response = await fetch(`${api.url}/groups/${groupId}/`, {
+      body: formBody,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    );
+      method: "PATCH",
+      mode: "cors",
+    });
     const responseBody = await response.json();
     const result: Response = {
       status: response.status,
@@ -417,6 +449,7 @@ const groups = {
   banUser,
   deleteGroup,
   demoteMod,
+  editDescription,
   getAllGroups,
   getGroupInfo,
   getMemberGroups,

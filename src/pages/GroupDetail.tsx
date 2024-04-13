@@ -3,6 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import AdminPanel from "@components/AdminPanel";
+import Button from "@components/Button";
+import EditGroupDescription from "@components/EditGroupDescription";
 import ErrorMessage from "@components/ErrorMessage";
 import GroupPosts from "@components/GroupPosts";
 import MembershipControl from "@components/MembershipControl";
@@ -21,6 +23,7 @@ import posts from "@util/posts";
 export default function GroupDetail() {
   const { user } = useContext(UserContext);
 
+  const [editing, setEditing] = useState(false);
   const [error, setError] = useState<null | string>(null);
   const [group, setGroup] = useState<null | GroupInterface>(null);
   const [postCount, setPostCount] = useState(0);
@@ -63,6 +66,21 @@ export default function GroupDetail() {
     return null;
   }
 
+  const userIsAdmin = user.id === group.admin;
+  const userIsMod = group.mods.includes(user.id);
+
+  const toggleEditing = () => {
+    setEditing(!editing);
+  };
+
+  const displayEditButton = () => {
+    return (
+      <Button onClick={toggleEditing}>
+        {editing ? "Cancel edit" : "Edit description"}
+      </Button>
+    );
+  };
+
   const displayGroupInfo = () => {
     return (
       <div className="rounded border-2 border-sky-600 bg-white shadow-md shadow-slate-400">
@@ -98,16 +116,23 @@ export default function GroupDetail() {
               <span className="absolute right-[56px] top-0 text-xs">admin</span>
             </div>
           </div>
-          <pre className="whitespace-pre-wrap font-sans text-lg">
-            {he.decode(group.description)}
-          </pre>
+          {userIsAdmin ? displayEditButton() : null}
+          {editing ? (
+            <EditGroupDescription 
+              description={group.description}
+              getGroupInfo={getGroupInfo}
+              groupId={group.id}
+              toggleEditing={toggleEditing}
+            />
+          ) : (
+            <pre className="whitespace-pre-wrap font-sans text-lg">
+              {he.decode(group.description)}
+            </pre>
+          )}
         </div>
       </div>
     );
   };
-
-  const userIsAdmin = user.id === group.admin;
-  const userIsMod = group.mods.includes(user.id);
 
   return (
     <div className="flex flex-col gap-4">
