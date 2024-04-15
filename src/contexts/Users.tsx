@@ -90,10 +90,13 @@ export default function UserContextProvider({ children }: ContextProps) {
     }
   };
 
-  const attemptLogin = async (username: string, password: string): Promise<Response> => {
+  const attemptLogin = async (
+    username: string,
+    password: string,
+  ): Promise<Response> => {
     // fetch will serialize this to x-www-form-urlencoded (what server expects)
     const formBody = new URLSearchParams();
-    formBody.append("username", username);
+    formBody.append("username", username.toLowerCase());
     formBody.append("password", password);
 
     try {
@@ -126,7 +129,7 @@ export default function UserContextProvider({ children }: ContextProps) {
         status: 500,
         // XXX wonky
         error: "unknown error",
-      }
+      };
     }
   };
 
@@ -154,7 +157,7 @@ export default function UserContextProvider({ children }: ContextProps) {
     const formBody = new URLSearchParams();
     const formKeys = Object.keys(formInfo) as Array<keyof SignUpForm>;
     formKeys.forEach((field) => {
-      formBody.append(field, formInfo[field])
+      formBody.append(field, formInfo[field]);
     });
 
     try {
@@ -206,7 +209,14 @@ export default function UserContextProvider({ children }: ContextProps) {
 
   return (
     <UserContext.Provider
-      value={{ attemptLogin, attemptLogout, attemptSignup, getCurrentUser, clearUser, user }}
+      value={{
+        attemptLogin,
+        attemptLogout,
+        attemptSignup,
+        getCurrentUser,
+        clearUser,
+        user,
+      }}
     >
       {children}
     </UserContext.Provider>
