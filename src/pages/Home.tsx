@@ -50,8 +50,9 @@ export default function Home() {
           // TODO
           // just get 5 most recent posts from each group for now,
           // implement pagination / "skip" later
-          sort: "newest",
           limit: postLimit,
+          noSticky: true,
+          sort: "newest",
         });
         if (response.posts) {
           postList[groupId] = response.posts;

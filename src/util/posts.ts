@@ -248,13 +248,21 @@ async function getCommentCount(groupId: string, postId: string) {
 
 async function getGroupPosts(
   groupId: string,
-  options?: { limit?: number; skip?: number; sort?: string },
+  options?: {
+    limit?: number;
+    noSticky?: boolean;
+    skip?: number;
+    sort?: string;
+  },
 ) {
   try {
     const url = new URL(`${api.url}/groups/${groupId}/posts`);
     if (options) {
       if (options.limit) {
         url.searchParams.append("limit", options.limit.toString());
+      }
+      if (options.noSticky) {
+        url.searchParams.append("nosticky", "1");
       }
       if (options.skip) {
         url.searchParams.append("skip", options.skip.toString());
