@@ -36,10 +36,12 @@ export default function GroupSummary({ group, updateGroup }: Props) {
   }, []);
 
   return (
-    <li className="border-2 border-sky-600 rounded bg-white shadow-md shadow-slate-400">
+    <li className="rounded border-2 border-sky-600 bg-white shadow-md shadow-slate-400">
       <div className="flex flex-wrap items-center justify-between gap-2 bg-sky-600 p-1 text-xl">
         <Link to={`/groups/${group.id}`}>
-          <h2 className="capitalize text-neutral-100">{group.name}</h2>
+          <h2 className="capitalize text-neutral-100">
+            {he.decode(group.name)}
+          </h2>
         </Link>
         <MembershipControl group={group} updateGroup={updateGroup} />
       </div>
