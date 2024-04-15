@@ -3,20 +3,23 @@ import { useEffect, useState } from "react";
 import ErrorMessage from "./ErrorMessage";
 import PostSummary from "./PostSummary";
 
+import GroupInterface from "@interfaces/Groups";
 import { PostList } from "@interfaces/Posts";
 
 import posts from "@util/posts";
 
 interface Props {
-  groupId: string;
+  group: GroupInterface;
+  userIsAdmin: boolean;
+  userIsMod: boolean;
 }
 
-export default function GroupPosts({ groupId }: Props) {
+export default function GroupPosts({ group, userIsAdmin, userIsMod }: Props) {
   const [error, setError] = useState<null | string>(null);
   const [groupPosts, setGroupPosts] = useState<null | PostList>(null);
 
   const getPosts = async () => {
-    const result = await posts.getGroupPosts(groupId, {sort:"newest"});
+    const result = await posts.getGroupPosts(group.id, { sort: "newest" });
     if (result.status === 200) {
       setGroupPosts(result.posts);
     } else {
@@ -46,7 +49,18 @@ export default function GroupPosts({ groupId }: Props) {
       <ul className="flex flex-col gap-4">
         {postIds.map((postId) => {
           const currentPost = groupPosts[postId];
-          return <PostSummary key={postId} post={currentPost} />;
+          const postByAdmin = groupPosts[postId].author === group.admin;
+          return (
+            <PostSummary
+              getPosts={getPosts}
+              groupId={group.id}
+              key={postId}
+              post={currentPost}
+              postByAdmin={postByAdmin}
+              userIsAdmin={userIsAdmin}
+              userIsMod={userIsMod}
+            />
+          );
         })}
       </ul>
     );

@@ -90,11 +90,11 @@ export default function GroupDetail() {
         </h1>
         <div className="flex flex-col gap-4 p-1 text-lg">
           <div className="flex flex-wrap items-center justify-between gap-2 font-mono">
-            <p>
+            <p className="text-sm">
               {group.members.length} member
               {group.members.length === 1 ? "" : "s"},
             </p>
-            <p>
+            <p className="text-sm">
               {postCount} post
               {postCount === 1 ? "" : "s"}
             </p>
@@ -118,7 +118,7 @@ export default function GroupDetail() {
           </div>
           {userIsAdmin ? displayEditButton() : null}
           {editing ? (
-            <EditGroupDescription 
+            <EditGroupDescription
               description={group.description}
               getGroupInfo={getGroupInfo}
               groupId={group.id}
@@ -147,7 +147,13 @@ export default function GroupDetail() {
       {group && group.members.includes(user.id) ? (
         <NewPost groupId={group.id} />
       ) : null}
-      {group ? <GroupPosts groupId={group.id} /> : null}
+      {group ? (
+        <GroupPosts
+          group={group}
+          userIsAdmin={userIsAdmin}
+          userIsMod={userIsMod}
+        />
+      ) : null}
       <ErrorMessage error={error} />
     </div>
   );

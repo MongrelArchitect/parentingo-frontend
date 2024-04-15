@@ -455,6 +455,46 @@ async function toggleLikePost(groupId: string, postId: string, liked: boolean) {
   }
 }
 
+async function toggleStickyPost(
+  groupId: string,
+  postId: string,
+  sticky: boolean,
+) {
+  const path = sticky ? "unstick" : "sticky";
+  try {
+    const response = await fetch(
+      `${api.url}/groups/${groupId}/posts/${postId}/${path}`,
+      {
+        credentials: "include",
+        method: "PATCH",
+        mode: "cors",
+      },
+    );
+    const responseBody = await response.json();
+    const postResponse: Response = {
+      status: response.status,
+      message: responseBody.message,
+    };
+    // this happens with a 500 response, either from a problem setting post
+    // stickiness or for some other unforseen server issue
+    if (responseBody.error) {
+      postResponse.error = responseBody.error;
+    }
+    return postResponse;
+  } catch (err) {
+    // XXX
+    // display this error in ui?
+    console.error(err);
+    // this will happen if there's some problem with fetch itself, just
+    // report as a server error & handle similarly
+    return {
+      status: 500,
+      message: "Server error",
+      error: err,
+    };
+  }
+}
+
 const posts = {
   createNewComment,
   createNewPost,
@@ -466,6 +506,7 @@ const posts = {
   getPostCount,
   getSinglePost,
   toggleLikePost,
+  toggleStickyPost,
 };
 
 export default posts;
