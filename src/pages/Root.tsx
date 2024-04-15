@@ -3,9 +3,9 @@ import Header from "@components/Header";
 
 export default function Root() {
   return (
-    <div className="min-h-[100lvh] bg-stone-200 text-slate-800">
+    <div className="min-h-[100lvh] bg-stone-200 text-slate-800 flex flex-col">
       <Header />
-      <main>
+      <main className="self-center max-w-[640px]">
         <Outlet />
       </main>
     </div>
