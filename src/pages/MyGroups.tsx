@@ -43,24 +43,13 @@ export default function MyGroups() {
       return <li>Not a member of any groups</li>;
     }
 
-    const groupIds = Object.keys(memberGroups).sort((a, b) => {
-      const isAdminGroupA = memberGroups[a].admin === user.id;
-      const isAdminGroupB = memberGroups[b].admin === user.id;
-      if (isAdminGroupA && !isAdminGroupB) {
-        return -1;
-      }
-      if (!isAdminGroupA && isAdminGroupB) {
-        return 1;
-      }
-      return 0;
-    });
+    const groupIds = Object.keys(memberGroups);
 
     return groupIds.map((groupId) => {
       const group = memberGroups[groupId];
 
       return (
         <GroupSummary
-          admin={group.admin === user.id}
           group={group}
           key={groupId}
           updateGroup={getGroups}
