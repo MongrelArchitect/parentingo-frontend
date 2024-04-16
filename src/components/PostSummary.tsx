@@ -13,12 +13,13 @@ import PostInterface from "@interfaces/Posts";
 import posts from "@util/posts";
 
 interface Props {
-  getPosts: () => void;
-  groupId: string;
+  getPosts?: () => void;
+  groupId?: string;
   post: PostInterface;
-  postByAdmin: boolean;
-  userIsAdmin: boolean;
-  userIsMod: boolean;
+  postByAdmin?: boolean;
+  userIsAdmin?: boolean;
+  userIsMod?: boolean;
+  viewingInGroup?: boolean;
 }
 
 export default function PostSummary({
@@ -28,6 +29,7 @@ export default function PostSummary({
   postByAdmin,
   userIsAdmin,
   userIsMod,
+  viewingInGroup,
 }: Props) {
   const [error, setError] = useState<null | string>(null);
   const [commentCount, setCommentCount] = useState(0);
@@ -59,21 +61,9 @@ export default function PostSummary({
   };
 
   const displayStickyControl = () => {
-    if (userIsAdmin) {
-      // admin can stick or unstick any post
-      return (
-        <StickyControl
-          getPosts={getPosts}
-          groupId={groupId}
-          postId={post.id}
-          sticky={post.sticky || false}
-        />
-      );
-    }
-    if (userIsMod) {
-      // mods can stick or unstick any non-admin post, but if the post is by
-      // admin they can only stick it (not unstick it)
-      if (!postByAdmin || (postByAdmin && !post.sticky)) {
+    if (viewingInGroup && getPosts && groupId) {
+      if (userIsAdmin) {
+        // admin can stick or unstick any post
         return (
           <StickyControl
             getPosts={getPosts}
@@ -83,11 +73,30 @@ export default function PostSummary({
           />
         );
       }
-    }
-    if (post.sticky) {
-      return (
-        <img className="max-h-[32px] invert" alt="Sticky post" src={pinIcon} />
-      );
+      if (userIsMod) {
+        // mods can stick or unstick any non-admin post, but if the post is by
+        // admin they can only stick it (not unstick it)
+        if (!postByAdmin || (postByAdmin && !post.sticky)) {
+          return (
+            <StickyControl
+              getPosts={getPosts}
+              groupId={groupId}
+              postId={post.id}
+              sticky={post.sticky || false}
+            />
+          );
+        }
+      }
+      if (post.sticky) {
+        return (
+          <img
+            className="max-h-[32px] invert"
+            alt="Sticky post"
+            src={pinIcon}
+          />
+        );
+      }
+      return null;
     }
     return null;
   };
@@ -132,11 +141,9 @@ export default function PostSummary({
           <pre className="whitespace-pre-wrap font-sans text-lg">
             {getContentPreview()}
           </pre>
-        <Link to={`/groups/${post.group}/posts/${post.id}`}>
-          <span className="text-sky-800 underline">
-            View full post
-          </span>
-        </Link>
+          <Link to={`/groups/${post.group}/posts/${post.id}`}>
+            <span className="text-sky-800 underline">View full post</span>
+          </Link>
         </div>
 
         <div className="flex justify-between gap-2 text-xl">

@@ -59,6 +59,7 @@ export default function GroupPosts({ group, userIsAdmin, userIsMod }: Props) {
               postByAdmin={postByAdmin}
               userIsAdmin={userIsAdmin}
               userIsMod={userIsMod}
+              viewingInGroup
             />
           );
         })}
