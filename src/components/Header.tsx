@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Button from "./Button";
 
+import defaultAvatarIcon from "@assets/icons/account-circle.svg";
+
 import { UserContext } from "@contexts/Users";
 
 export default function Header() {
@@ -50,8 +52,8 @@ export default function Header() {
           >
             <img
               alt=""
-              className="w-[48px] rounded-full border-2 border-slate-900"
-              src={user.avatar}
+              className="h-[48px] w-[48px] bg-white rounded-full border-2 border-slate-900"
+              src={user.avatar || defaultAvatarIcon}
             />
             <span>{user.username}</span>
           </Link>
