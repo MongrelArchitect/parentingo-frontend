@@ -73,7 +73,11 @@ export default function PostDetail() {
     }
   };
 
-  useTitle(post && group ? he.decode(`${group.name} - ${post.title}`) : "");
+  useTitle(
+    post && group
+      ? he.decode(`${he.decode(group.name)} - ${he.decode(post.title)}`)
+      : "",
+  );
 
   useEffect(() => {
     getPost();
@@ -222,10 +226,10 @@ export default function PostDetail() {
         Posted in{" "}
         <Link
           className="text-sky-800 underline"
-          title={`Go to ${group.name} group page`}
+          title={`Go to ${he.decode(group.name)} group page`}
           to={`/groups/${group.id}`}
         >
-          {group.name}
+          {he.decode(group.name)}
         </Link>{" "}
         group
       </p>
