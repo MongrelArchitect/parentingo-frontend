@@ -1,3 +1,4 @@
+import he from "he";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -116,10 +117,10 @@ export default function Home() {
           <h3 className="rounded border-2 border-sky-600 bg-sky-600 p-1 text-2xl capitalize shadow-md shadow-slate-400">
             <Link
               className="text-neutral-100"
-              title={`Visit ${memberGroups[groupId].name} group`}
+              title={`Visit ${he.decode(memberGroups[groupId].name)} group`}
               to={`/groups/${groupId}`}
             >
-              {memberGroups[groupId].name}
+              {he.decode(memberGroups[groupId].name)}
             </Link>
           </h3>
           {postIds.map((postId) => {
